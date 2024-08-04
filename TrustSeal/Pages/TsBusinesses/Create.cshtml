@@ -1,0 +1,123 @@
+﻿@page
+@model TrustSeal.Pages.TsBusinesses.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Business</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Business.LegalName" class="control-label"></label>
+                <input asp-for="Business.LegalName" class="form-control" />
+                <span asp-validation-for="Business.LegalName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Business.RegistrationNumber" class="control-label"></label>
+                <input asp-for="Business.RegistrationNumber" class="form-control" />
+                <span asp-validation-for="Business.RegistrationNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Business.TaxIdentificationNumber" class="control-label"></label>
+                <input asp-for="Business.TaxIdentificationNumber" class="form-control" />
+                <span asp-validation-for="Business.TaxIdentificationNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Business.IncorporationDate" class="control-label"></label>
+                <input asp-for="Business.IncorporationDate" class="form-control" />
+                <span asp-validation-for="Business.IncorporationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Business.StreetAddress" class="control-label"></label>
+                <input asp-for="Business.StreetAddress" class="form-control" />
+                <span asp-validation-for="Business.StreetAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Business.City" class="control-label"></label>
+                <input asp-for="Business.City" class="form-control" />
+                <span asp-validation-for="Business.City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Business.PostalCode" class="control-label"></label>
+                <input asp-for="Business.PostalCode" class="form-control" />
+                <span asp-validation-for="Business.PostalCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Business.Country" class="control-label"></label>
+                <input asp-for="Business.Country" class="form-control" />
+                <span asp-validation-for="Business.Country" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Business.PhoneNumber" class="control-label"></label>
+                <input asp-for="Business.PhoneNumber" class="form-control" />
+                <span asp-validation-for="Business.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Business.Email" class="control-label"></label>
+                <input asp-for="Business.Email" class="form-control" />
+                <span asp-validation-for="Business.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Business.Website" class="control-label"></label>
+                <input asp-for="Business.Website" class="form-control" />
+                <span asp-validation-for="Business.Website" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Business.PrimaryContactName" class="control-label"></label>
+                <input asp-for="Business.PrimaryContactName" class="form-control" />
+                <span asp-validation-for="Business.PrimaryContactName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Business.PrimaryContactPhone" class="control-label"></label>
+                <input asp-for="Business.PrimaryContactPhone" class="form-control" />
+                <span asp-validation-for="Business.PrimaryContactPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Business.PrimaryContactEmail" class="control-label"></label>
+                <input asp-for="Business.PrimaryContactEmail" class="form-control" />
+                <span asp-validation-for="Business.PrimaryContactEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Business.BusinessType" class="control-label"></label>
+                <input asp-for="Business.BusinessType" class="form-control" />
+                <span asp-validation-for="Business.BusinessType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Business.IndustryCategory" class="control-label"></label>
+                <input asp-for="Business.IndustryCategory" class="form-control" />
+                <span asp-validation-for="Business.IndustryCategory" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Business.IsVerified" /> @Html.DisplayNameFor(model => model.Business.IsVerified)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Business.SubmissionDate" class="control-label"></label>
+                <input asp-for="Business.SubmissionDate" class="form-control" />
+                <span asp-validation-for="Business.SubmissionDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Business.OwnerId" class="control-label"></label>
+                <select asp-for="Business.OwnerId" class ="form-control" asp-items="ViewBag.OwnerId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
