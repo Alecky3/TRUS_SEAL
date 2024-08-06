@@ -26,7 +26,15 @@ public class TSAuth : IdentityDbContext<TSUser>
        .WithMany(e => e.UserBusinesses)
        .HasForeignKey(e => e.OwnerId)
        .IsRequired();
+
+        builder.Entity<Question>()
+             .HasOne(q => q.Category);
+
+        
+           
     }
     public DbSet<Business> Businesses { get; set; }
+    public DbSet<Question> Questions { get; set; }
+    public DbSet<QuestionCategory> QuestionCategories { get; set; }
 
 }
