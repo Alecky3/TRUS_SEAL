@@ -11,8 +11,7 @@ using TrustSeal.Areas.Identity.Data;
 
 namespace TrustSeal.Migrations
 {
-    [DbContext(typeof(TSAuth))]
-    [Migration("20240806080154_CreateQuestionAndCategory2")]
+    
     partial class CreateQuestionAndCategory2
     {
         /// <inheritdoc />
