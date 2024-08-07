@@ -2,143 +2,70 @@
 @model TrustSeal.Pages.TsBusinesses.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Business Details";
 }
+<div class="container-fluid table-container">
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <h2 class="h4 mb-4">My Businesses</h2>
+            <div class="mb-3">
+                <a asp-page="Create" class="btn btn-primary btn-custom">Create New</a>
+            </div>
 
-<h1>Index</h1>
-
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].LegalName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].RegistrationNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].TaxIdentificationNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].IncorporationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].StreetAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].City)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].PostalCode)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].Country)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].PhoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].Website)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].PrimaryContactName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].PrimaryContactPhone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].PrimaryContactEmail)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].BusinessType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].IndustryCategory)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].IsVerified)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].SubmissionDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].Owner)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Business) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.LegalName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RegistrationNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TaxIdentificationNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IncorporationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StreetAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PostalCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Country)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Website)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrimaryContactName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrimaryContactPhone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrimaryContactEmail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BusinessType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IndustryCategory)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsVerified)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SubmissionDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Owner.Id)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-sm small shadow">
+                    <thead class="table-light bg-secondary text-black">
+                        <tr>
+                            <th>Legal Name</th>
+                            <th>Reg. Number</th>
+                            <th>Tax ID</th>
+                            <th>Incorp. Date</th>
+                            <th>Address</th>
+                            <th>Contact</th>
+                            <th>Business Info</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Business)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.LegalName)</td>
+                                <td>@Html.DisplayFor(modelItem => item.RegistrationNumber)</td>
+                                <td>@Html.DisplayFor(modelItem => item.TaxIdentificationNumber)</td>
+                                <td>@Html.DisplayFor(modelItem => item.IncorporationDate)</td>
+                               
+                                <td title="@item.StreetAddress, @item.City, @item.PostalCode, @item.Country">
+                                        @(item.StreetAddress?.Length > 20 ? item.StreetAddress.Substring(0, 17) + "..." : item.StreetAddress)
+                                
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PhoneNumber)<br>
+                                    @Html.DisplayFor(modelItem => item.Email)<br>
+                                    @Html.DisplayFor(modelItem => item.Website)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BusinessType)<br>
+                                    @Html.DisplayFor(modelItem => item.IndustryCategory)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IsVerified)<br>
+                                    @Html.DisplayFor(modelItem => item.SubmissionDate)
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a class="btn btn-success btn-sm" asp-page="#" asp-route-id="@item.Id"><i class="bi bi-list-check"></i></a>
+                                        <a class="btn btn-primary btn-sm" asp-page="./Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-fill"></i></a>
+                                        <a class="btn btn-info btn-sm" asp-page="./Details" asp-route-id="@item.Id"><i class="text-white bi bi-eye-fill"></i></a>
+                                        <a class="btn btn-danger btn-sm" asp-page="./Delete" asp-route-id="@item.Id"><i class="bi bi-trash-fill"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
