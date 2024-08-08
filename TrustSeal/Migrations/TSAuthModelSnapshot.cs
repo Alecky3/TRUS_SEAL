@@ -295,7 +295,6 @@ namespace TrustSeal.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RegistrationNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StreetAddress")
@@ -305,7 +304,6 @@ namespace TrustSeal.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("TaxIdentificationNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Website")
@@ -317,6 +315,55 @@ namespace TrustSeal.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Businesses", (string)null);
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.Question", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("HasAttachment")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("QuestionText")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Questions");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.QuestionCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("QuestionCategories");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -381,9 +428,25 @@ namespace TrustSeal.Migrations
                     b.Navigation("Owner");
                 });
 
+            modelBuilder.Entity("TrustSeal.Models.Question", b =>
+                {
+                    b.HasOne("TrustSeal.Models.QuestionCategory", "Category")
+                        .WithMany("questions")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("TrustSeal.Areas.Identity.Data.TSUser", b =>
                 {
                     b.Navigation("UserBusinesses");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.QuestionCategory", b =>
+                {
+                    b.Navigation("questions");
                 });
 #pragma warning restore 612, 618
         }

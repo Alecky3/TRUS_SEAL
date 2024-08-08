@@ -5,26 +5,40 @@
 @inject UserManager<TSUser> UserManager
 
 <ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
+    @if (SignInManager.IsSignedIn(User))
+    {
         TSUser user = await UserManager.GetUserAsync(User);
         var fullName = $"{user?.FirstName} {user?.LastName}";
-    <li class="nav-item">
-            <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello, @fullName!</a>
-    </li>
-    <li class="nav-item">
-        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
-            <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
-        </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
-}
+        <li class="dropdown">
+            <a id="manage" class="nav-link dropdown-toggle waves-effect waves-light nav-user"  title="Manage"  data-bs-toggle="dropdown" role="button"
+               aria-haspopup="false" aria-expanded="false">
+                <span>Hello, @fullName!</span>
+                <img src="assets/images/users/user-5.jpg" alt="profile-user" class="rounded-circle thumb-xs" />
+            </a>
+            <div class="dropdown-menu dropdown-menu-end">
+                <a class='dropdown-item' asp-area="Identity"  asp-page="/Account/Manage/Index"><i data-feather="user" class="align-self-center icon-xs icon-dual me-1"></i> Profile</a>
+                <a class='dropdown-item' href='apps-contact-list.html'><i data-feather="users" class="align-self-center icon-xs icon-dual me-1"></i> Contacts</a>
+                <div class="dropdown-divider mb-0"></div>
+                <form id="logoutForm" class="dropdown-item" asp-area="Identity"  asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+                    <button id="logout" type="submit" class="btn btn-link text-dark border-0 p-0"><i data-feather="power" class="align-self-center icon-xs icon-dual me-1"></i> Logout</button>
+                </form>
+            </div>
+        </li>
+    }
+    else
+    {
+        <li class="dropdown">
+            <a id="manage" class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-bs-toggle="dropdown" role="button"
+               aria-haspopup="false" aria-expanded="false">
+                <span class="btn btn-primary">Authenticate</span>
+               
+            </a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                <a class="dropdown-item" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            </div>
+           
+        </li>
+   
+    }
 </ul>
