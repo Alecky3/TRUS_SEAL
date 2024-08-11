@@ -40,7 +40,7 @@ This application manages and verifies trust seals for websites and organizations
 # This for when you need to configure from scratch, otherwise skip to the end
 # Configure Tailwind & flowbite (a tailwind component library)
 
-# Preliguisite
+# Preliquisites
 1. Make sure Nodejs is installed - installation instructions on https://nodejs.org/
 2. Check NodeJs installation with this command; `node -v` - should output something like <v20.10.0>
 3. If Nodejs is installed correctly, create a package.json file under TRUSTSEALAPPLICATION folder.
