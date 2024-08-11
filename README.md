@@ -75,6 +75,9 @@ This application manages and verifies trust seals for websites and organizations
     }'
 10. Comment the css includes and js includes on _Layout.cshtml
 11. include a new styleshett with href=["~/css/tailwind/tailwind_main_out.css"]
-
+12. Update package.json file, under Scripts, after "test" add a comma and add 
+    'tailwind-dev":"npx tailwindcss -i ./wwwroot/css/tailwind/tailwind_main.css -o ./wwwroot/css/tailwind/tailwind_main_out.css --watch'
+    This allow you initiate the command a simple as 
+    'npm run tailwind-dev'
 
   
