@@ -73,6 +73,8 @@ This application manages and verifies trust seals for websites and organizations
       },
       plugins: [],
     }'
+10. Comment the css includes and js includes on _Layout.cshtml
+11. include a new styleshett with href=["~/css/tailwind/tailwind_main_out.css"]
 
 
   
