@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./Pages/**/*.cshtml"],
+  content: ["./TrustSeal/Pages/**/*.cshtml"],
   theme: {
     extend: {},
   },
