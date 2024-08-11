@@ -57,5 +57,7 @@ This application manages and verifies trust seals for websites and organizations
     }'
 6. Create Tailwind config file - this creates a tailwind.config.js file on the directory TrustSeal
   'npx tailwindcss init'
+7. Create a file under wwwroot/css/tailwind/ with filename [tailwind_main.css] - This will be the main css file tailwind will use to generate the output css under the name [tailwind_main_out.css]
+
 
   
