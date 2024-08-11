@@ -94,6 +94,7 @@ This application manages and verifies trust seals for websites and organizations
         "./node_modules/flowbite/**/*.js"
     ]'
 4. Copy flowbite.min.js file under node_modules/flowbite/dist/flowbite.min.css to TrustSeal/wwwwroot/js/
+5. Add flowbite js include under _Layout.cshtml
 
 
   
