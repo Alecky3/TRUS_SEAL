@@ -84,6 +84,9 @@ This application manages and verifies trust seals for websites and organizations
 # Configure flowbite (Tailwind component library)
 1. Install flowbite
     'npm install flowbite'
-2. 
+2. Add flowbite as a plugin on tailwind.config.js under plugins
+    'plugins: [
+        require('flowbite/plugin')
+    ]'
 
   
