@@ -63,6 +63,16 @@ This application manages and verifies trust seals for websites and organizations
      @tailwind components;
      @tailwind utilities;
     '
+9. Tell tailwind CLI where your template files are
+   - modify tailwind.config.js to look like this
+   '@type {import('tailwindcss').Config} */
+    module.exports = {
+      content: ["./Pages/**/*.cshtml"],
+      theme: {
+        extend: {},
+      },
+      plugins: [],
+    }'
 
 
   
