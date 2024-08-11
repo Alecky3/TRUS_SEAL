@@ -48,12 +48,14 @@ This application manages and verifies trust seals for websites and organizations
 4. Install tailwind CLI
    'npm install -D tailwindcss@latest postcss@latest autoprefixer@latest'
 5. On directory TrustSeal, create a file with name [postcss.config.js] with this content
-'// postcss.config.js
-module.exports = {
-  plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
-  }
-}'
+    '// postcss.config.js
+    module.exports = {
+      plugins: {
+        tailwindcss: {},
+        autoprefixer: {},
+      }
+    }'
+6. Create Tailwind config file - this creates a tailwind.config.js file on the directory TrustSeal
+  'npx tailwindcss init'
 
   
