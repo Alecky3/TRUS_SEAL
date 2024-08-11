@@ -99,7 +99,7 @@ This application manages and verifies trust seals for websites and organizations
 # configure tailwind and flowbite the easy way
 1. Ensure NodeJs is installed
 2. under TRUSTSEALAPPLICATION run
-  `npm run install`
+  `npm install`
 3. To start tailwind CLI run
   `npm run tailwind-dev`
 4. Good to go.
