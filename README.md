@@ -81,4 +81,9 @@ This application manages and verifies trust seals for websites and organizations
     'npm run tailwind-dev'
 13. Test whether tailwind command is working, run 'npm run tailwind-dev'
 
+# Configure flowbite (Tailwind component library)
+1. Install flowbite
+    'npm install flowbite'
+2. 
+
   
