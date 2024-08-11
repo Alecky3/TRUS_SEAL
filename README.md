@@ -37,4 +37,15 @@ This application manages and verifies trust seals for websites and organizations
   `dotnet ef database update`
  6. Run the Application
   ` dotnet run`
+
+# Configure Tailwind & flowbite (a tailwind component library)
+
+# Preliguisite
+1. Make sure Nodejs is installed - installation instructions on https://nodejs.org/
+2. Check NodeJs installation with this command; 'node -v' - should output something like <v20.10.0>
+3. If Nodejs is installed correctly, create a package.json file.
+   'npm init -y'
+4. Install tailwind CLI
+   'npm install -D tailwindcss@latest postcss@latest autoprefixer@latest'
+
   
