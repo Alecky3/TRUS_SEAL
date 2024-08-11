@@ -37,7 +37,7 @@ This application manages and verifies trust seals for websites and organizations
   `dotnet ef database update`
  6. Run the Application
   ` dotnet run`
-
+# This for when you need to configure from scratch, otherwise skip to the end
 # Configure Tailwind & flowbite (a tailwind component library)
 
 # Preliguisite
@@ -95,6 +95,15 @@ This application manages and verifies trust seals for websites and organizations
     ]'
 4. Copy flowbite.min.js file under node_modules/flowbite/dist/flowbite.min.css to TrustSeal/wwwwroot/js/
 5. Add flowbite js include under _Layout.cshtml
+
+# configure tailwind and flowbite the easy way
+1. Ensure NodeJs is installed
+2. under TRUSTSEALAPPLICATION run
+  'npm run install'
+3. To start tailwind CLI run
+  'npm run tailwind-dev'
+4. Good to go.
+
 
 
   
