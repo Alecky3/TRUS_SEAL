@@ -88,5 +88,11 @@ This application manages and verifies trust seals for websites and organizations
     'plugins: [
         require('flowbite/plugin')
     ]'
+3. Update tailwind.config.js under content
+'content: [
+        "..other include from before",
+        "./node_modules/flowbite/**/*.js"
+    ]'
+
 
   
