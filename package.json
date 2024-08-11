@@ -1,0 +1,12 @@
+{
+  "name": "trustsealapplication",
+  "version": "1.0.0",
+  "description": "<!-- Brief description of what the Trust Seal Application does --> This application manages and verifies trust seals for websites and organizations.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
