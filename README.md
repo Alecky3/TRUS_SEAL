@@ -43,11 +43,11 @@ This application manages and verifies trust seals for websites and organizations
 # Preliguisite
 1. Make sure Nodejs is installed - installation instructions on https://nodejs.org/
 2. Check NodeJs installation with this command; 'node -v' - should output something like <v20.10.0>
-3. If Nodejs is installed correctly, create a package.json file.
+3. If Nodejs is installed correctly, create a package.json file under TRUSTSEALAPPLICATION folder.
    'npm init -y'
 4. Install tailwind CLI
    'npm install -D tailwindcss@latest postcss@latest autoprefixer@latest'
-5. On directory TrustSeal, create a file with name [postcss.config.js] with this content
+5. On directory TRUSTSEALAPPLICATION, create a file with name [postcss.config.js] with this content
     '// postcss.config.js
     module.exports = {
       plugins: {
@@ -57,7 +57,7 @@ This application manages and verifies trust seals for websites and organizations
     }'
 6. Create Tailwind config file - this creates a tailwind.config.js file on the directory TrustSeal
   'npx tailwindcss init'
-7. Create a file under wwwroot/css/tailwind/ with filename [tailwind_main.css] - This will be the main css file tailwind will use to generate the output css under the name [tailwind_main_out.css]
+7. Create a file under TrustSeal/wwwroot/css/tailwind/ with filename [tailwind_main.css] - This will be the main css file tailwind will use to generate the output css under the name [tailwind_main_out.css]
 8. Add this content on [tailwind_main.css]
     '@tailwind base;
      @tailwind components;
@@ -76,8 +76,9 @@ This application manages and verifies trust seals for websites and organizations
 10. Comment the css includes and js includes on _Layout.cshtml
 11. include a new styleshett with href=["~/css/tailwind/tailwind_main_out.css"]
 12. Update package.json file, under Scripts, after "test" add a comma and add 
-    'tailwind-dev":"npx tailwindcss -i ./wwwroot/css/tailwind/tailwind_main.css -o ./wwwroot/css/tailwind/tailwind_main_out.css --watch'
+    'tailwind-dev":"npx tailwindcss -i ./TrustSeal/wwwroot/css/tailwind/tailwind_main.css -o ./wwwroot/css/tailwind/tailwind_main_out.css --watch'
     This allow you initiate the command a simple as 
     'npm run tailwind-dev'
+13. Test whether tailwind command is working, run 'npm run tailwind-dev'
 
   
