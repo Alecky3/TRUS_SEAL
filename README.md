@@ -104,6 +104,8 @@ This application manages and verifies trust seals for websites and organizations
   `npm run tailwind-dev`
 4. Good to go.
 
+# Add flowbite datatables plugin
+This is already configured, to make sure this works correctly, copy the javascript code and paste under function init which is on file  [js/datatables_init.js]
 
 
   
