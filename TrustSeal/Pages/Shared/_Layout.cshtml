@@ -22,7 +22,7 @@
     <link href="~/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <link href="~/assets/css/metisMenu.min.css" rel="stylesheet" type="text/css" />
     <link href="~/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css" />
-    <link href="~/assets/css/app.min.css" rel="stylesheet" type="text/css" /> 
+    <link href="~/assets/css/app.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/TrustSeal.styles.css" asp-append-version="true" />
@@ -31,7 +31,7 @@
 <body>
     @using Microsoft.AspNetCore.Identity
     @using TrustSeal.Areas.Identity.Data
-    
+
     @inject SignInManager<TSUser> SignInManager
     @inject UserManager<TSUser> UserManager
 
@@ -392,10 +392,10 @@
             <!-- Top Bar End -->
             <!-- Page Content-->
             <div class="page-content">
-                <main class="container-fluid">
-
-                    @RenderBody()
-
+                <main class="flex-1 overflow-y-hidden ">
+                    <div class="container-fluid mx-auto px-6 py-8">
+                        @RenderBody()
+                    </div>
                 </main><!-- container -->
 
                 <footer class="footer text-center text-sm-start">
@@ -408,36 +408,36 @@
             </div>
             <!-- end page content -->
         </div>
-    }else
+    }
+    else
     {
 
-        <div class="container-fluid" >
+        <div class="container-fluid">
             <div class="top">
                 <section class="p-2  ">
                     <a class="float-end  btn btn-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
                     <a class="float-end mx-2 btn btn-primary" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
                 </section>
-                
-                
-               
+
+
+
             </div>
             <br />
-            <main class="container-fluid">
+            <main class="container container-fluid">
+
 
                 @RenderBody()
 
             </main>
         </div>
-    
+
         <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script> 
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
         <!-- jQuery  -->
-        
-        
     }
-  
-  
+
+
     <script src="~/assets/js/jquery.min.js"></script>
     <script src="~/assets/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/js/metismenu.min.js"></script>
@@ -456,7 +456,7 @@
     <script src="~/assets/js/app.js"></script>
     <script src="~/js/flowbite.min.js"></script>
     <script src="~/js/datatables_init.js"></script>
-     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
