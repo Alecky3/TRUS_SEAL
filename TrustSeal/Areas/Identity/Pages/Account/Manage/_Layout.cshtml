@@ -1,0 +1,28 @@
+﻿@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout != null)
+    {
+        Layout = parentLayout.ToString();
+    }
+    else
+    {
+        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+    }
+}
+
+
+<div class="mt-4"> 
+    <h2 class="text-xl font-semibold ">Account settings</h2>
+    <br class="my-4 border-gray-300" />
+    <div class="flex  bg-white dark:bg-gray-900 flex-wrap">
+        <div class="mt-4 w-1/4">
+            <partial name="_ManageNav" />
+        </div>
+        <div class="w-full md:w-3/4">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

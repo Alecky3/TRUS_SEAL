@@ -1,0 +1,46 @@
+﻿@page
+@model RegisterConfirmationModel
+@{
+    ViewData["Title"] = "Register confirmation";
+}
+
+<div class="container w-1/3 mx-auto px-4">
+    <div class="flex justify-center">
+        <div class="w-full md:w-2/3 lg:w-1/3">
+            <div class="bg-white shadow-md rounded-lg mt-5">
+                <div class="p-4">
+                    <div class="text-center mb-4">
+                        <h1 class="text-2xl text-red-600 font-semibold mb-3">@ViewData["Title"]</h1>
+                    </div>
+                    @{
+                        if (@Model.DisplayConfirmAccountLink)
+                        {
+                            <div class="text-sm p-4 bg-gray-100 rounded-md mb-4">
+                                <p class="mb-2">
+                                    This app does not currently have a real email sender registered, see <a href="https://aka.ms/aspaccountconf" class="text-blue-600 hover:underline">these docs</a> for how to configure a real email sender.
+                                </p>
+                                <p>
+                                    Normally this would be emailed:
+                                    <a id="confirm-link" href="@Model.EmailConfirmationUrl" class="font-medium text-blue-600 hover:underline">
+                                        Click here to confirm your account
+                                    </a>
+                                </p>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-center text-gray-700">
+                                Please check your email to confirm your account.
+                            </p>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="bg-white mt-2 rounded-lg">
+                <div class="p-4 text-center">
+                    <a href="/Identity/Account/Login" class="font-medium text-blue-600 hover:underline">Back to Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
