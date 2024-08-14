@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TrustSeal.Areas.Identity.Data;
 using TrustSeal.Models;
-using Microsoft.AspNet.Identity;
 
 namespace TrustSeal.Pages.TsBusinesses
 {
@@ -34,7 +34,11 @@ namespace TrustSeal.Pages.TsBusinesses
         {
 
             var emptyBusiness = new Business();
-            emptyBusiness.OwnerId = User.Identity.GetUserId()
+            emptyBusiness.OwnerId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            
+            Console.WriteLine("-------");
+            Console.WriteLine(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             if (await TryUpdateModelAsync<Business>(
                 emptyBusiness,
@@ -57,7 +61,6 @@ namespace TrustSeal.Pages.TsBusinesses
                 b => b.IndustryCategory,
                 b => b.SubmissionDate,
                 b => b.OwnerId))
-                if (!ModelState.IsValid)
                 {
                     // Explicitly set properties not included in the form
                     emptyBusiness.IsVerified = false;
