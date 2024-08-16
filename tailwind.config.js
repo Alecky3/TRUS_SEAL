@@ -58,7 +58,8 @@ module.exports = {
     },
   plugins: [
     require('flowbite/plugin')({
-      datatables: true
+        datatables: true,
+        charts: true,
     })
   ],
 }
