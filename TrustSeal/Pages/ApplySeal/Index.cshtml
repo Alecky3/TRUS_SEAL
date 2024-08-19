@@ -1,0 +1,167 @@
+﻿@page
+@model TrustSeal.Pages.ApplySeal.IndexModel
+@{
+}
+
+<section class="bg-white dark:bg-gray-900">
+    <div class="mx-auto px-6 lg:py-16">
+        <ol id="stepper" class="flex items-center w-full mx-auto mb-4 sm:mb-5">
+            @foreach (var (item, index) in Model.Criteria.Select((item, index) => (item, index)))
+            {
+                <li id="step@(index + 1)" class="flex w-full items-center @(index < Model.Criteria.Count() - 1 ? "after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:border-4 after:inline-block dark:after:border-gray-700" : "")" data-step-name="@item.Name">
+                    <div class="flex flex-col items-center">
+                        <div class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 dark:bg-gray-700 shrink-0 mb-2">
+                            <svg class="w-4 h-4 text-primary-600 lg:w-6 lg:h-6 dark:text-primary-300 question-mark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <svg class="w-6 h-6 text-green-600 dark:text-green-300 check-mark hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <div class="text-xs font-bold text-center w-20 overflow-hidden text-ellipsis">@item.Name</div>
+                    </div>
+                </li>
+            }
+        </ol>
+        <h2 id="currentStepHeading" class="mb-4 text-xl font-bold text-gray-900 dark:text-white">
+            e-Commerce Business Information
+        </h2>
+        <form method="post" id="createBusinessForm">
+            @foreach (var (item, index) in Model.Criteria.Select((item, index) => (item, index)))
+            {
+                <div id="step@(index + 1)Fields" class="grid gap-4 sm:grid-cols-2 sm:gap-6 step-fields">
+                    @foreach (var question in @item.questions)
+                    {
+                        <div class="">
+                            <label for="question@(index + 1)_@(question.Id)" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                @question.QuestionText
+                            </label>
+                            <input type="text" id="question@(index + 1)_@(question.Id)"
+                                   name="Criteria[@index].Questions[@question.Id].QuestionText"
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                   placeholder="Enter question text"
+                                   value="@question.QuestionText"
+                                   required>
+                            <span data-valmsg-for="Criteria[@index].Questions[@question.Id].QuestionText" class="text-sm text-red-600 dark:text-red-500"></span>
+                        </div>
+                    }
+                </div>
+            }
+
+            <br />
+            <div class="flex flex-row-reverse space-x-4 space-x-reverse">
+                <div>
+                    <button type="button" id="nextButton" class="text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                        Next Step: Payment Info
+                    </button>
+                </div>
+                <div>
+                    <button type="button" id="prevButton" class="justify-end text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                        Previous
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const stepper = document.getElementById('stepper');
+            const steps = stepper.getElementsByTagName('li');
+            const nextButton = document.getElementById('nextButton');
+            const prevButton = document.getElementById('prevButton');
+            const form = document.getElementById('createBusinessForm');
+            const stepFields = Array.from(document.querySelectorAll('[id^="step"][id$="Fields"]'));
+            const currentStepHeading = document.getElementById('currentStepHeading');
+
+            let currentStep = 1;
+
+            function updateStepStyles(stepIndex, status) {
+                const step = steps[stepIndex];
+                const circle = step.querySelector('div > div');
+                const questionMark = circle.querySelector('.question-mark');
+                const checkMark = circle.querySelector('.check-mark');
+
+                if (status === 'current') {
+                    circle.classList.remove('bg-gray-100', 'dark:bg-gray-700', 'bg-green-100', 'dark:bg-green-800');
+                    circle.classList.add('bg-primary-100', 'dark:bg-primary-800');
+                    questionMark.classList.remove('hidden', 'text-gray-600', 'dark:text-gray-300');
+                    questionMark.classList.add('text-primary-600', 'dark:text-primary-300');
+                    checkMark.classList.add('hidden');
+                    if (stepIndex > 0) {
+                        steps[stepIndex - 1].classList.remove('after:border-gray-100', 'dark:after:border-gray-700');
+                        steps[stepIndex - 1].classList.add('after:border-primary-100', 'dark:after:border-primary-800');
+                    }
+                } else if (status === 'completed') {
+                    circle.classList.remove('bg-gray-100', 'dark:bg-gray-700', 'bg-primary-100', 'dark:bg-primary-800');
+                    circle.classList.add('bg-green-100', 'dark:bg-green-800');
+                    questionMark.classList.add('hidden');
+                    checkMark.classList.remove('hidden');
+                    if (step.classList.contains('after:content-[\'\']')) {
+                        step.classList.remove('after:border-gray-100', 'dark:after:border-gray-700', 'after:border-primary-100', 'dark:after:border-primary-800');
+                        step.classList.add('after:border-green-100', 'dark:after:border-green-800');
+                    }
+                } else {
+                    circle.classList.add('bg-gray-100', 'dark:bg-gray-700');
+                    circle.classList.remove('bg-primary-100', 'dark:bg-primary-800', 'bg-green-100', 'dark:bg-green-800');
+                    questionMark.classList.remove('hidden', 'text-primary-600', 'dark:text-primary-300');
+                    questionMark.classList.add('text-gray-600', 'dark:text-gray-300');
+                    checkMark.classList.add('hidden');
+                    if (step.classList.contains('after:content-[\'\']')) {
+                        step.classList.remove('after:border-primary-100', 'dark:after:border-primary-800', 'after:border-green-100', 'dark:after:border-green-800');
+                        step.classList.add('after:border-gray-100', 'dark:after:border-gray-700');
+                    }
+                }
+            }
+
+            function updateHeading(stepIndex) {
+                const stepName = steps[stepIndex].getAttribute('data-step-name');
+                currentStepHeading.textContent = stepName;
+            }
+
+            function showStep(stepIndex) {
+                stepFields.forEach((field, index) => {
+                    field.style.display = index === stepIndex ? 'grid' : 'none';
+                });
+                updateStepStyles(stepIndex, 'current');
+                updateHeading(stepIndex);
+            }
+
+            function updateButtonsVisibility() {
+                prevButton.style.display = currentStep > 1 ? 'block' : 'none';
+                nextButton.textContent = currentStep === steps.length ? 'Submit' : `Next Step: ${steps[currentStep].getAttribute('data-step-name')}`;
+            }
+
+            // Initialize the first step
+            showStep(0);
+            updateButtonsVisibility();
+
+            nextButton.addEventListener('click', function () {
+                if (currentStep < steps.length) {
+                    if (form.checkValidity()) {
+                        updateStepStyles(currentStep - 1, 'completed');
+                        currentStep++;
+                        showStep(currentStep - 1);
+                        updateButtonsVisibility();
+                    } else {
+                        form.reportValidity();
+                    }
+                } else {
+                    form.submit();
+                }
+            });
+
+            prevButton.addEventListener('click', function () {
+                if (currentStep > 1) {
+                    updateStepStyles(currentStep - 1, 'incomplete');
+                    currentStep--;
+                    showStep(currentStep - 1);
+                    updateButtonsVisibility();
+                }
+            });
+        });
+    </script>
+}
