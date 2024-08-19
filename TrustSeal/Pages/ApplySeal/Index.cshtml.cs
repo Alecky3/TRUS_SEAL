@@ -15,6 +15,9 @@ namespace TrustSeal.Pages.ApplySeal
             _context = context;
         }
 
+        [BindProperty]
+        public Business Business { get; set; } = default!;
+
         public IList<QuestionCategory> Criteria { get; set; } = default!;
 
         public async Task OnGetAsync()
