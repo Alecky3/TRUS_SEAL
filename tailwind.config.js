@@ -44,7 +44,8 @@ module.exports = {
                 'Noto Color Emoji'
             ]
         }
-    },
+    }
+,
   plugins: [
     require('flowbite/plugin')({
         datatables: true,
@@ -52,3 +53,5 @@ module.exports = {
     })
   ],
 }
+
+
