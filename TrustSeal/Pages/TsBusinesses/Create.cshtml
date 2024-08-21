@@ -5,118 +5,119 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Business</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<section class="bg-white dark:bg-gray-900">
+    <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+        <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Create New Business</h2>
         <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Business.LegalName" class="control-label"></label>
-                <input asp-for="Business.LegalName" class="form-control" />
-                <span asp-validation-for="Business.LegalName" class="text-danger"></span>
+            <div asp-validation-summary="ModelOnly" class="text-sm text-red-600 dark:text-red-500"></div>
+            <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+                <div class="sm:col-span-2">
+                    <label asp-for="Business.LegalName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Legal Name</label>
+                    <input asp-for="Business.LegalName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
+                    <span asp-validation-for="Business.LegalName" class="text-sm text-red-600 dark:text-red-500"></span>
+                </div>
+                <div>
+                    <label asp-for="Business.RegistrationNumber" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Registration Number</label>
+                    <input asp-for="Business.RegistrationNumber" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    <span asp-validation-for="Business.RegistrationNumber" class="text-sm text-red-600 dark:text-red-500"></span>
+                </div>
+                <div>
+                    <label asp-for="Business.TaxIdentificationNumber" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tax ID</label>
+                    <input asp-for="Business.TaxIdentificationNumber" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    <span asp-validation-for="Business.TaxIdentificationNumber" class="text-sm text-red-600 dark:text-red-500"></span>
+                </div>
+                <div>
+                    <label asp-for="Business.IncorporationDate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Incorporation Date</label>
+                    <input asp-for="Business.IncorporationDate" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    <span asp-validation-for="Business.IncorporationDate" class="text-sm text-red-600 dark:text-red-500"></span>
+                </div>
+                <div class="sm:col-span-2">
+                    <label asp-for="Business.StreetAddress" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Street Address</label>
+                    <input asp-for="Business.StreetAddress" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    <span asp-validation-for="Business.StreetAddress" class="text-sm text-red-600 dark:text-red-500"></span>
+                </div>
+                <div>
+                    <label asp-for="Business.City" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">City</label>
+                    <input asp-for="Business.City" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    <span asp-validation-for="Business.City" class="text-sm text-red-600 dark:text-red-500"></span>
+                </div>
+                <div>
+                    <label asp-for="Business.PostalCode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Postal Code</label>
+                    <input asp-for="Business.PostalCode" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    <span asp-validation-for="Business.PostalCode" class="text-sm text-red-600 dark:text-red-500"></span>
+                </div>
+                <div>
+                    <label asp-for="Business.Country" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Country</label>
+                    <input asp-for="Business.Country" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    <span asp-validation-for="Business.Country" class="text-sm text-red-600 dark:text-red-500"></span>
+                </div>
+                <div>
+                    <label asp-for="Business.PhoneNumber" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone Number</label>
+                    <input asp-for="Business.PhoneNumber" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    <span asp-validation-for="Business.PhoneNumber" class="text-sm text-red-600 dark:text-red-500"></span>
+                </div>
+                <div>
+                    <label asp-for="Business.Email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                    <input asp-for="Business.Email" type="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    <span asp-validation-for="Business.Email" class="text-sm text-red-600 dark:text-red-500"></span>
+                </div>
+                <div>
+                    <label asp-for="Business.Website" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Website</label>
+                    <input asp-for="Business.Website" type="url" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    <span asp-validation-for="Business.Website" class="text-sm text-red-600 dark:text-red-500"></span>
+                </div>
+                <div>
+                    <label asp-for="Business.PrimaryContactName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Primary Contact Name</label>
+                    <input asp-for="Business.PrimaryContactName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    <span asp-validation-for="Business.PrimaryContactName" class="text-sm text-red-600 dark:text-red-500"></span>
+                </div>
+                <div>
+                    <label asp-for="Business.PrimaryContactPhone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Primary Contact Phone</label>
+                    <input asp-for="Business.PrimaryContactPhone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    <span asp-validation-for="Business.PrimaryContactPhone" class="text-sm text-red-600 dark:text-red-500"></span>
+                </div>
+                <div>
+                    <label asp-for="Business.PrimaryContactEmail" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Primary Contact Email</label>
+                    <input asp-for="Business.PrimaryContactEmail" type="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    <span asp-validation-for="Business.PrimaryContactEmail" class="text-sm text-red-600 dark:text-red-500"></span>
+                </div>
+                <div >
+                    <label asp-for="Business.BusinessType" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Business Type</label>
+                    <input asp-for="Business.BusinessType" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" />
+                    <span asp-validation-for="Business.BusinessType" class="text-sm text-red-600 dark:text-red-500"></span>
+                </div>
+
+                <div >
+                    <label asp-for="Business.IndustryCategory" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Industry Category</label>
+                    <input asp-for="Business.IndustryCategory" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" />
+                    <span asp-validation-for="Business.IndustryCategory" class="text-sm text-red-600 dark:text-red-500"></span>
+                </div>
+
+               
+
+                <div >
+                    <label asp-for="Business.SubmissionDate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Submission Date</label>
+                    <input asp-for="Business.SubmissionDate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" />
+                    <span asp-validation-for="Business.SubmissionDate" class="text-sm text-red-600 dark:text-red-500"></span>
+                </div>
+           
+               @*  <div class="sm:col-span-2">
+                    <label asp-for="Business.OwnerId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Owner</label>
+                    <select asp-for="Business.OwnerId" asp-items="ViewBag.OwnerId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"></select>
+                    <span asp-validation-for="Business.OwnerId" class="text-sm text-red-600 dark:text-red-500"></span>
+                </div> *@
             </div>
-            <div class="form-group">
-                <label asp-for="Business.RegistrationNumber" class="control-label"></label>
-                <input asp-for="Business.RegistrationNumber" class="form-control" />
-                <span asp-validation-for="Business.RegistrationNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Business.TaxIdentificationNumber" class="control-label"></label>
-                <input asp-for="Business.TaxIdentificationNumber" class="form-control" />
-                <span asp-validation-for="Business.TaxIdentificationNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Business.IncorporationDate" class="control-label"></label>
-                <input asp-for="Business.IncorporationDate" class="form-control" />
-                <span asp-validation-for="Business.IncorporationDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Business.StreetAddress" class="control-label"></label>
-                <input asp-for="Business.StreetAddress" class="form-control" />
-                <span asp-validation-for="Business.StreetAddress" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Business.City" class="control-label"></label>
-                <input asp-for="Business.City" class="form-control" />
-                <span asp-validation-for="Business.City" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Business.PostalCode" class="control-label"></label>
-                <input asp-for="Business.PostalCode" class="form-control" />
-                <span asp-validation-for="Business.PostalCode" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Business.Country" class="control-label"></label>
-                <input asp-for="Business.Country" class="form-control" />
-                <span asp-validation-for="Business.Country" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Business.PhoneNumber" class="control-label"></label>
-                <input asp-for="Business.PhoneNumber" class="form-control" />
-                <span asp-validation-for="Business.PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Business.Email" class="control-label"></label>
-                <input asp-for="Business.Email" class="form-control" />
-                <span asp-validation-for="Business.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Business.Website" class="control-label"></label>
-                <input asp-for="Business.Website" class="form-control" />
-                <span asp-validation-for="Business.Website" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Business.PrimaryContactName" class="control-label"></label>
-                <input asp-for="Business.PrimaryContactName" class="form-control" />
-                <span asp-validation-for="Business.PrimaryContactName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Business.PrimaryContactPhone" class="control-label"></label>
-                <input asp-for="Business.PrimaryContactPhone" class="form-control" />
-                <span asp-validation-for="Business.PrimaryContactPhone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Business.PrimaryContactEmail" class="control-label"></label>
-                <input asp-for="Business.PrimaryContactEmail" class="form-control" />
-                <span asp-validation-for="Business.PrimaryContactEmail" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Business.BusinessType" class="control-label"></label>
-                <input asp-for="Business.BusinessType" class="form-control" />
-                <span asp-validation-for="Business.BusinessType" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Business.IndustryCategory" class="control-label"></label>
-                <input asp-for="Business.IndustryCategory" class="form-control" />
-                <span asp-validation-for="Business.IndustryCategory" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Business.IsVerified" /> @Html.DisplayNameFor(model => model.Business.IsVerified)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="Business.SubmissionDate" class="control-label"></label>
-                <input asp-for="Business.SubmissionDate" class="form-control" />
-                <span asp-validation-for="Business.SubmissionDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Business.OwnerId" class="control-label"></label>
-                <select asp-for="Business.OwnerId" class ="form-control" asp-items="ViewBag.OwnerId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
+            <button type="submit" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
+                Create Business
+            </button>
+            <a asp-page="Index" class="inline-flex  items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-red-700 rounded-lg focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900 hover:bg-red-800">
+                Cancel
+            </a>
         </form>
     </div>
-</div>
+</section>
 
-<div>
-    <a asp-page="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

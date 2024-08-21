@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using TrustSeal.Areas.Identity.Data;
 using TrustSeal.Models;
 
-namespace TrustSeal.Pages.TsQuestions
+namespace TrustSeal.Pages.TsBusinessAnswers
 {
     public class CreateModel : PageModel
     {
@@ -21,24 +21,23 @@ namespace TrustSeal.Pages.TsQuestions
 
         public IActionResult OnGet()
         {
-        ViewData["CategoryId"] = new SelectList(_context.QuestionCategories, "Id", "Name");
+        ViewData["BusinessID"] = new SelectList(_context.Businesses, "Id", "City");
+        ViewData["QuestionID"] = new SelectList(_context.Questions, "Id", "QuestionText");
             return Page();
         }
 
         [BindProperty]
-        public Question Question { get; set; } = default!;
+        public BsAnswer BsAnswer { get; set; } = default!;
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-
-            
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Questions.Add(Question);
+            _context.BsAnswer.Add(BsAnswer);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
