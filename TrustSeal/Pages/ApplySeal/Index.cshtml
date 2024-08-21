@@ -40,9 +40,30 @@
         <h2 id="currentStepHeading" class="mb-4 text-xl font-bold text-gray-900 dark:text-white">
             e-Commerce Business Information
         </h2>
+
+      @*   <form class="max-w-sm mx-auto">
+            <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an option</label>
+            <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option selected> Create / Select</option>
+                <option value="CB">Create Business</option>
+                <option value="SB">Select Business</option>
+
+            </select>
+        </form> *@
+
+       
+
         <form method="post" id="createBusinessForm">
 
             <div id="step0Fields" class="step-fields">
+                @* if select show *@
+                   @*  <label for="countries_multiple" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an option</label>
+                    <select multiple id="countries_multiple" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected>Choose countries</option>
+                        <option value="1">United States</option>
+                        <option value="1">Canada</option>
+                    </select> *@
+                @* if create show *@
             <div asp-validation-summary="ModelOnly" class="text-sm text-red-600 dark:text-red-500"></div>
             <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
                 <div class="sm:col-span-2">
@@ -141,7 +162,6 @@
                 <span asp-validation-for="Business.OwnerId" class="text-sm text-red-600 dark:text-red-500"></span>
                 </div> *@
             </div>
-           
             </div>
             @foreach (var (item, index) in Model.Criteria.Select((item, index) => (item, index)))
             {
@@ -292,6 +312,15 @@
                 });
                 updateStepStyles(stepIndex, 'current');
                 updateHeading(stepIndex);
+            }
+        });
+        document.getElementById('countries').addEventListener('change', function () {
+            if (this.value === 'CB') {
+                document.getElementById('createBusinessForm').style.display = 'block';
+                document.getElementById('selectBusinessForm').style.display = 'none';
+            } else if (this.value === 'SB') {
+                document.getElementById('createBusinessForm').style.display = 'none';
+                document.getElementById('selectBusinessForm').style.display = 'block';
             }
         });
     </script>

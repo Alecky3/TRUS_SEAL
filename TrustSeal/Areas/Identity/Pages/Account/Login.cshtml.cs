@@ -104,7 +104,7 @@ namespace TrustSeal.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/TsDashboard/Index");
+            returnUrl ??= Url.Content("~/ApplySeal");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
