@@ -29,7 +29,7 @@ namespace TrustSeal.Pages.TsBusinessAnswers
                 return NotFound();
             }
 
-            var bsanswer = await _context.BsAnswer.FirstOrDefaultAsync(m => m.ID == id);
+            var bsanswer = await _context.Answers.FirstOrDefaultAsync(m => m.BusinessID == id);
 
             if (bsanswer == null)
             {
@@ -49,11 +49,11 @@ namespace TrustSeal.Pages.TsBusinessAnswers
                 return NotFound();
             }
 
-            var bsanswer = await _context.BsAnswer.FindAsync(id);
+            var bsanswer = await _context.Answers.FindAsync(id);
             if (bsanswer != null)
             {
                 BsAnswer = bsanswer;
-                _context.BsAnswer.Remove(BsAnswer);
+                _context.Answers.Remove(BsAnswer);
                 await _context.SaveChangesAsync();
             }
 

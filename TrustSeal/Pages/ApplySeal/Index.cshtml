@@ -2,7 +2,17 @@
 @model TrustSeal.Pages.ApplySeal.IndexModel
 @{
 }
-
+@if (TempData["AlertMessage"] != null)
+{
+    <script>
+        Swal.fire({
+            title: '@TempData["AlertTitle"]',
+            text: '@TempData["AlertMessage"]',
+            icon: '@TempData["AlertIcon"]',
+            confirmButtonText: 'OK'
+        });
+    </script>
+}
 <section class="bg-white dark:bg-gray-900">
     <div class="mx-auto px-6 lg:py-16">
         <ol id="stepper" class="flex items-center w-full mx-auto mb-4 sm:mb-5">
@@ -41,6 +51,10 @@
         <h2 id="currentStepHeading" class="mb-4 text-xl font-bold text-gray-900 dark:text-white">
             e-Commerce Business Information
         </h2>
+
+
+       
+
 
         <form method="post" id="createBusinessForm">
             <div id="step0Fields" class="step-fields">
@@ -164,14 +178,42 @@
                             <label for="question@(index + 1)_@(question.Id)" class="block  mb-2 w-full text-sm font-medium text-gray-900 dark:text-white">
                                 @question.QuestionText
                             </label>
-                            <input type="text" id="question@(index + 1)_@(question.Id)"
-                                   name="@question.Id"
-                                   class="bg-gray-50  w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                   placeholder="Enter question text"
-                                   value="@question.QuestionText"
-                                   required>
-                            <span data-valmsg-for="@question.Id" class="text-sm text-red-600 dark:text-red-500"></span>
+                            <div class="flex space-x-4">
+                                <div>
+                                    <input type="text" id="question@(index + 1)_@(question.Id)"
+                                           name="@question.Id"
+                                           class="bg-gray-50 w-64  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                           placeholder="Enter question text"
+                                           value=""
+                                           required>
+                                </div>
+
+                                <div>
+                                    <span data-valmsg-for="@question.Id" class="text-sm text-red-600 dark:text-red-500"></span>
+                                </div>
+                               
+
+                                @if (question.HasAttachment)
+                                {
+                                    <div class="col-span-1 mx-2">
+                                        <label for="file_@(question.Id)" class="flex items-center justify-center w-full px-4 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm cursor-pointer hover:bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-600">
+                                            <svg class="w-5 h-5 mr-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                                            </svg>
+                                            <p id="fileLabel_@(question.Id)">Upload PDF</p>
+                                        </label>
+                                        <input type="file" id="file_@(question.Id)"
+                                               name="file_@(question.Id)"
+                                               class="hidden"
+                                               accept=".pdf"
+                                               onchange="updateFileName(this)">
+                                        <p id="fileName_@(question.Id)" class="mt-2 text-sm text-gray-500 dark:text-gray-400"></p>
+                                    </div>
+                                }
+                            </div>
+                            
                         </div>
+                        <br />
                     }
 
                 </div>
@@ -204,7 +246,27 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+
+  
     <script>
+
+        function updateFileName(input) {
+            const fileLabel = document.getElementById('fileLabel_' + input.id.split('_')[1]);
+            const fileName = document.getElementById('fileName_' + input.id.split('_')[1]);
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                fileLabel.textContent = 'Change PDF';
+                fileName.textContent = file.name;
+                fileName.classList.add('text-green-500', 'dark:text-green-400');
+
+            } else {
+                fileLabel.textContent = 'Upload PDF';
+                fileName.textContent = '';
+
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
 
             const businessOptions = document.getElementById('businessOptions');
@@ -218,6 +280,7 @@
             const currentStepHeading = document.getElementById('currentStepHeading');
             const steps = Array.from(stepper.querySelectorAll('li[id^="step"]'));
             const submitButton = document.getElementById('submitButton');
+        
 
             let currentStep = 0;
 
@@ -321,6 +384,8 @@
 
           
         });
+
+
       
     </script>
 }

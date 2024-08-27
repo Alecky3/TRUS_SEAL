@@ -236,24 +236,18 @@ namespace TrustSeal.Migrations
 
             modelBuilder.Entity("TrustSeal.Models.BsAnswer", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("BusinessID")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+                    b.Property<int>("QuestionID")
+                        .HasColumnType("int");
 
                     b.Property<string>("AnswerText")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("BusinessID")
-                        .HasColumnType("int");
-
                     b.Property<string>("FileReference")
                         .HasColumnType("nvarchar(255)");
-
-                    b.Property<int>("QuestionID")
-                        .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -262,9 +256,7 @@ namespace TrustSeal.Migrations
                     b.Property<DateTime>("SubmittedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ID");
-
-                    b.HasIndex("BusinessID");
+                    b.HasKey("BusinessID", "QuestionID");
 
                     b.HasIndex("QuestionID");
 

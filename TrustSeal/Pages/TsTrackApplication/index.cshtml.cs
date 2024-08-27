@@ -8,18 +8,18 @@ using Microsoft.EntityFrameworkCore;
 using TrustSeal.Areas.Identity.Data;
 using TrustSeal.Models;
 
-namespace TrustSeal.Pages.TsBusinessAnswers
+namespace TrustSeal.Pages.TsTrackApplication
 {
-    public class DetailsModel : PageModel
+    public class indexModel : PageModel
     {
         private readonly TrustSeal.Areas.Identity.Data.TSAuth _context;
 
-        public DetailsModel(TrustSeal.Areas.Identity.Data.TSAuth context)
+        public indexModel(TrustSeal.Areas.Identity.Data.TSAuth context)
         {
             _context = context;
         }
 
-        public BsAnswer BsAnswer { get; set; } = default!;
+        public Business Business { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,14 +28,14 @@ namespace TrustSeal.Pages.TsBusinessAnswers
                 return NotFound();
             }
 
-            var bsanswer = await _context.Answers.FirstOrDefaultAsync(m => m.BusinessID == id);
-            if (bsanswer == null)
+            var business = await _context.Businesses.FirstOrDefaultAsync(m => m.Id == id);
+            if (business == null)
             {
                 return NotFound();
             }
             else
             {
-                BsAnswer = bsanswer;
+                Business = business;
             }
             return Page();
         }

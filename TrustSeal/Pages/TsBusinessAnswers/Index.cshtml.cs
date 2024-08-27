@@ -23,7 +23,7 @@ namespace TrustSeal.Pages.TsBusinessAnswers
 
         public async Task OnGetAsync()
         {
-            BsAnswer = await _context.BsAnswer
+            BsAnswer = await _context.Answers
                 .Include(b => b.Business)
                 .Include(b => b.Question).ToListAsync();
         }

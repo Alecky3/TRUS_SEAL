@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
 using System.Security.Claims;
 using TrustSeal.Models;
@@ -13,6 +15,7 @@ namespace TrustSeal.Pages.ApplySeal
     {
         private readonly TrustSeal.Areas.Identity.Data.TSAuth _context;
         private readonly ILogger<IndexModel> _logger;
+       
 
 
         // This is the only constructor
@@ -113,9 +116,41 @@ namespace TrustSeal.Pages.ApplySeal
                 }
             }
 
-            await _context.Answers.AddRangeAsync(businessAnswers);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.Answers.AddRangeAsync(businessAnswers);
+                var changed = await _context.SaveChangesAsync();
 
+                TempData["AlertTitle"] = "Success!";
+                TempData["AlertMessage"] = "Your application is successfull!";
+                TempData["AlertIcon"] = "success";
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["AlertTitle"] = "Error!";
+                TempData["AlertMessage"] = "Invalid Operation Check Form Fields and try again";
+                TempData["AlertIcon"] = "error";
+                _logger.LogInformation($"{ex.Message}", ex);
+
+            }
+            catch (DbUpdateException ex)
+            {
+                TempData["AlertTitle"] = "Error!";
+                TempData["AlertMessage"] = "Application for this business already exists";
+                TempData["AlertIcon"] = "error";
+                _logger.LogInformation($"{ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                TempData["AlertTitle"] = "Error!";
+                TempData["AlertMessage"] = "Failed To Save Application";
+                TempData["AlertIcon"] = "error";
+                _logger.LogInformation($"{ex.Message}", ex);
+            }
+        
+
+
+            // if exist sh
             return RedirectToPage("./Index");
         }
     }

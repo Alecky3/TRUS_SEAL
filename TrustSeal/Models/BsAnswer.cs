@@ -1,12 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using Mono.TextTemplating;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TrustSeal.Models
 {
+    [PrimaryKey(nameof(BusinessID), nameof(QuestionID))]
     public class BsAnswer
     {
-        [Key]
-        public int ID { get; set; }
+       
 
         [Required]
         public int BusinessID { get; set; }
@@ -14,6 +16,7 @@ namespace TrustSeal.Models
         [ForeignKey("BusinessID")]
         public Business Business { get; set; }
 
+        
         [Required]
         public int QuestionID { get; set; }
 
