@@ -37,7 +37,7 @@ namespace TrustSeal.Pages.TsBusinessAnswers
                 return Page();
             }
 
-            _context.BsAnswer.Add(BsAnswer);
+            _context.Answers.Add(BsAnswer);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

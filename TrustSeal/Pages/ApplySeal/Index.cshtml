@@ -2,7 +2,17 @@
 @model TrustSeal.Pages.ApplySeal.IndexModel
 @{
 }
-
+@if (TempData["AlertMessage"] != null)
+{
+    <script>
+        Swal.fire({
+            title: '@TempData["AlertTitle"]',
+            text: '@TempData["AlertMessage"]',
+            icon: '@TempData["AlertIcon"]',
+            confirmButtonText: 'OK'
+        });
+    </script>
+}
 <section class="bg-white dark:bg-gray-900">
     <div class="mx-auto px-6 lg:py-16">
         <ol id="stepper" class="flex items-center w-full mx-auto mb-4 sm:mb-5">
@@ -41,6 +51,10 @@
         <h2 id="currentStepHeading" class="mb-4 text-xl font-bold text-gray-900 dark:text-white">
             e-Commerce Business Information
         </h2>
+
+
+       
+
 
         <form method="post" id="createBusinessForm">
             <div id="step0Fields" class="step-fields">
@@ -204,7 +218,9 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
     <script>
+
         document.addEventListener('DOMContentLoaded', function () {
 
             const businessOptions = document.getElementById('businessOptions');
@@ -321,6 +337,8 @@
 
           
         });
+
+
       
     </script>
 }
