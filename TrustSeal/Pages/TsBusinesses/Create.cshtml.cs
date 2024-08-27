@@ -36,9 +36,7 @@ namespace TrustSeal.Pages.TsBusinesses
             var emptyBusiness = new Business();
             emptyBusiness.OwnerId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            
-            Console.WriteLine("-------");
-            Console.WriteLine(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+           
 
             if (await TryUpdateModelAsync<Business>(
                 emptyBusiness,

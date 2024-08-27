@@ -37,6 +37,8 @@ public class TSAuth : IdentityDbContext<TSUser>
     public DbSet<Question> Questions { get; set; }
     public DbSet<QuestionCategory> QuestionCategories { get; set; }
 
+    public DbSet<BsAnswer> Answers { get; set; }
+
 public DbSet<TrustSeal.Models.BsAnswer> BsAnswer { get; set; }
 
 }
