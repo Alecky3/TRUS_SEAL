@@ -28,7 +28,7 @@ namespace TrustSeal.Pages.TsBusinessAnswers
                 return NotFound();
             }
 
-            var bsanswer = await _context.BsAnswer.FirstOrDefaultAsync(m => m.ID == id);
+            var bsanswer = await _context.Answers.FirstOrDefaultAsync(m => m.BusinessID == id);
             if (bsanswer == null)
             {
                 return NotFound();

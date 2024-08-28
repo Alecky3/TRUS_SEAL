@@ -50,6 +50,6 @@
     </dl>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.BsAnswer.ID">Edit</a> |
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
     <a asp-page="./Index">Back to List</a>
 </div>

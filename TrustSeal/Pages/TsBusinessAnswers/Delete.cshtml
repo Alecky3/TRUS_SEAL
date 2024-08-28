@@ -51,7 +51,8 @@
     </dl>
     
     <form method="post">
-        <input type="hidden" asp-for="BsAnswer.ID" />
+        <input type="hidden" asp-for="BsAnswer.BusinessID" />
+        <input type="hidden" asp-for="BsAnswer.QuestionID" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-page="./Index">Back to List</a>
     </form>

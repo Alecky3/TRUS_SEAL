@@ -18,6 +18,7 @@ public class TSAuth : IdentityDbContext<TSUser>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+        builder.Entity<BsAnswer>().ToTable("BsAnswers");
         // Customize the ASP.NET Identity model and override the defaults if needed.
         // For example, you can rename the ASP.NET Identity table names and more.
         // Add your customizations after calling base.OnModelCreating(builder);
@@ -37,6 +38,8 @@ public class TSAuth : IdentityDbContext<TSUser>
     public DbSet<Question> Questions { get; set; }
     public DbSet<QuestionCategory> QuestionCategories { get; set; }
 
-public DbSet<TrustSeal.Models.BsAnswer> BsAnswer { get; set; }
+    public DbSet<BsAnswer> Answers { get; set; }
+
+    public DbSet<BsAnswer> BsAnswer { get; set; }
 
 }
