@@ -30,13 +30,16 @@ namespace TrustSeal.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<TSUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
             UserManager<TSUser> userManager,
             IUserStore<TSUser> userStore,
             SignInManager<TSUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager
+            )
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -44,6 +47,7 @@ namespace TrustSeal.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager; 
         }
 
         /// <summary>
@@ -188,6 +192,25 @@ namespace TrustSeal.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<TSUser>)_userStore;
+        }
+
+
+       // this method create "User & Admin" Roles if they don't exist
+        private async Task CreateRole()
+        {
+            bool x = await _roleManager.RoleExistsAsync("User");
+            if (!x)
+            {
+                var role = new IdentityRole {Name="User"};
+                var roleResult = await _roleManager.CreateAsync(role);
+            }
+
+            x = await _roleManager.RoleExistsAsync("Admin");
+            if (!x)
+            {
+                var role = new IdentityRole {Name="Admin"};
+                var roleResult = await _roleManager.CreateAsync(role);
+            }
         }
     }
 }
