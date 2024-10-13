@@ -138,6 +138,13 @@ namespace TrustSeal.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+                    /* assign user to role
+                        first check if role are defined and if not create them
+                    */
+                    await CreateRole();
+                    // assign the role
+                    var roleResult =  _userManager.AddToRoleAsync(user,"User");
+                   _logger.LogInformation("User assigned to 'User' Role");
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
