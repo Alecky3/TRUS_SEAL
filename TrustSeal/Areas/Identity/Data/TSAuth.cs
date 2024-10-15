@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Emit;
@@ -41,5 +41,7 @@ public class TSAuth : IdentityDbContext<TSUser>
     public DbSet<BsAnswer> Answers { get; set; }
 
     public DbSet<BsAnswer> BsAnswer { get; set; }
+
+public DbSet<TrustSeal.Models.BusinessAttachment> BusinessAttachment { get; set; }
 
 }

@@ -1,0 +1,41 @@
+@page
+@model TrustSeal.Pages.BusinessAttachments.EditModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit</title>
+</head>
+<body>
+
+<h4>BusinessAttachment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="BusinessAttachment.Id" />
+            <div class="form-group">
+                <label asp-for="BusinessAttachment.FileReference" class="control-label"></label>
+                <input asp-for="BusinessAttachment.FileReference" class="form-control" disabled />
+                <span asp-validation-for="BusinessAttachment.FileReference" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+</body>
+</html>

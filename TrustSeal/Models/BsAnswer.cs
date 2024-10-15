@@ -36,5 +36,9 @@ namespace TrustSeal.Models
         [Required]
         [Column(TypeName = "nvarchar(20)")]
         public string Status { get; set; } = "Submitted";
+
+        public bool? AttachmentProvided {get;set;} = false;
+
+        public BusinessAttachment BusinessAttachment {get;set;} = default!;
     }
 }
