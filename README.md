@@ -107,5 +107,8 @@ This application manages and verifies trust seals for websites and organizations
 # Add flowbite datatables plugin
 This is already configured, to make sure this works correctly, copy the javascript code and paste under function init which is on file  [js/datatables_init.js]
 
+# File Uploads folder
+Create a [Uploads] folder under TrustSeal where upladed files will be stored
+
 
   

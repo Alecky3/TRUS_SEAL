@@ -1,28 +1,39 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Data.SqlClient;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
 using System.Security.Claims;
+using TrustSeal.Areas.Identity.Data;
 using TrustSeal.Models;
 
 namespace TrustSeal.Pages.ApplySeal
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly TrustSeal.Areas.Identity.Data.TSAuth _context;
+        private readonly UserManager<TSUser> _userManager;
         private readonly ILogger<IndexModel> _logger;
        
 
 
         // This is the only constructor
-        public IndexModel(TrustSeal.Areas.Identity.Data.TSAuth context, ILogger<IndexModel> logger)
+        public IndexModel(TrustSeal.Areas.Identity.Data.TSAuth context,
+         ILogger<IndexModel> logger,
+         UserManager<TSUser> userManager
+         )
         {
             _context = context;
             _logger = logger;
+            _userManager = userManager;
         }
 
         [BindProperty]
@@ -36,7 +47,9 @@ namespace TrustSeal.Pages.ApplySeal
 
         public async Task OnGetAsync()
         {
+            var user = await _userManager.GetUserAsync(User);
             Businesses = _context.Businesses
+            .Where(b => b.OwnerId == user.Id.ToString())
             .Select(b => new SelectListItem
             {
                 Value = b.Id.ToString(),
@@ -152,6 +165,27 @@ namespace TrustSeal.Pages.ApplySeal
 
             // if exist sh
             return RedirectToPage("./Index");
+        }
+
+        public async Task<JsonResult> OnPostFileUploadsWithFileAsync(IFormFile file)
+        {
+
+        var uploadedFilePath = string.Empty;
+         if (file != null && file.Length > 0)
+         {
+            var randomFile = Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
+             var filePath = Path.Combine("Uploads",randomFile + file.FileName);
+             uploadedFilePath = filePath;
+             _logger.LogInformation($"filePath={filePath}");
+
+             using (var stream = new FileStream(filePath,FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+         }
+          var message = new { Message = "in FileUploads Handler"};
+
+          return new JsonResult(new { message = "file uploaded sucessfully",filename =  uploadedFilePath});
         }
     }
 }

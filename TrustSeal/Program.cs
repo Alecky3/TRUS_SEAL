@@ -9,7 +9,9 @@ builder.Services.AddDbContext<TSAuth>(options => options.UseSqlServer(connection
 
 
 
-builder.Services.AddDefaultIdentity<TSUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<TSAuth>();
+builder.Services.AddDefaultIdentity<TSUser>(options => options.SignIn.RequireConfirmedAccount = true)
+.AddRoles<IdentityRole>()
+.AddEntityFrameworkStores<TSAuth>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
