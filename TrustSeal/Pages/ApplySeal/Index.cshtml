@@ -1,81 +1,77 @@
-﻿@page
+@page
 @model TrustSeal.Pages.ApplySeal.IndexModel
-@{
-}
-@if (TempData["AlertMessage"] != null)
-{
-    <script>
-        Swal.fire({
-            title: '@TempData["AlertTitle"]',
-            text: '@TempData["AlertMessage"]',
-            icon: '@TempData["AlertIcon"]',
-            confirmButtonText: 'OK'
-        });
-    </script>
-}
+
 <section class="bg-white dark:bg-gray-900">
-    <div class="mx-auto px-6 lg:py-16">
-        <ol id="stepper" class="flex items-center w-full mx-auto mb-4 sm:mb-5">
-            <li id="step0" class="flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:border-4 after:inline-block dark:after:border-gray-700" data-step-name="Business Information">
-                <div class="flex flex-col items-center">
-                    <div class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 dark:bg-gray-700 shrink-0 mb-2">
-                        <svg class="w-4 h-4 text-primary-600 lg:w-6 lg:h-6 dark:text-primary-300 question-mark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                        </svg>
-                        <svg class="w-6 h-6 text-green-600 dark:text-green-300 check-mark hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                    </div>
-                    <div class="text-xs font-bold text-center w-20 overflow-hidden text-ellipsis">Business Information</div>
-                </div>
-           
-            </li>
-            @foreach (var (item, index) in Model.Criteria.Select((item, index) => (item, index)))
-            {
-                <li id="step@(index + 1)" class="flex w-full items-center @(index < Model.Criteria.Count() - 1 ? "after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-100 after:border-4 after:inline-block dark:after:border-gray-700" : "")" data-step-name="@item.Name">
-                    <div class="flex flex-col items-center">
-                        <div class="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full lg:h-12 lg:w-12 dark:bg-gray-700 shrink-0 mb-2">
-                            <svg class="w-4 h-4 text-primary-600 lg:w-6 lg:h-6 dark:text-primary-300 question-mark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <svg class="w-6 h-6 text-green-600 dark:text-green-300 check-mark hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                            </svg>
-                        </div>
-                        <div class="text-xs font-bold text-center w-20 overflow-hidden text-ellipsis">@item.Name</div>
-                    </div>
-                </li>
-            }
-        </ol>
-
-        <h2 id="currentStepHeading" class="mb-4 text-xl font-bold text-gray-900 dark:text-white">
-            e-Commerce Business Information
-        </h2>
-
-
-       
-
-
-        <div id="createBusinessForm">
-            <div id="step0Fields" class="step-fields">
-                <div id="bsOptions">
-                    <label for="businessOptions" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an option</label>
-                    <select id="businessOptions" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value="CB" selected>Create Business</option>
-                        <option value="SB">Select Business</option>
-                    </select>
-                </div>
-
-                <div id="selectBusiness" style="display: none;">
-                    <label for="selectBusinessDropdown" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select a Business</label>
-                    <select id="selectBusinessDropdown" name="SelectedBusiness" asp-items="Model.Businesses" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value="">-- Select a Business --</option>
-                    </select>
-                </div>
-                @*Register a new Business*@
-                <form method="post" enctype="multipart/form-data"  id="createBusiness">
-                    <div>
-                    <div asp-validation-summary="ModelOnly" class="text-sm text-red-600 dark:text-red-500"></div>
+    <div class="p-4 bg-white rounded-lg shadow-md dark:bg-neutral-800">
+    <!-- Stepper -->
+    <div id="registerStepper" data-hs-stepper="">
+      <!-- Stepper Nav -->
+      <ul class="relative flex flex-row gap-x-2">
+        <li class="flex items-center gap-x-2 shrink basis-0 flex-1 group" data-hs-stepper-nav-item='{
+          "index": 1
+        }'>
+          <span class="min-w-7 min-h-7 group inline-flex items-center text-xs align-middle">
+            <span class="size-7 flex justify-center items-center shrink-0 bg-gray-100 font-medium text-gray-800 rounded-full group-focus:bg-gray-200 dark:bg-neutral-700 dark:text-white dark:group-focus:bg-gray-600 hs-stepper-active:bg-blue-600 hs-stepper-active:text-white hs-stepper-success:bg-blue-600 hs-stepper-success:text-white hs-stepper-completed:bg-teal-500 hs-stepper-completed:group-focus:bg-teal-600 dark:hs-stepper-active:bg-blue-500 dark:hs-stepper-success:bg-blue-500 dark:hs-stepper-completed:bg-teal-500 dark:hs-stepper-completed:group-focus:bg-teal-600">
+              <span class="hs-stepper-success:hidden hs-stepper-completed:hidden">1</span>
+              <svg class="hidden shrink-0 size-3 hs-stepper-success:block" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </span>
+            <span class="ms-2 text-sm font-medium text-gray-800 dark:text-white">
+              Step
+            </span>
+          </span>
+          <div class="w-full h-px flex-1 bg-gray-200 group-last:hidden hs-stepper-success:bg-blue-600 hs-stepper-completed:bg-teal-600 dark:bg-neutral-600 dark:hs-stepper-success:bg-blue-500 dark:hs-stepper-completed:bg-teal-500"></div>
+        </li>
+  
+        <li class="flex items-center gap-x-2 shrink basis-0 flex-1 group" data-hs-stepper-nav-item='{
+          "index": 2
+        }'>
+          <span class="min-w-7 min-h-7 group inline-flex items-center text-xs align-middle">
+            <span class="size-7 flex justify-center items-center shrink-0 bg-gray-100 font-medium text-gray-800 rounded-full group-focus:bg-gray-200 dark:bg-neutral-700 dark:text-white dark:group-focus:bg-gray-600 hs-stepper-active:bg-blue-600 hs-stepper-active:text-white hs-stepper-success:bg-blue-600 hs-stepper-success:text-white hs-stepper-completed:bg-teal-500 hs-stepper-completed:group-focus:bg-teal-600 dark:hs-stepper-active:bg-blue-500 dark:hs-stepper-success:bg-blue-500 dark:hs-stepper-completed:bg-teal-500 dark:hs-stepper-completed:group-focus:bg-teal-600">
+              <span class="hs-stepper-success:hidden hs-stepper-completed:hidden">2</span>
+              <svg class="hidden shrink-0 size-3 hs-stepper-success:block" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </span>
+            <span class="ms-2 text-sm font-medium text-gray-800 dark:text-white">
+              Step
+            </span>
+          </span>
+          <div class="w-full h-px flex-1 bg-gray-200 group-last:hidden hs-stepper-success:bg-blue-600 hs-stepper-completed:bg-teal-600 dark:bg-neutral-600 dark:hs-stepper-success:bg-blue-500 dark:hs-stepper-completed:bg-teal-500"></div>
+        </li>
+  
+        <li class="flex items-center gap-x-2 shrink basis-0 flex-1 group" data-hs-stepper-nav-item='{
+            "index": 3
+          }'>
+          <span class="min-w-7 min-h-7 group inline-flex items-center text-xs align-middle">
+            <span class="size-7 flex justify-center items-center shrink-0 bg-gray-100 font-medium text-gray-800 rounded-full group-focus:bg-gray-200 dark:bg-neutral-700 dark:text-white dark:group-focus:bg-gray-600 hs-stepper-active:bg-blue-600 hs-stepper-active:text-white hs-stepper-success:bg-blue-600 hs-stepper-success:text-white hs-stepper-completed:bg-teal-500 hs-stepper-completed:group-focus:bg-teal-600 dark:hs-stepper-active:bg-blue-500 dark:hs-stepper-success:bg-blue-500 dark:hs-stepper-completed:bg-teal-500 dark:hs-stepper-completed:group-focus:bg-teal-600">
+              <span class="hs-stepper-success:hidden hs-stepper-completed:hidden">3</span>
+              <svg class="hidden shrink-0 size-3 hs-stepper-success:block" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </span>
+            <span class="ms-2 text-sm font-medium text-gray-800 dark:text-white">
+              Step
+            </span>
+          </span>
+          <div class="w-full h-px flex-1 bg-gray-200 group-last:hidden hs-stepper-success:bg-blue-600 hs-stepper-completed:bg-teal-600 dark:bg-neutral-600 dark:hs-stepper-success:bg-blue-500 dark:hs-stepper-completed:bg-teal-500"></div>
+        </li>
+        <!-- End Item -->
+      </ul>
+      <!-- End Stepper Nav -->
+  
+      <!-- Stepper Content -->
+      <div class="mt-5 sm:mt-8">
+        <!-- First Content -->
+        <div data-hs-stepper-content-item='{
+          "index": 1
+        }'>
+          <div class="p-4 bg-gray-50 flex justify-center items-center border border-dashed border-gray-200 rounded-xl dark:bg-neutral-700 dark:border-neutral-600">
+            <input type="text" name="Business"  hidden value="">
+            @*Register a new Business*@
+                <form method="post" enctype="multipart/form-data" novalidate  id="createBusiness">
+                   <div asp-validation-summary="ModelOnly" class="text-sm text-red-600 dark:text-red-500"></div>
                     <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
                         <div class="sm:col-span-2">
                             <label asp-for="Business.LegalName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Legal Name</label>
@@ -159,355 +155,195 @@
                             <span asp-validation-for="Business.IndustryCategory" class="text-sm text-red-600 dark:text-red-500"></span>
                         </div>
 
-
-
                         <div>
                             <label asp-for="Business.SubmissionDate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Submission Date</label>
                             <input asp-for="Business.SubmissionDate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" />
                             <span asp-validation-for="Business.SubmissionDate" class="text-sm text-red-600 dark:text-red-500"></span>
                         </div>
+                        <div>
+
+                        </div>
                     </div>
                     
                     <div class="mt-2">
-                        <button type="button"  class="justify-end text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                        <button type="submit"  class="justify-end text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
                         Save Progress
                         </button>
                     </div>
-                    
-                </div>
-
-                
                 </form>
                  @*End of Register a new Business*@
-                
-            </div>
-
-            @foreach (var (item, index) in Model.Criteria.Select((item, index) => (item, index)))
-            {
-                <div id="step@(index + 1)Fields" class="  flex  gap-4 step-fields">
-                    @foreach (var question in @item.questions)
-                    {
-                        <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
-                            <label for="question@(index + 1)_@(question.Id)" class="block  mb-2 w-full text-sm font-medium text-gray-900 dark:text-white">
-                                @question.QuestionText
-                            </label>
-                            <div class="flex space-x-4">
-                                <div>
-                                    <input type="text" id="question@(index + 1)_@(question.Id)"
-                                           name="@question.Id"
-                                           class="bg-gray-50 w-64  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                           placeholder="Enter question text"
-                                           value=""
-                                           required>
-                                </div>
-
-                                <div>
-                                    <span data-valmsg-for="@question.Id" class="text-sm text-red-600 dark:text-red-500"></span>
-                                </div>
-                               
-
-                                @if (question.HasAttachment)
-                                {
-                                    @* <div class="col-span-1 mx-2">
-                                        <label for="file_@(question.Id)" class="flex items-center justify-center w-full px-4 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm cursor-pointer hover:bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-600">
-                                            <svg class="w-5 h-5 mr-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                                <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
-                                            </svg>
-                                            <p id="fileLabel_@(question.Id)">Upload PDF</p>
-                                        </label>
-                                        <input type="file" id="file_@(question.Id)"
-                                               name="file_@(question.Id)"
-                                               class="hidden"
-                                               accept=".pdf"
-                                               onchange="updateFileName(this)">
-                                        <p id="fileName_@(question.Id)" class="mt-2 text-sm text-gray-500 dark:text-gray-400"></p>
-                                    </div> *@
-
-                                    @* Start of Modal*@
-                                   
-                                    <button type="button" data-modal-target="attach_popup@(question.Id)" data-modal-toggle="attach_popup@(question.Id)" class="attachment_togglers text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center flex  items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" style="max-height: 42px;">
-                                        <svg class="w-3.5 h-3.5 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 21">
-                                            <path fill-rule="evenodd" d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-5h7.586l-.293.293a1 1 0 0 0 1.414 1.414l2-2a1 1 0 0 0 0-1.414l-2-2a1 1 0 0 0-1.414 1.414l.293.293H4V9h5a2 2 0 0 0 2-2Z" clip-rule="evenodd"/>
-                                        </svg>
-
-                                        <span class="sr-only">Icon description</span>
-                                    </button>
-
-                                    <!-- Main modal -->
-                                    <div id="attach_popup@(question.Id)" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                                        <div class="relative p-4 w-full max-w-2xl max-h-full">
-                                            <!-- Modal content -->
-                                            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                                                <!-- Modal header -->
-                                                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                                                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                                                        File Upload Modal
-                                                    </h3>
-                                                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="attach_popup@(question.Id)">
-                                                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                                                        </svg>
-                                                        <span class="sr-only">Close Modal</span>
-                                                    </button>
-                                                </div>
-                                                <!-- Modal body -->
-                                                <form class="fileattachment_form">
-                                                   <div class="p-2">
-                                                    <input type="text" hidden value="">
-                                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Upload file</label>
-                                                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" name="file" type="file">
-
-                                                   </div>
-                                                </form>
-                                                <!-- Modal footer -->
-                                                <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                                                    <button data-modal-hide="attach_popup@(question.Id)" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I accept</button>
-                                                    <button data-modal-hide="attach_popup@(question.Id)" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Decline</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                     @* End of Modal*@
-                                }
-                            </div>
-                            
-                        </div>
-                        <br />
-                    }
-
-                </div>
-
-            }
-
-            <br />
-
-            <div class="flex flex-row-reverse space-x-4 space-x-reverse">
-                <div>
-                    <button type="button" id="nextButton" class="text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                        Next Step: Payment Info
-                    </button>
-                </div>
-                <div>
-                    <button type="submit"  id="submitButton" class="justify-end text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                        Submit
-                    </button>
-                </div>
-                <div>
-                    <button type="button" id="prevButton" class="justify-end text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                        Previous
-                    </button>
-                </div>
-            </div>
+          </div>
         </div>
+        <!-- End First Content -->
+        @foreach(var (item,index) in Model.Criteria.Select((item,index)=>(item,index+2)))
+        {
+            <!-- First Content -->
+            <div data-hs-stepper-content-item='{
+              "index": @index
+            }' style="display: none;">
+            <form class="criteriaAnswer">
+             @foreach (var question in @item.questions)
+                    {
+                      <div class="p-4 h-48 bg-gray-50 flex justify-center items-center border border-dashed border-gray-200 rounded-xl dark:bg-neutral-700 dark:border-neutral-600">
+                        
+                          <input type="text" hidden name="question_id_@question.Id" value="@question.Id">
+                           <div>
+                            <label for="question_id_@(question.Id)_AnswerText" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">@question.QuestionText</label>
+                            <input name="question_id_@(question.Id)_AnswerText" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" />
+                            <span asp-validation-for="@question.QuestionText" class="text-sm text-red-600 dark:text-red-500"></span>
+                          </div>
+                      </div>
+                            
+                    }
+                    <div class="mt-2">
+                        <button type="submit"  class="justify-end text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                        Save Progress
+                        </button>
+                    </div>
+            </form>
+              
+            </div>
+            <!-- End First Content -->
+        }
+          
         
+  
+        @* <!-- First Content -->
+        <div data-hs-stepper-content-item='{
+          "index": 3
+        }' style="display: none;">
+          <div class="p-4 h-48 bg-gray-50 flex justify-center items-center border border-dashed border-gray-200 rounded-xl dark:bg-neutral-700 dark:border-neutral-600">
+            <form id="newBusiness1">
+              <input type="text" name="username">
+              <div>
+                <button type="submit" class="py-2 px-3 inline-flex items-center gap-x-1 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- End First Content --> *@
+  
+        <!-- Final Content -->
+        <div data-hs-stepper-content-item='{
+          "isFinal": true
+        }' style="display: none;">
+          <div class="p-4 h-48 bg-gray-50 flex justify-center items-center border border-dashed border-gray-200 rounded-xl dark:bg-neutral-700 dark:border-neutral-600">
+            <h3 class="text-gray-500 dark:text-neutral-400">
+              Final content
+            </h3>
+          </div>
+        </div>
+        <!-- End Final Content -->
+  
+        <!-- Button Group -->
+        <div class="mt-5 flex justify-between items-center gap-x-2">
+          <button type="button" class="py-2 px-3 inline-flex items-center gap-x-1 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none" data-hs-stepper-back-btn="">
+            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m15 18-6-6 6-6"></path>
+            </svg>
+            Back
+          </button>
+          <button type="button" class="py-2 px-3 inline-flex items-center gap-x-1 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" data-hs-stepper-next-btn="">
+            Next
+            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m9 18 6-6-6-6"></path>
+            </svg>
+          </button> 
+          <button type="button" class="py-2 px-3 inline-flex items-center gap-x-1 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" data-hs-stepper-finish-btn="" style="display: none;">
+            Finish
+          </button>
+          <!-- <button type="reset" class="py-2 px-3 inline-flex items-center gap-x-1 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" data-hs-stepper-reset-btn="" style="display: none;">
+            Reset
+          </button> -->
+        </div>
+        <!-- End Button Group -->
+      </div>
+      <!-- End Stepper Content -->
     </div>
+    <!-- End Stepper -->
+  </div>
+
 </section>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-
-
-  
+    
     <script>
 
-        function updateFileName(input) {
-            const fileLabel = document.getElementById('fileLabel_' + input.id.split('_')[1]);
-            const fileName = document.getElementById('fileName_' + input.id.split('_')[1]);
-            if (input.files && input.files[0]) {
-                const file = input.files[0];
-                fileLabel.textContent = 'Change PDF';
-                fileName.textContent = file.name;
-                fileName.classList.add('text-green-500', 'dark:text-green-400');
+       @* const errorStepper = HSStepper.getInstance('#registerStepper');
+       errorStepper.enableButtons(); *@
+      // errorStepper.disableButtons();
 
-            } else {
-                fileLabel.textContent = 'Upload PDF';
-                fileName.textContent = '';
+      var forms = document.querySelectorAll("form#createBusiness");
+      var criteriaForms = document.querySelectorAll("form.criteriaAnswer");
+      console.log(criteriaForms);
+      console.log(forms);
+      forms.forEach(form=>{
+        form.addEventListener("submit",(e)=>{
+          event.preventDefault();
+          console.log(e.target);
+          let formData = new FormData(e.target);
+          const token = document.querySelector("input[name='__RequestVerificationToken']").value;
+          console.log(token)
+          fetch("/ApplySeal?handler=NewBusiness",{
+            method: "POST",
+            headers:{
+                RequestVerificationToken: token
+            },
+            body: formData
+          })
+          .then(res=> res.json())
+          .then(messg => {
+            console.log(messg.business);
+            let message = messg;
+            if (message.business)
+            {
+              if (message.business !== 0)
+              {
+               let BusinessIdInput =  document.querySelector("input[name='Business']")
+               console.log(BusinessIdInput.value);
+               BusinessIdInput.value = message.business;
+               console.log(BusinessIdInput.value);
 
+              }
             }
-        }
+          }).catch(err=>{
+            console.log(err);
+          })
+        })
+      })
 
-        document.addEventListener('DOMContentLoaded', function () {
-
-            const businessOptions = document.getElementById('businessOptions');
-            const bsOptions = document.getElementById('bsOptions');
-            const selectBusiness = document.getElementById('selectBusiness');
-            const createBusiness = document.getElementById('createBusiness');
-            const businessInfoSection = document.getElementById('businessInfoSection');
-            const nextButton = document.getElementById('nextButton');
-            const prevButton = document.getElementById('prevButton');
-            const stepFields = Array.from(document.querySelectorAll('[id^="step"][id$="Fields"]'));
-            const currentStepHeading = document.getElementById('currentStepHeading');
-            const steps = Array.from(stepper.querySelectorAll('li[id^="step"]'));
-            const submitButton = document.getElementById('submitButton');
-
-            const attchmentTogglers = document.querySelectorAll(".attachment_togglers");
-
-            attchmentTogglers.forEach(btn=>{
-                btn.addEventListener("click",()=>{
-                    console.log("attach toggler clicked")
-                    fileAttachment();
-                })
-            })
-        
-
-            let currentStep = 0;
-
-            function toggleBusinessOptions() {
-                if (businessOptions.value === 'CB') {
-                    selectBusiness.style.display = 'none';
-                    createBusiness.style.display = 'block';
-                } else if (businessOptions.value === 'SB') {
-                    selectBusiness.style.display = 'block';
-                    createBusiness.style.display = 'none';
-                }
-            }
-
-            function updateButtonsVisibility() {
-                prevButton.style.display = currentStep > 0 ? 'block' : 'none';
-                submitButton.style.display = currentStep !== steps.length - 1 ? 'none' : 'block';
-                nextButton.style.display = currentStep < steps.length - 1 ? 'block' : 'none';
-                nextButton.textContent = currentStep === steps.length - 1 ? 'Submit' : `Next Step: ${steps[currentStep + 1].getAttribute('data-step-name')}`;
-               
-            }
-
-
-            function updateStepStyles(stepIndex, status) {
-                const step = steps[stepIndex];
-                const circle = step.querySelector('div > div');
-                const questionMark = circle.querySelector('.question-mark');
-                const checkMark = circle.querySelector('.check-mark');
-
-                if (status === 'current') {
-                    circle.classList.remove('bg-gray-100', 'dark:bg-gray-700', 'bg-green-100', 'dark:bg-green-800');
-                    circle.classList.add('bg-primary-100', 'dark:bg-primary-800');
-                    questionMark.classList.remove('hidden', 'text-gray-600', 'dark:text-gray-300');
-                    questionMark.classList.add('text-primary-600', 'dark:text-primary-300');
-                    checkMark.classList.add('hidden');
-                    if (stepIndex > 0) {
-                        steps[stepIndex - 1].classList.remove('after:border-gray-100', 'dark:after:border-gray-700');
-                        steps[stepIndex - 1].classList.add('after:border-primary-100', 'dark:after:border-primary-800');
-                    }
-                } else if (status === 'completed') {
-                    circle.classList.remove('bg-gray-100', 'dark:bg-gray-700', 'bg-primary-100', 'dark:bg-primary-800');
-                    circle.classList.add('bg-green-100', 'dark:bg-green-800');
-                    questionMark.classList.add('hidden');
-                    checkMark.classList.remove('hidden');
-                    if (step.classList.contains('after:content-[\'\']')) {
-                        step.classList.remove('after:border-gray-100', 'dark:after:border-gray-700', 'after:border-primary-100', 'dark:after:border-primary-800');
-                        step.classList.add('after:border-green-100', 'dark:after:border-green-800');
-                    }
-                } else {
-                    circle.classList.add('bg-gray-100', 'dark:bg-gray-700');
-                    circle.classList.remove('bg-primary-100', 'dark:bg-primary-800', 'bg-green-100', 'dark:bg-green-800');
-                    questionMark.classList.remove('hidden', 'text-primary-600', 'dark:text-primary-300');
-                    questionMark.classList.add('text-gray-600', 'dark:text-gray-300');
-                    checkMark.classList.add('hidden');
-                    if (step.classList.contains('after:content-[\'\']')) {
-                        step.classList.remove('after:border-primary-100', 'dark:after:border-primary-800', 'after:border-green-100', 'dark:after:border-green-800');
-                        step.classList.add('after:border-gray-100', 'dark:after:border-gray-700');
-                    }
-                }
-            }
-
-            function updateHeading(stepIndex) {
-                const stepName = steps[stepIndex].getAttribute('data-step-name');
-                currentStepHeading.textContent = stepName;
-            }
-
-          
-            function showStep(stepIndex) {
-                stepFields.forEach((field, index) => {
-                    field.style.display = index === stepIndex ? 'block' : 'none';
-                });
-                updateStepStyles(stepIndex, 'current');
-                updateHeading(currentStep);
-            }
-
-            nextButton.addEventListener('click', function () {
-                if (currentStep < stepFields.length - 1) {
-                    currentStep++;
-                    showStep(currentStep);
-                    updateButtonsVisibility();
-                    updateStepStyles(currentStep-1, 'completed');
-
-
-                } else {
-                    document.getElementById('businessForm').submit();
-                }
-            });
-        
-            prevButton.addEventListener('click', function () {
-                if (currentStep > 0) {
-                    updateStepStyles(currentStep, 'incomplete');
-                    currentStep--;
-                    showStep(currentStep);
-                    updateButtonsVisibility();
-                }
-            });
-
-            businessOptions.addEventListener('change', toggleBusinessOptions);
-
-            showStep(0);
-            updateButtonsVisibility();
-
-          
-        });
-
-        function createNewBusiness()
-        {
-            var bsForm = document.querySelectorAll("form#createBusiness")[0];
-            bsForm.addEventListener("submit",(e)=>{
-
-            })
-        }
-
-        function fileAttachment()
-        {
-            var formInputs = document.querySelectorAll(".fileattachment_form  input[type='file']");
-            console.log(formInputs);
-            formInputs.forEach( i => {
-                i.addEventListener("change", (e)=>{
-                    let form = e.target.closest("form");
-                    let uploadedFilenameInput = form.querySelectorAll("input[hidden]")[0]
-                    console.log(uploadedFilenameInput);
-                    const token = document.querySelector("input[name='__RequestVerificationToken']").value;
-                    let formData = new FormData(form);
-                    console.log(form,token,formData);
-
-                    fetch("/ApplySeal?handler=FileUploadsWithFile",{
-                    method: 'POST',
-                    headers: {
-                        'RequestVerificationToken': token,
-                    },
-                    body: formData
-                   }).then(res => res.json()).
-                   then(json=>{
-                    console.log(`uploaded filename ${json.filename}`)
-                    uploadedFilenameInput.value = json.filename;
-                    console.log(uploadedFilenameInput.value);
-                    console.log(json);
-                   })
-                   .catch(err=>{
-                    console.log(err)
-                   })
-                })
-             })
-            @* .addEventListener("change",(e)=>{
-                let form = e.target.closest("form");
-                const token = document.querySelector("input[name='__RequestVerificationToken']").value;
-                let formData = new FormData(form);
-                fetch("/ApplySeal?handler=FileUpload",{
-                    method: 'POST',
-                    headers: {
-                        'RequestVerificationToken': value
-                    },
-                    body: formData
-                })
-            })  *@
-        }
+      // BusinessAnswer
+      criteriaForms.forEach(form=>{
+        form.addEventListener("submit",(e)=>{
+          event.preventDefault();
+          console.log(e.target);
+          let formData = new FormData(e.target);
+          let BusinessIdInput = document.querySelector("input[name='Business']");
+          formData.append("Business",BusinessIdInput.value);
+          const token = document.querySelector("input[name='__RequestVerificationToken']").value;
+          console.log(token)
+          fetch("/ApplySeal?handler=BusinessAnswer",{
+            method: "POST",
+            headers:{
+                RequestVerificationToken: token
+            },
+            body: formData
+          })
+          .then(res=> res.json())
+          .then(messg => {
+            console.log(messg);
+          }).catch(err=>{
+            console.log(err);
+          })
+        })
+      })
       
+  
+    
     </script>
+   
 }
 
 

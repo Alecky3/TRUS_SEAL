@@ -16,60 +16,59 @@ using TrustSeal.Models;
 
 namespace TrustSeal.Pages.ApplySeal
 {
-    [Authorize]
+    // [Authorize]
     public class IndexModel : PageModel
     {
         private readonly TrustSeal.Areas.Identity.Data.TSAuth _context;
-        private readonly UserManager<TSUser> _userManager;
+        // private readonly UserManager<TSUser> _userManager;
         private readonly ILogger<IndexModel> _logger;
        
 
 
         // This is the only constructor
         public IndexModel(TrustSeal.Areas.Identity.Data.TSAuth context,
-         ILogger<IndexModel> logger,
-         UserManager<TSUser> userManager
+         ILogger<IndexModel> logger
+        //  UserManager<TSUser> userManager
          )
         {
             _context = context;
             _logger = logger;
-            _userManager = userManager;
+            // _userManager = userManager;
         }
 
         [BindProperty]
         public Business Business { get; set; } = default!;
 
-        public List<SelectListItem> Businesses { get; set; }
+        // public List<SelectListItem> Businesses { get; set; }
 
         public IList<QuestionCategory> Criteria { get; set; } = default!;
+        
+        public BsAnswer Answer {get;set;} = default!;
 
     
 
         public async Task OnGetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
-            Businesses = _context.Businesses
-            .Where(b => b.OwnerId == user.Id.ToString())
-            .Select(b => new SelectListItem
-            {
-                Value = b.Id.ToString(),
-                Text = b.LegalName
-            })
-            .ToList();
+            // var user = await _userManager.GetUserAsync(User);
+            // Businesses = _context.Businesses
+            // // .Where(b => b.OwnerId == user.Id.ToString())
+            // .Select(b => new SelectListItem
+            // {
+            //     Value = b.Id.ToString(),
+            //     Text = b.LegalName
+            // })
+            // .ToList();
 
             Criteria = await _context.QuestionCategories
                .Include(q => q.questions).ToListAsync();
         }
 
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<JsonResult> OnPostNewBusinessAsync()
         {
-
-            int bsID;
-            if (!int.TryParse(Request.Form["SelectedBusiness"], out bsID) || bsID == 0)
-            {
-                var emptyBusiness = new Business();
-                emptyBusiness.OwnerId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            _logger.LogInformation("In post business");
+            var emptyBusiness = new Business();
+            emptyBusiness.OwnerId = "ca7d7338-1cc4-46ef-a732-ceb48de04572";
 
 
                 if (await TryUpdateModelAsync<Business>(
@@ -99,72 +98,16 @@ namespace TrustSeal.Pages.ApplySeal
 
                     _context.Businesses.Add(emptyBusiness);
                     await _context.SaveChangesAsync();
+                    Business = emptyBusiness;
+                    _logger.LogInformation($"Created new business with ID: {Business.Id}");
 
+                    var message = new {message="Created Business successfully", business = Business.Id};
+
+                    return new JsonResult(message);
                 }
                 
-                bsID = emptyBusiness.Id; // Assuming Id is the primary key of Business
-                _logger.LogInformation("Created new business with ID: {BusinessID}", bsID);
-            }
-
-            var businessAnswers = new List<BsAnswer>();
-
-
-            foreach (var key in Request.Form.Keys.Where(k => int.TryParse(k, out _)))
-            {
-                if (int.TryParse(key, out int questionId))
-                {
-                    var value = Request.Form[key].ToString();
-                    var answer = new BsAnswer
-                    {
-                        BusinessID = bsID,
-                        QuestionID = questionId,
-                        AnswerText = value
-                    };
-                    businessAnswers.Add(answer);
-
-                    _logger.LogInformation("BsAnswer: BusinessID={BusinessID}, QuestionID={QuestionID}, AnswerText={AnswerText}",
-                        answer.BusinessID,
-                        answer.QuestionID,
-                        answer.AnswerText);
-                }
-            }
-
-            try
-            {
-                await _context.Answers.AddRangeAsync(businessAnswers);
-                var changed = await _context.SaveChangesAsync();
-
-                TempData["AlertTitle"] = "Success!";
-                TempData["AlertMessage"] = "Your application is successfull!";
-                TempData["AlertIcon"] = "success";
-            }
-            catch (InvalidOperationException ex)
-            {
-                TempData["AlertTitle"] = "Error!";
-                TempData["AlertMessage"] = "Invalid Operation Check Form Fields and try again";
-                TempData["AlertIcon"] = "error";
-                _logger.LogInformation($"{ex.Message}", ex);
-
-            }
-            catch (DbUpdateException ex)
-            {
-                TempData["AlertTitle"] = "Error!";
-                TempData["AlertMessage"] = "Application for this business already exists";
-                TempData["AlertIcon"] = "error";
-                _logger.LogInformation($"{ex.Message}", ex);
-            }
-            catch (Exception ex)
-            {
-                TempData["AlertTitle"] = "Error!";
-                TempData["AlertMessage"] = "Failed To Save Application";
-                TempData["AlertIcon"] = "error";
-                _logger.LogInformation($"{ex.Message}", ex);
-            }
-        
-
-
             // if exist sh
-            return RedirectToPage("./Index");
+            return new JsonResult(new {message = "could not create business",business = 0});
         }
 
         public async Task<JsonResult> OnPostFileUploadsWithFileAsync(IFormFile file)
@@ -187,5 +130,34 @@ namespace TrustSeal.Pages.ApplySeal
 
           return new JsonResult(new { message = "file uploaded sucessfully",filename =  uploadedFilePath});
         }
+
+        public async Task<JsonResult> OnPostBusinessAnswerAsync()
+        {
+            var data = Request.Form;
+            var questionKeys = data.Keys.Where(k => ! k.EndsWith("AnswerText") && ! k.EndsWith("Business"));
+           var bsAnswers = new List<BsAnswer>();
+            var businessId = data["Business"];
+            _logger.LogInformation($"Business.ID = {businessId}");
+                if (int.Parse(businessId) != 0 ||  businessId != string.Empty)
+                {
+                    foreach(var key in questionKeys){
+                        var answerKey = Request.Form.Keys.Where(k => k == key+"_AnswerText").First();
+                        var bsAnswer = new BsAnswer();
+                        bsAnswer.BusinessID = int.Parse(businessId);
+                        bsAnswer.QuestionID = int.Parse(data[key]);
+                        bsAnswer.AnswerText = data[answerKey];
+                        bsAnswers.Add(bsAnswer);
+                        _logger.LogInformation($"{key}-{answerKey} data{data[key]} - {data[answerKey]}");
+                    }
+                    _logger.LogInformation($"bsAnswers = {bsAnswers.Count()}");
+                    await  _context.Answers.AddRangeAsync(bsAnswers);
+                    await _context.SaveChangesAsync();
+                    return new JsonResult(new {message = "Saved Answers successfuly",count = bsAnswers.Count()});
+                }else {
+                    return new JsonResult(new {message = "Could not save answers",count = bsAnswers.Count()});
+             }
+        }
+        
     }
+
 }

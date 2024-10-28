@@ -1,6 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./TrustSeal/Pages/**/*.cshtml","./node_modules/flowbite/**/*.js"],
+  content: ["./TrustSeal/Pages/**/*.cshtml",
+    "./node_modules/flowbite/**/*.js",
+    'node_modules/preline/dist/*.js'],
     darkMode: 'class',
     theme: {
         extend: {
@@ -52,7 +54,8 @@ module.exports = {
     require('flowbite/plugin')({
         datatables: true,
         charts: true,
-    })
+    }),
+    require('preline/plugin'),
   ],
 }
 
