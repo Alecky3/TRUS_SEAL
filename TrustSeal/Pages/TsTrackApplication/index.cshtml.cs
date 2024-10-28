@@ -10,11 +10,11 @@ using TrustSeal.Models;
 
 namespace TrustSeal.Pages.TsTrackApplication
 {
-    public class indexModel : PageModel
+    public class IndexModel : PageModel
     {
         private readonly TrustSeal.Areas.Identity.Data.TSAuth _context;
 
-        public indexModel(TrustSeal.Areas.Identity.Data.TSAuth context)
+        public IndexModel(TrustSeal.Areas.Identity.Data.TSAuth context)
         {
             _context = context;
         }

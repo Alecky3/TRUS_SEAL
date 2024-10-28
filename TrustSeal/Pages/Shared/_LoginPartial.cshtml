@@ -30,10 +30,6 @@
                         <a class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" asp-area="Identity" asp-page="/Account/Manage/Index"><i data-feather="user" class="align-self-center icon-xs icon-dual me-1"></i> Profile</a>
                     </li>
                     <li>
-                        <a  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" href='apps-contact-list.html'><i data-feather="users" class="align-self-center icon-xs icon-dual me-1"></i> Contacts</a>
-                    </li>
-                   
-                    <li>
                         <form id="logoutForm" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
                             <button id="logout" type="submit" class="btn btn-link text-dark border-0 p-0"><i data-feather="power" class="align-self-center icon-xs icon-dual me-1"></i> Logout</button>
                         </form>
