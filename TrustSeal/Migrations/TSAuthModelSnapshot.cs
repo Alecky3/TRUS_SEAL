@@ -246,6 +246,9 @@ namespace TrustSeal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool?>("AttachmentProvided")
+                        .HasColumnType("bit");
+
                     b.Property<string>("FileReference")
                         .HasColumnType("nvarchar(255)");
 
@@ -300,7 +303,6 @@ namespace TrustSeal.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OwnerId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PhoneNumber")
@@ -343,7 +345,32 @@ namespace TrustSeal.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Businesses", (string)null);
+                    b.ToTable("Businesses");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.BusinessAttachment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BusinessID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FileReference")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("QuestionID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BusinessID", "QuestionID")
+                        .IsUnique();
+
+                    b.ToTable("BusinessAttachment");
                 });
 
             modelBuilder.Entity("TrustSeal.Models.Question", b =>
@@ -469,11 +496,20 @@ namespace TrustSeal.Migrations
                 {
                     b.HasOne("TrustSeal.Areas.Identity.Data.TSUser", "Owner")
                         .WithMany("UserBusinesses")
-                        .HasForeignKey("OwnerId")
+                        .HasForeignKey("OwnerId");
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.BusinessAttachment", b =>
+                {
+                    b.HasOne("TrustSeal.Models.BsAnswer", "BsAnswer")
+                        .WithOne("BusinessAttachment")
+                        .HasForeignKey("TrustSeal.Models.BusinessAttachment", "BusinessID", "QuestionID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Owner");
+                    b.Navigation("BsAnswer");
                 });
 
             modelBuilder.Entity("TrustSeal.Models.Question", b =>
@@ -490,6 +526,11 @@ namespace TrustSeal.Migrations
             modelBuilder.Entity("TrustSeal.Areas.Identity.Data.TSUser", b =>
                 {
                     b.Navigation("UserBusinesses");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.BsAnswer", b =>
+                {
+                    b.Navigation("BusinessAttachment");
                 });
 
             modelBuilder.Entity("TrustSeal.Models.QuestionCategory", b =>

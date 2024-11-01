@@ -143,7 +143,7 @@ namespace TrustSeal.Areas.Identity.Pages.Account
                     */
                     await CreateRole();
                     // assign the role
-                    var roleResult =  _userManager.AddToRoleAsync(user,"User");
+                    var roleResult =  await _userManager.AddToRoleAsync(user,"User");
                    _logger.LogInformation("User assigned to 'User' Role");
 
                     var userId = await _userManager.GetUserIdAsync(user);
