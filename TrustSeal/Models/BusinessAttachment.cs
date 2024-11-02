@@ -9,6 +9,7 @@ namespace TrustSeal.Models
 
         public int BusinessID {get;set;}
         public int QuestionID {get;set;}
+        
         [ForeignKey("BusinessID,QuestionID")]
         public BsAnswer BsAnswer {get;set;} = null!;
 

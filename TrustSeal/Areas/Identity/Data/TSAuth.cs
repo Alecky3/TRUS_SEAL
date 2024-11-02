@@ -15,8 +15,8 @@ public class TSAuth : IdentityDbContext<TSUser>
     {
     }
 
-    // protected override void OnModelCreating(ModelBuilder builder)
-    // {
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
     //     base.OnModelCreating(builder);
     //     builder.Entity<BsAnswer>().ToTable("BsAnswers");
     //     // Customize the ASP.NET Identity model and override the defaults if needed.
@@ -30,10 +30,11 @@ public class TSAuth : IdentityDbContext<TSUser>
 
     //     builder.Entity<Question>()
     //          .HasOne(q => q.Category);
-
-        
-           
-    // }
+    builder.Entity<Seal>()
+    .Property(e => e.Id)
+    .HasColumnType("uniqueidentifier")
+    .HasDefaultValue("NEWSEQUENTIALID()");    
+    }
     public DbSet<Business> Businesses { get; set; }
     public DbSet<Question> Questions { get; set; }
     public DbSet<QuestionCategory> QuestionCategories { get; set; }
