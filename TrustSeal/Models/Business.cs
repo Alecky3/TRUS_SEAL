@@ -51,6 +51,7 @@ namespace TrustSeal.Models
         public DateTime SubmissionDate { get; set; }
 
         public string OwnerId { get; set; }
+        
         [ForeignKey("OwnerId")]
          public TSUser Owner { get; set; }
 

@@ -45,7 +45,7 @@ public class TSAuth : IdentityDbContext<TSUser>
 
     public DbSet<TrustSeal.Models.BusinessAttachment> BusinessAttachment { get; set; }
 
-    public DbSet<Notification> Notifications {get; set;}
+    // public DbSet<Notification> Notifications {get; set;}
 
     public DbSet<Seal> Seals {get;set;}
 
