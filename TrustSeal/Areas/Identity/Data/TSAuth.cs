@@ -15,11 +15,6 @@ public class TSAuth : IdentityDbContext<TSUser>
     {
     }
 
-    public TSAuth()
-    {
-        
-    }
-
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
