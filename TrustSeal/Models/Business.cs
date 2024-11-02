@@ -52,12 +52,13 @@ namespace TrustSeal.Models
 
         public string OwnerId { get; set; }
         [ForeignKey("OwnerId")]
+         public TSUser Owner { get; set; }
 
         public string Status {get;set;}
 
         public string CaseNumber {get;set;} = string.Empty;
 
-        public TSUser Owner { get; set; }
+       
 
     }
 }
