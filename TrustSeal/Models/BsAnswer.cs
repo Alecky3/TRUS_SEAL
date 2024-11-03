@@ -8,8 +8,7 @@ namespace TrustSeal.Models
     [PrimaryKey(nameof(BusinessID), nameof(QuestionID))]
     public class BsAnswer
     {
-       
-
+       public int Id {get;set;}
         [Required]
         public int BusinessID { get; set; }
 

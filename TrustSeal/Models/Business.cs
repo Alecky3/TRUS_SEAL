@@ -59,7 +59,9 @@ namespace TrustSeal.Models
 
         public string CaseNumber {get;set;} = string.Empty;
 
-       
+        public int? SealId {get;set;}
 
+        [ForeignKey("SealId")]
+        public Seals Seal {get;set;}
     }
 }
