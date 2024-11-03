@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TrustSeal.Migrations
 {
     /// <inheritdoc />
-    public partial class Seal3 : Migration
+    public partial class BusinessAttachments : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -259,6 +259,8 @@ namespace TrustSeal.Migrations
                 name: "BsAnswer",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     BusinessID = table.Column<int>(type: "int", nullable: false),
                     QuestionID = table.Column<int>(type: "int", nullable: false),
                     AnswerText = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -269,7 +271,7 @@ namespace TrustSeal.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BsAnswer", x => new { x.BusinessID, x.QuestionID });
+                    table.PrimaryKey("PK_BsAnswer", x => x.Id);
                     table.ForeignKey(
                         name: "FK_BsAnswer_Businesses_BusinessID",
                         column: x => x.BusinessID,
@@ -291,18 +293,22 @@ namespace TrustSeal.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FileReference = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BusinessID = table.Column<int>(type: "int", nullable: false),
-                    QuestionID = table.Column<int>(type: "int", nullable: false)
+                    BusinessId = table.Column<int>(type: "int", nullable: true),
+                    BsAnswerId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BusinessAttachment", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BusinessAttachment_BsAnswer_BusinessID_QuestionID",
-                        columns: x => new { x.BusinessID, x.QuestionID },
+                        name: "FK_BusinessAttachment_BsAnswer_BsAnswerId",
+                        column: x => x.BsAnswerId,
                         principalTable: "BsAnswer",
-                        principalColumns: new[] { "BusinessID", "QuestionID" },
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_BusinessAttachment_Businesses_BusinessId",
+                        column: x => x.BusinessId,
+                        principalTable: "Businesses",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -345,15 +351,24 @@ namespace TrustSeal.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BsAnswer_BusinessID",
+                table: "BsAnswer",
+                column: "BusinessID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BsAnswer_QuestionID",
                 table: "BsAnswer",
                 column: "QuestionID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BusinessAttachment_BusinessID_QuestionID",
+                name: "IX_BusinessAttachment_BsAnswerId",
                 table: "BusinessAttachment",
-                columns: new[] { "BusinessID", "QuestionID" },
-                unique: true);
+                column: "BsAnswerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BusinessAttachment_BusinessId",
+                table: "BusinessAttachment",
+                column: "BusinessId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Businesses_OwnerId",

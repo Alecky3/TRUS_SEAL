@@ -74,8 +74,8 @@ namespace TrustSeal.Pages.BusinessAttachments
                         await formFile.CopyToAsync(stream);
                     }
                     BsAttachement.FileReference = filePath;
-                    BsAttachement.BusinessID = BusinessID;
-                    BsAttachement.QuestionID = QuestionID;
+                    BsAttachement.BsAnswerId = BusinessID;
+                    BsAttachement.BsAnswerId = QuestionID;
 
                     _context.BusinessAttachment.Add(BsAttachement);
                      await _context.SaveChangesAsync();

@@ -8,7 +8,7 @@ namespace TrustSeal.Models
     [PrimaryKey(nameof(BusinessID), nameof(QuestionID))]
     public class BsAnswer
     {
-       public int Id {get;set;}
+        public int Id {get;set;}
         [Required]
         public int BusinessID { get; set; }
 
@@ -38,6 +38,6 @@ namespace TrustSeal.Models
 
         public bool? AttachmentProvided {get;set;} = false;
 
-        public BusinessAttachment BusinessAttachment {get;set;} = default!;
+        public List<BusinessAttachment> BusinessAttachment {get;set;} = new List<BusinessAttachment>();
     }
 }

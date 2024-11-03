@@ -7,11 +7,13 @@ namespace TrustSeal.Models
         public int Id {get;set;}
         public string FileReference {get;set;}
 
-        public int BusinessID {get;set;}
-        public int QuestionID {get;set;}
-        
-        [ForeignKey("BusinessID,QuestionID")]
-        public BsAnswer BsAnswer {get;set;} = null!;
+        public int? BusinessId {get;set;}
+
+        [ForeignKey("BusinessId")]
+        public Business Business {get; set;}
+        public int? BsAnswerId {get;set;}
+        [ForeignKey("BsAnswerId")]
+        public BsAnswer BsAnswer {get;set;}
 
     }
 }

@@ -12,8 +12,8 @@ using TrustSeal.Areas.Identity.Data;
 namespace TrustSeal.Migrations
 {
     [DbContext(typeof(TSAuth))]
-    [Migration("20241103090144_Seal3")]
-    partial class Seal3
+    [Migration("20241103094652_BusinessAttachments")]
+    partial class BusinessAttachments
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -239,11 +239,11 @@ namespace TrustSeal.Migrations
 
             modelBuilder.Entity("TrustSeal.Models.BsAnswer", b =>
                 {
-                    b.Property<int>("BusinessID")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("QuestionID")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AnswerText")
                         .IsRequired()
@@ -252,8 +252,14 @@ namespace TrustSeal.Migrations
                     b.Property<bool?>("AttachmentProvided")
                         .HasColumnType("bit");
 
+                    b.Property<int>("BusinessID")
+                        .HasColumnType("int");
+
                     b.Property<string>("FileReference")
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("QuestionID")
+                        .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -262,7 +268,9 @@ namespace TrustSeal.Migrations
                     b.Property<DateTime>("SubmittedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("BusinessID", "QuestionID");
+                    b.HasKey("Id");
+
+                    b.HasIndex("BusinessID");
 
                     b.HasIndex("QuestionID");
 
@@ -372,19 +380,20 @@ namespace TrustSeal.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BusinessID")
+                    b.Property<int?>("BsAnswerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BusinessId")
                         .HasColumnType("int");
 
                     b.Property<string>("FileReference")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("QuestionID")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("BusinessID", "QuestionID")
-                        .IsUnique();
+                    b.HasIndex("BsAnswerId");
+
+                    b.HasIndex("BusinessId");
 
                     b.ToTable("BusinessAttachment");
                 });
@@ -554,12 +563,16 @@ namespace TrustSeal.Migrations
             modelBuilder.Entity("TrustSeal.Models.BusinessAttachment", b =>
                 {
                     b.HasOne("TrustSeal.Models.BsAnswer", "BsAnswer")
-                        .WithOne("BusinessAttachment")
-                        .HasForeignKey("TrustSeal.Models.BusinessAttachment", "BusinessID", "QuestionID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("BusinessAttachment")
+                        .HasForeignKey("BsAnswerId");
+
+                    b.HasOne("TrustSeal.Models.Business", "Business")
+                        .WithMany("BusinessAttachments")
+                        .HasForeignKey("BusinessId");
 
                     b.Navigation("BsAnswer");
+
+                    b.Navigation("Business");
                 });
 
             modelBuilder.Entity("TrustSeal.Models.Question", b =>
@@ -581,6 +594,11 @@ namespace TrustSeal.Migrations
             modelBuilder.Entity("TrustSeal.Models.BsAnswer", b =>
                 {
                     b.Navigation("BusinessAttachment");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.Business", b =>
+                {
+                    b.Navigation("BusinessAttachments");
                 });
 
             modelBuilder.Entity("TrustSeal.Models.QuestionCategory", b =>

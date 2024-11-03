@@ -42,7 +42,8 @@ public class TSAuth : IdentityDbContext<TSUser>
     //     .HasColumnType("uniqueidentifier")
     //     .HasDefaultValue("NEWSEQUENTIALID()");    
 
-       
+       builder.Entity<BsAnswer>()
+        .HasKey(e => e.Id);
 
          builder.Entity<Business>()
             .HasOne(b => b.Seal)
