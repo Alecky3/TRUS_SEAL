@@ -39,5 +39,15 @@ namespace TrustSeal.Models
         [ForeignKey("QuestionId")]
         public Question Question {get;set;}
 
+        public int? QuestionCategoryId {get;set;}
+
+        [ForeignKey("QuestionCategoryId")]
+        public QuestionCategory QuestionCategory {get;set;}
+
+        public int? SealId {get;set;}
+
+        [ForeignKey("SealId")]
+        public Seals Seals {get;set;}
+
     }
 }

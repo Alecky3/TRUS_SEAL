@@ -17,5 +17,7 @@ namespace TrustSeal.Models
         public DateTime RenewedAt {get;set;}
 
         public Business Business {get;set;}
+
+        public List<Notification> Notifications {get;set;} = new List<Notification>();
     }
 }

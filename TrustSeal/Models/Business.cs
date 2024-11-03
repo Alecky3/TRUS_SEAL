@@ -64,6 +64,8 @@ namespace TrustSeal.Models
         [ForeignKey("SealId")]
         public Seals Seal {get;set;}
 
+        public List<Notification> Notifications {get;set;} = new List<Notification>();
+
         public List<BusinessAttachment> BusinessAttachments {get;set;} = new List<BusinessAttachment>();
     }
 }

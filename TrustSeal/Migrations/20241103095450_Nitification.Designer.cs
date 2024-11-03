@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrustSeal.Areas.Identity.Data;
 
@@ -11,9 +12,11 @@ using TrustSeal.Areas.Identity.Data;
 namespace TrustSeal.Migrations
 {
     [DbContext(typeof(TSAuth))]
-    partial class TSAuthModelSnapshot : ModelSnapshot
+    [Migration("20241103095450_Nitification")]
+    partial class Nitification
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -395,68 +398,6 @@ namespace TrustSeal.Migrations
                     b.ToTable("BusinessAttachment");
                 });
 
-            modelBuilder.Entity("TrustSeal.Models.Notification", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("BsAnswerId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("BusinessAttachmentId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("BusinessId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("NotificationId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("QuestionCategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("QuestionId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SealId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BsAnswerId");
-
-                    b.HasIndex("BusinessAttachmentId");
-
-                    b.HasIndex("BusinessId");
-
-                    b.HasIndex("NotificationId");
-
-                    b.HasIndex("QuestionCategoryId");
-
-                    b.HasIndex("QuestionId");
-
-                    b.HasIndex("SealId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Notification");
-                });
-
             modelBuilder.Entity("TrustSeal.Models.Question", b =>
                 {
                     b.Property<int>("Id")
@@ -634,55 +575,6 @@ namespace TrustSeal.Migrations
                     b.Navigation("Business");
                 });
 
-            modelBuilder.Entity("TrustSeal.Models.Notification", b =>
-                {
-                    b.HasOne("TrustSeal.Models.BsAnswer", "BsAnswer")
-                        .WithMany("Notifications")
-                        .HasForeignKey("BsAnswerId");
-
-                    b.HasOne("TrustSeal.Models.BusinessAttachment", null)
-                        .WithMany("Notifications")
-                        .HasForeignKey("BusinessAttachmentId");
-
-                    b.HasOne("TrustSeal.Models.Business", "Business")
-                        .WithMany("Notifications")
-                        .HasForeignKey("BusinessId");
-
-                    b.HasOne("TrustSeal.Models.Notification", "ReplyToNotification")
-                        .WithMany()
-                        .HasForeignKey("NotificationId");
-
-                    b.HasOne("TrustSeal.Models.QuestionCategory", "QuestionCategory")
-                        .WithMany("Notifications")
-                        .HasForeignKey("QuestionCategoryId");
-
-                    b.HasOne("TrustSeal.Models.Question", "Question")
-                        .WithMany()
-                        .HasForeignKey("QuestionId");
-
-                    b.HasOne("TrustSeal.Models.Seals", "Seals")
-                        .WithMany("Notifications")
-                        .HasForeignKey("SealId");
-
-                    b.HasOne("TrustSeal.Areas.Identity.Data.TSUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("BsAnswer");
-
-                    b.Navigation("Business");
-
-                    b.Navigation("CreatedBy");
-
-                    b.Navigation("Question");
-
-                    b.Navigation("QuestionCategory");
-
-                    b.Navigation("ReplyToNotification");
-
-                    b.Navigation("Seals");
-                });
-
             modelBuilder.Entity("TrustSeal.Models.Question", b =>
                 {
                     b.HasOne("TrustSeal.Models.QuestionCategory", "Category")
@@ -702,34 +594,21 @@ namespace TrustSeal.Migrations
             modelBuilder.Entity("TrustSeal.Models.BsAnswer", b =>
                 {
                     b.Navigation("BusinessAttachment");
-
-                    b.Navigation("Notifications");
                 });
 
             modelBuilder.Entity("TrustSeal.Models.Business", b =>
                 {
                     b.Navigation("BusinessAttachments");
-
-                    b.Navigation("Notifications");
-                });
-
-            modelBuilder.Entity("TrustSeal.Models.BusinessAttachment", b =>
-                {
-                    b.Navigation("Notifications");
                 });
 
             modelBuilder.Entity("TrustSeal.Models.QuestionCategory", b =>
                 {
-                    b.Navigation("Notifications");
-
                     b.Navigation("questions");
                 });
 
             modelBuilder.Entity("TrustSeal.Models.Seals", b =>
                 {
                     b.Navigation("Business");
-
-                    b.Navigation("Notifications");
                 });
 #pragma warning restore 612, 618
         }

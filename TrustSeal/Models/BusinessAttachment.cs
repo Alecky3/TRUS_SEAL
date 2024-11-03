@@ -15,5 +15,7 @@ namespace TrustSeal.Models
         [ForeignKey("BsAnswerId")]
         public BsAnswer BsAnswer {get;set;}
 
+        public List<Notification> Notifications {get;set;}= new List<Notification>();
+
     }
 }

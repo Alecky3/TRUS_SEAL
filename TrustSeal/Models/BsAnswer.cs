@@ -39,5 +39,7 @@ namespace TrustSeal.Models
         public bool? AttachmentProvided {get;set;} = false;
 
         public List<BusinessAttachment> BusinessAttachment {get;set;} = new List<BusinessAttachment>();
+
+        public List<Notification> Notifications {get;set;} = new List<Notification>();
     }
 }

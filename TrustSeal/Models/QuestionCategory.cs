@@ -13,5 +13,7 @@ namespace TrustSeal.Models
         public string Description { get; set; } = string.Empty;
 
         public ICollection<Question> questions { get; set; }
+
+        public List<Notification> Notifications {get;set;} = new List<Notification>();
     }
 }
