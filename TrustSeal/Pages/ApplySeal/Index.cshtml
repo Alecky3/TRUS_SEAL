@@ -1,15 +1,20 @@
 @page
 @model TrustSeal.Pages.ApplySeal.IndexModel
 
+@{
+  var numOfCategories = Model.Criteria.Count();
+}
+
 <section class="bg-white dark:bg-gray-900">
     <div class="p-4 bg-white rounded-lg shadow-md dark:bg-neutral-800">
     <!-- Stepper -->
     <div id="registerStepper" data-hs-stepper="">
       <!-- Stepper Nav -->
+      <!--Business info Registration-->
       <ul class="relative flex flex-row gap-x-2">
-        <li class="flex items-center gap-x-2 shrink basis-0 flex-1 group" data-hs-stepper-nav-item='{
-          "index": 1
-        }'>
+            <li class="flex items-center gap-x-2 shrink basis-0 flex-1 group" data-hs-stepper-nav-item='{
+              "index": 1 
+            }'>
           <span class="min-w-7 min-h-7 group inline-flex items-center text-xs align-middle">
             <span class="size-7 flex justify-center items-center shrink-0 bg-gray-100 font-medium text-gray-800 rounded-full group-focus:bg-gray-200 dark:bg-neutral-700 dark:text-white dark:group-focus:bg-gray-600 hs-stepper-active:bg-blue-600 hs-stepper-active:text-white hs-stepper-success:bg-blue-600 hs-stepper-success:text-white hs-stepper-completed:bg-teal-500 hs-stepper-completed:group-focus:bg-teal-600 dark:hs-stepper-active:bg-blue-500 dark:hs-stepper-success:bg-blue-500 dark:hs-stepper-completed:bg-teal-500 dark:hs-stepper-completed:group-focus:bg-teal-600">
               <span class="hs-stepper-success:hidden hs-stepper-completed:hidden">1</span>
@@ -18,61 +23,47 @@
               </svg>
             </span>
             <span class="ms-2 text-sm font-medium text-gray-800 dark:text-white">
-              Step
+              Business Reqistration
             </span>
           </span>
           <div class="w-full h-px flex-1 bg-gray-200 group-last:hidden hs-stepper-success:bg-blue-600 hs-stepper-completed:bg-teal-600 dark:bg-neutral-600 dark:hs-stepper-success:bg-blue-500 dark:hs-stepper-completed:bg-teal-500"></div>
         </li>
-  
-        <li class="flex items-center gap-x-2 shrink basis-0 flex-1 group" data-hs-stepper-nav-item='{
-          "index": 2
-        }'>
+        <!--End Business Info Registration Stepper-->
+        @foreach(var (criteria,index) in Model.Criteria.Select((criteria,index)=>(criteria,index + 1)))
+        {
+          <li class="flex items-center gap-x-2 shrink basis-0 flex-1 group" data-hs-stepper-nav-item='{
+              "index": @(index + 1) 
+            }'>
           <span class="min-w-7 min-h-7 group inline-flex items-center text-xs align-middle">
             <span class="size-7 flex justify-center items-center shrink-0 bg-gray-100 font-medium text-gray-800 rounded-full group-focus:bg-gray-200 dark:bg-neutral-700 dark:text-white dark:group-focus:bg-gray-600 hs-stepper-active:bg-blue-600 hs-stepper-active:text-white hs-stepper-success:bg-blue-600 hs-stepper-success:text-white hs-stepper-completed:bg-teal-500 hs-stepper-completed:group-focus:bg-teal-600 dark:hs-stepper-active:bg-blue-500 dark:hs-stepper-success:bg-blue-500 dark:hs-stepper-completed:bg-teal-500 dark:hs-stepper-completed:group-focus:bg-teal-600">
-              <span class="hs-stepper-success:hidden hs-stepper-completed:hidden">2</span>
+              <span class="hs-stepper-success:hidden hs-stepper-completed:hidden">@(index + 1)</span>
               <svg class="hidden shrink-0 size-3 hs-stepper-success:block" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
             </span>
             <span class="ms-2 text-sm font-medium text-gray-800 dark:text-white">
-              Step
+              @criteria.Name
             </span>
           </span>
           <div class="w-full h-px flex-1 bg-gray-200 group-last:hidden hs-stepper-success:bg-blue-600 hs-stepper-completed:bg-teal-600 dark:bg-neutral-600 dark:hs-stepper-success:bg-blue-500 dark:hs-stepper-completed:bg-teal-500"></div>
         </li>
-  
-        <li class="flex items-center gap-x-2 shrink basis-0 flex-1 group" data-hs-stepper-nav-item='{
-            "index": 3
-          }'>
-          <span class="min-w-7 min-h-7 group inline-flex items-center text-xs align-middle">
-            <span class="size-7 flex justify-center items-center shrink-0 bg-gray-100 font-medium text-gray-800 rounded-full group-focus:bg-gray-200 dark:bg-neutral-700 dark:text-white dark:group-focus:bg-gray-600 hs-stepper-active:bg-blue-600 hs-stepper-active:text-white hs-stepper-success:bg-blue-600 hs-stepper-success:text-white hs-stepper-completed:bg-teal-500 hs-stepper-completed:group-focus:bg-teal-600 dark:hs-stepper-active:bg-blue-500 dark:hs-stepper-success:bg-blue-500 dark:hs-stepper-completed:bg-teal-500 dark:hs-stepper-completed:group-focus:bg-teal-600">
-              <span class="hs-stepper-success:hidden hs-stepper-completed:hidden">3</span>
-              <svg class="hidden shrink-0 size-3 hs-stepper-success:block" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-            </span>
-            <span class="ms-2 text-sm font-medium text-gray-800 dark:text-white">
-              Step
-            </span>
-          </span>
-          <div class="w-full h-px flex-1 bg-gray-200 group-last:hidden hs-stepper-success:bg-blue-600 hs-stepper-completed:bg-teal-600 dark:bg-neutral-600 dark:hs-stepper-success:bg-blue-500 dark:hs-stepper-completed:bg-teal-500"></div>
-        </li>
-        <!-- End Item -->
+        }
       </ul>
+     
       <!-- End Stepper Nav -->
   
       <!-- Stepper Content -->
       <div class="mt-5 sm:mt-8">
-        <!-- First Content -->
+        <!-- First Content Business info Registration-->
         <div data-hs-stepper-content-item='{
           "index": 1
         }'>
-          <div class="p-4 bg-gray-50 flex justify-center items-center border border-dashed border-gray-200 rounded-xl dark:bg-neutral-700 dark:border-neutral-600">
+          <div class="p-4 w-full bg-gray-50 flex justify-center items-center border border-dashed border-gray-200 rounded-xl dark:bg-neutral-700 dark:border-neutral-600">
             <input type="text" name="Business"  hidden value="">
             @*Register a new Business*@
-                <form method="post" enctype="multipart/form-data" novalidate  id="createBusiness">
+                <form method="post" enctype="multipart/form-data" novalidate  id="createBusiness" class="w-full">
                    <div asp-validation-summary="ModelOnly" class="text-sm text-red-600 dark:text-red-500"></div>
-                    <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+                    <div class="grid gap-4 md:grid-cols-2 sm:gap-2 md:gap-4">
                         <div class="sm:col-span-2">
                             <label asp-for="Business.LegalName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Legal Name</label>
                             <input asp-for="Business.LegalName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" >
@@ -174,7 +165,7 @@
                  @*End of Register a new Business*@
           </div>
         </div>
-        <!-- End First Content -->
+        <!-- End First Content Business info Registration-->
         @foreach(var (item,index) in Model.Criteria.Select((item,index)=>(item,index+2)))
         {
             <!-- First Content -->
@@ -182,6 +173,8 @@
               "index": @index
             }' style="display: none;">
             <form class="criteriaAnswer">
+              <input type="text" hidden name="category" value="@item.Name">
+              <input type="text" hidden name="isNextToFinal" value="@(index -1 == numOfCategories ? "true" : "false")">
              @foreach (var question in @item.questions)
                     {
                       <div class="p-4 h-48 bg-gray-50 flex justify-center items-center border border-dashed border-gray-200 rounded-xl dark:bg-neutral-700 dark:border-neutral-600">
@@ -205,33 +198,13 @@
             </div>
             <!-- End First Content -->
         }
-          
-        
-  
-        @* <!-- First Content -->
-        <div data-hs-stepper-content-item='{
-          "index": 3
-        }' style="display: none;">
-          <div class="p-4 h-48 bg-gray-50 flex justify-center items-center border border-dashed border-gray-200 rounded-xl dark:bg-neutral-700 dark:border-neutral-600">
-            <form id="newBusiness1">
-              <input type="text" name="username">
-              <div>
-                <button type="submit" class="py-2 px-3 inline-flex items-center gap-x-1 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">
-                  Submit
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-        <!-- End First Content --> *@
-  
         <!-- Final Content -->
         <div data-hs-stepper-content-item='{
           "isFinal": true
         }' style="display: none;">
           <div class="p-4 h-48 bg-gray-50 flex justify-center items-center border border-dashed border-gray-200 rounded-xl dark:bg-neutral-700 dark:border-neutral-600">
-            <h3 class="text-gray-500 dark:text-neutral-400">
-              Final content
+            <h3 class="text-gray-500 dark:text-neutral-400 text-lg" id="CaseNumber">
+              [Your Case Number will appear here after you finish the process]
             </h3>
           </div>
         </div>
@@ -254,9 +227,9 @@
           <button type="button" class="py-2 px-3 inline-flex items-center gap-x-1 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" data-hs-stepper-finish-btn="" style="display: none;">
             Finish
           </button>
-          <!-- <button type="reset" class="py-2 px-3 inline-flex items-center gap-x-1 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" data-hs-stepper-reset-btn="" style="display: none;">
+           <button type="reset" class="py-2 px-3 inline-flex items-center gap-x-1 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" data-hs-stepper-reset-btn="" style="display: none;">
             Reset
-          </button> -->
+          </button>
         </div>
         <!-- End Button Group -->
       </div>
@@ -277,12 +250,17 @@
 
       var forms = document.querySelectorAll("form#createBusiness");
       var criteriaForms = document.querySelectorAll("form.criteriaAnswer");
+      var CaseNumberElem = document.getElementById("CaseNumber");
       console.log(criteriaForms);
       console.log(forms);
       forms.forEach(form=>{
         form.addEventListener("submit",(e)=>{
           event.preventDefault();
           console.log(e.target);
+          var submitBtn = e.target.querySelector("button[type='submit']");
+          console.log(submitBtn)
+          submitBtn.innerText = "Saving Business Info...";
+          submitBtn.disabled = true;
           let formData = new FormData(e.target);
           const token = document.querySelector("input[name='__RequestVerificationToken']").value;
           console.log(token)
@@ -295,7 +273,7 @@
           })
           .then(res=> res.json())
           .then(messg => {
-            console.log(messg.business);
+            console.log(messg);
             let message = messg;
             if (message.business)
             {
@@ -305,9 +283,18 @@
                console.log(BusinessIdInput.value);
                BusinessIdInput.value = message.business;
                console.log(BusinessIdInput.value);
-
+               submitBtn.innerText = "Saved Business";
+               submitBtn.enabled = false;
               }
+              else {
+                submitBtn.innerText = "Save Progress";
+                submitBtn.disabled = false;
+              }
+            }else {
+              submitBtn.innerText = "Save Progress";
+                submitBtn.disabled = false;
             }
+           
           }).catch(err=>{
             console.log(err);
           })
@@ -333,7 +320,13 @@
           })
           .then(res=> res.json())
           .then(messg => {
+            var msg = messg;
             console.log(messg);
+            if (messg.caseNumber.length != 0)
+            {
+              CaseNumberElem.innerHTML = `<span>Congratulations! See below Business Case Number you will use for Tracking</span></br>
+                                          ${msg.caseNumber}`
+            }
           }).catch(err=>{
             console.log(err);
           })

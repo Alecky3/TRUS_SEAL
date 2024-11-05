@@ -23,10 +23,13 @@ namespace TrustSeal.Areas.Identity.Pages.Account
         private readonly SignInManager<TSUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<TSUser> signInManager, ILogger<LoginModel> logger)
+        private readonly UserManager<TSUser> _userManager;
+
+        public LoginModel(SignInManager<TSUser> signInManager, ILogger<LoginModel> logger,UserManager<TSUser> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -104,7 +107,8 @@ namespace TrustSeal.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/ApplySeal");
+           
+            
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
@@ -116,6 +120,20 @@ namespace TrustSeal.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                     var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                _logger.LogInformation("User is Logged in");
+                if (await _userManager.IsInRoleAsync(user, "User"))
+                {
+                    returnUrl ??= Url.Content("~/ApplySeal");
+                    _logger.LogInformation($"User is Logged in {returnUrl}");
+                }
+                else {
+                    returnUrl ??= Url.Content("~/TsDashboard");
+                    _logger.LogInformation($"User is Logged in {returnUrl}");
+                }
+            }
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

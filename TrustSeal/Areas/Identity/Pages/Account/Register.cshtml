@@ -31,8 +31,14 @@
                             <span asp-validation-for="Input.Password" class="text-red-500"></span>
                         </div>
                         <div class="mb-3">
+                            
                             <input asp-for="Input.ConfirmPassword" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" autocomplete="new-password" aria-required="true" placeholder="Confirm Password" type="password" />
                             <span asp-validation-for="Input.ConfirmPassword" class="text-red-500"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Input.IsAdmin">Is Admin</label>
+                            <input asp-for="Input.IsAdmin" type="checkbox" class="ml-2 px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"  />
+                            <span asp-validation-for="Input.IsAdmin" class="text-red-500"></span>
                         </div>
                         <button id="registerSubmit" type="submit" class="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50">Sign up</button>
                     </form>

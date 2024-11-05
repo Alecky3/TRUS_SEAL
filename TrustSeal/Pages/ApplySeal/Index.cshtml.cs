@@ -14,34 +14,33 @@ using System.Security.Claims;
 using TrustSeal.Areas.Identity.Data;
 using TrustSeal.Models;
 
+
 namespace TrustSeal.Pages.ApplySeal
 {
-    // [Authorize]
+    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly TrustSeal.Areas.Identity.Data.TSAuth _context;
-        // private readonly UserManager<TSUser> _userManager;
+        private readonly UserManager<TSUser> _userManager;
         private readonly ILogger<IndexModel> _logger;
        
 
 
         // This is the only constructor
         public IndexModel(TrustSeal.Areas.Identity.Data.TSAuth context,
-         ILogger<IndexModel> logger
-        //  UserManager<TSUser> userManager
+         ILogger<IndexModel> logger,
+         UserManager<TSUser> userManager
          )
         {
             _context = context;
             _logger = logger;
-            // _userManager = userManager;
+            _userManager = userManager;
         }
 
         [BindProperty]
         public Business Business { get; set; } = default!;
 
-        // public List<SelectListItem> Businesses { get; set; }
-
-        public IList<QuestionCategory> Criteria { get; set; } = default!;
+        public IList<QuestionCategory> Criteria { get; set;}
         
         public BsAnswer Answer {get;set;} = default!;
 
@@ -49,16 +48,7 @@ namespace TrustSeal.Pages.ApplySeal
 
         public async Task OnGetAsync()
         {
-            // var user = await _userManager.GetUserAsync(User);
-            // Businesses = _context.Businesses
-            // // .Where(b => b.OwnerId == user.Id.ToString())
-            // .Select(b => new SelectListItem
-            // {
-            //     Value = b.Id.ToString(),
-            //     Text = b.LegalName
-            // })
-            // .ToList();
-
+            
             Criteria = await _context.QuestionCategories
                .Include(q => q.questions).ToListAsync();
         }
@@ -66,9 +56,10 @@ namespace TrustSeal.Pages.ApplySeal
 
         public async Task<JsonResult> OnPostNewBusinessAsync()
         {
+            var user = await _userManager.GetUserAsync(User);
             _logger.LogInformation("In post business");
             var emptyBusiness = new Business();
-            emptyBusiness.OwnerId = "ca7d7338-1cc4-46ef-a732-ceb48de04572";
+            emptyBusiness.OwnerId = user.Id;
 
 
                 if (await TryUpdateModelAsync<Business>(
@@ -95,6 +86,7 @@ namespace TrustSeal.Pages.ApplySeal
                 {
                     // Explicitly set properties not included in the form
                     emptyBusiness.IsVerified = false;
+                    emptyBusiness.Status = "Business Information Submitted";
 
                     _context.Businesses.Add(emptyBusiness);
                     await _context.SaveChangesAsync();
@@ -134,9 +126,13 @@ namespace TrustSeal.Pages.ApplySeal
         public async Task<JsonResult> OnPostBusinessAnswerAsync()
         {
             var data = Request.Form;
-            var questionKeys = data.Keys.Where(k => ! k.EndsWith("AnswerText") && ! k.EndsWith("Business"));
+            var questionKeys = data.Keys.Where(k => ! k.EndsWith("AnswerText") && ! k.EndsWith("Business") 
+            && !k.EndsWith("isNextToFinal") && !k.EndsWith("category"));
            var bsAnswers = new List<BsAnswer>();
+           var GeneratedCaseNumber =  "";
             var businessId = data["Business"];
+            var isFinal = data["isNextToFinal"];
+            var categoryName = data["category"];
             _logger.LogInformation($"Business.ID = {businessId}");
                 if (int.Parse(businessId) != 0 ||  businessId != string.Empty)
                 {
@@ -152,11 +148,46 @@ namespace TrustSeal.Pages.ApplySeal
                     _logger.LogInformation($"bsAnswers = {bsAnswers.Count()}");
                     await  _context.Answers.AddRangeAsync(bsAnswers);
                     await _context.SaveChangesAsync();
-                    return new JsonResult(new {message = "Saved Answers successfuly",count = bsAnswers.Count()});
+                    // update business status to "[category name] Answers Submitted"
+                    var business = await _context.Businesses.FirstOrDefaultAsync(b => b.Id == int.Parse(businessId));
+                    if (business != null && isFinal != "true")
+                    {
+                        string status = categoryName.ToString() + "Answers Submitted";
+                        _logger.LogInformation($"Current business Status ${status}");
+                        business.Status = status;
+                        await _context.SaveChangesAsync();
+                    }
+                    else if (isFinal.ToString() == "true")
+                    {
+                        _logger.LogInformation("This is the last step");
+                        business.Status = "All Answers Submitted";
+                        var firstTwoLetters = business.LegalName[0].ToString() + business.LegalName[1].ToString();
+                        var CaseNumber = await GenerateCaseNumber(firstTwoLetters);
+
+                        if (CaseNumber != null)
+                        {
+                            business.CaseNumber = CaseNumber.ToString();
+                            await _context.SaveChangesAsync();
+                            GeneratedCaseNumber = CaseNumber;
+                        }
+                    }
+                    return new JsonResult(new {message = "Saved Answers successfuly",count = bsAnswers.Count(),CaseNumber = GeneratedCaseNumber });
                 }else {
                     return new JsonResult(new {message = "Could not save answers",count = bsAnswers.Count()});
              }
         }
+
+         public async Task<string> GenerateCaseNumber(string BsName)
+         {
+               var CurrentBusinessCaseSequence = _context.Database
+               .SqlQuery<int>($"SELECT NEXT VALUE FOR BusinessCaseSequence AS CurrentValue")
+               .AsEnumerable().FirstOrDefault();
+               var CurrentDate = DateTime.Now.ToShortDateString();
+
+               var result = BsName +"/"+ CurrentBusinessCaseSequence.ToString() +"-"+CurrentDate;
+
+                return result.ToUpper();
+         }
         
     }
 

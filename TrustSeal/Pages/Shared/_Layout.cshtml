@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en" class="h-full bg-gray-100 dark:bg-gray-900">
+<html lang="en" class=" bg-gray-100 dark:bg-gray-900">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="~/css/tailwind/tailwind_main_out.css">
     <link rel="shortcut icon" href="~/assets/images/favicon.ico">
 </head>
-<body class="h-full">
+<body class="">
     @using Microsoft.AspNetCore.Identity
     @using TrustSeal.Areas.Identity.Data
 
@@ -286,7 +286,7 @@
     else
     { 
        
-        if (pageName.ToString() == "Home page")
+        if (pageName != null && pageName.ToString() == "Home page")
         {
          <nav class="bg-gray-200 p-4">
             <div class="container mx-auto flex items-center justify-between">
@@ -326,9 +326,9 @@
                 @RenderBody()
             </main>
         </div> 
-        } else if (pageName.ToString() == "Log in" || pageName.ToString() == "Register" ||
+        } else if ( pageName != null && (pageName.ToString() == "Log in" || pageName.ToString() == "Register" ||
          pageName.ToString() == "Forgot your password?" || pageName.ToString() == "Resend email confirmation"
-         || pageName.ToString() == "Reset password confirmation") {
+         || pageName.ToString() == "Reset password confirmation")) {
             <nav class="p-4">
                 <div class="container mx-auto flex items-center justify-between">
                     <!-- Logo (you can replace this with your own logo) -->

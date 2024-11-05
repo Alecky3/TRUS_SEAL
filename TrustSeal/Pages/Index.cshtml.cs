@@ -14,11 +14,10 @@ namespace TrustSeal.Pages
             _logger = logger;
             _context = context;
          }
-         public int CurrentBusinessCaseSequence;
 
         public async void OnGet()
         {
-           CurrentBusinessCaseSequence = _context.Database.SqlQuery<int>($"SELECT NEXT VALUE FOR BusinessCaseSequence AS CurrentValue").AsEnumerable().FirstOrDefault();
+           
         }
     }
 }
