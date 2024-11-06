@@ -49,5 +49,10 @@ namespace TrustSeal.Models
         [ForeignKey("SealId")]
         public Seals Seals {get;set;}
 
+        public int? ApplicationTrackingId {get;set;}
+
+        [ForeignKey("ApplicationTrackingId")]
+        public ApplicationTracking ApplicationTracking {get;set;}
+
     }
 }

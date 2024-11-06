@@ -5,6 +5,7 @@ using System.Reflection.Emit;
 using System.Reflection.Metadata;
 using TrustSeal.Areas.Identity.Data;
 using TrustSeal.Models;
+using TrustSeal.Pages.ApplySeal;
 
 namespace TrustSeal.Areas.Identity.Data;
 
@@ -61,9 +62,11 @@ public class TSAuth : IdentityDbContext<TSUser>
 
     public DbSet<BsAnswer> BsAnswer { get; set; }
 
-    public DbSet<TrustSeal.Models.BusinessAttachment> BusinessAttachment { get; set; }
+    public DbSet<BusinessAttachment> BusinessAttachment { get; set; }
 
-    // public DbSet<Notification> Notifications {get; set;}
+    public DbSet<Notification> Notifications {get; set;}
+
+    public DbSet<ApplicationTracking> ApplicationTrackings {get;set;}
 
     public DbSet<Seals> Seals {get;set;}
 

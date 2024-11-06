@@ -1,0 +1,42 @@
+@page
+@model TrustSeal.Pages.ApplySeal.TrackSealApplication
+
+<div class="p-2 md:p-4 bg-white antialiased dark:bg-gray-900">
+    <div id="alert-additional-content-1" class="p-4 mb-4 text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800" role="alert">
+    <div class="flex items-center">
+        <svg class="flex-shrink-0 w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+        </svg>
+        <span class="sr-only">Info</span>
+        <h3 class="text-lg font-medium">@Model.Business.LegalName</h3>
+    </div>
+    <div class="mt-2 mb-4 text-lg">
+        You are Tracking @Model.Business.LegalName, Case Number <span class="text-3xl text-green-500 font-bold underline decoration-green-500">@Model.Business.CaseNumber</span> 
+    </div>
+</div>
+<!-- Stepper -->
+<ul class="relative flex flex-col  gap-2">
+  @foreach(var app in Model.ApplicationTrackings)
+  {
+    <!-- Item -->
+  <li class="md:shrink md:basis-0 flex-1 group flex gap-x-2 md:block">
+    <div class="min-w-7 min-h-7 flex flex-col items-center  md:inline-flex md:flex-wrap text-xs align-middle">
+      <span class="size-7 flex justify-center items-center shrink-0 bg-gray-100 font-medium text-gray-800 rounded-full dark:bg-neutral-700 dark:text-white">
+        @app.Id
+      </span>
+      <div class="mt-2 w-px h-full md:mt-0 md:ms-2  bg-gray-200 group-last:hidden dark:bg-neutral-700"></div>
+    </div>
+    <div class="grow md:grow-0 md:mt-3 pb-5">
+      <span class="block text-sm font-medium text-gray-800 dark:text-white">
+        @app.Status
+      </span>
+      <p class="text-sm text-gray-500 dark:text-neutral-500">
+        @(app.Comments != null ? app.Comments : "[Reviewer Comments will appear here]")
+      </p>
+    </div>
+  </li>
+  <!-- End Item -->
+  }
+</ul>
+<!-- End Stepper -->
+</div>
