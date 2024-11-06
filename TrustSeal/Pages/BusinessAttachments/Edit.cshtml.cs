@@ -52,6 +52,8 @@ namespace TrustSeal.Pages.BusinessAttachments
 
             try
             {
+                var filename = Path.Combine("Uploads",Path.GetFileNameWithoutExtension(Path.GetRandomFileName()));
+                
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)

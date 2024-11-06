@@ -22,5 +22,7 @@ namespace TrustSeal.Models
         public int CategoryId { get; set; }
 
         public QuestionCategory Category { get; set; }
+
+        public List<Notification> Notifications {get;set;} = new List<Notification>();
     }
 }

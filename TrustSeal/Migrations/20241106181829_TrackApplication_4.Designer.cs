@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrustSeal.Areas.Identity.Data;
 
@@ -11,9 +12,11 @@ using TrustSeal.Areas.Identity.Data;
 namespace TrustSeal.Migrations
 {
     [DbContext(typeof(TSAuth))]
-    partial class TSAuthModelSnapshot : ModelSnapshot
+    [Migration("20241106181829_TrackApplication_4")]
+    partial class TrackApplication_4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -264,7 +267,7 @@ namespace TrustSeal.Migrations
 
                     b.HasIndex("BusinessId");
 
-                    b.ToTable("ApplicationTrackings");
+                    b.ToTable("ApplicationTracking");
                 });
 
             modelBuilder.Entity("TrustSeal.Models.BsAnswer", b =>
@@ -492,7 +495,7 @@ namespace TrustSeal.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notification");
                 });
 
             modelBuilder.Entity("TrustSeal.Models.Question", b =>

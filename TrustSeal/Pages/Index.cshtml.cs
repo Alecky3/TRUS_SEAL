@@ -1,20 +1,23 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace TrustSeal.Pages
 {
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
+        private readonly TrustSeal.Areas.Identity.Data.TSAuth _context;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IndexModel(ILogger<IndexModel> logger,TrustSeal.Areas.Identity.Data.TSAuth context)
         {
             _logger = logger;
-        }
+            _context = context;
+         }
 
-        public void OnGet()
+        public async void OnGet()
         {
-
+           
         }
     }
 }

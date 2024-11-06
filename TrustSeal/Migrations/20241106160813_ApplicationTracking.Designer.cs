@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrustSeal.Areas.Identity.Data;
 
@@ -11,9 +12,11 @@ using TrustSeal.Areas.Identity.Data;
 namespace TrustSeal.Migrations
 {
     [DbContext(typeof(TSAuth))]
-    partial class TSAuthModelSnapshot : ModelSnapshot
+    [Migration("20241106160813_ApplicationTracking")]
+    partial class ApplicationTracking
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -242,17 +245,11 @@ namespace TrustSeal.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BusinessId")
+                    b.Property<int>("BusinessId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Comments")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("Required")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
@@ -262,9 +259,10 @@ namespace TrustSeal.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BusinessId");
+                    b.HasIndex("BusinessId")
+                        .IsUnique();
 
-                    b.ToTable("ApplicationTrackings");
+                    b.ToTable("ApplicationTracking");
                 });
 
             modelBuilder.Entity("TrustSeal.Models.BsAnswer", b =>
@@ -436,9 +434,6 @@ namespace TrustSeal.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ApplicationTrackingId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("BsAnswerId")
                         .HasColumnType("int");
 
@@ -474,8 +469,6 @@ namespace TrustSeal.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationTrackingId");
-
                     b.HasIndex("BsAnswerId");
 
                     b.HasIndex("BusinessAttachmentId");
@@ -492,7 +485,7 @@ namespace TrustSeal.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notification");
                 });
 
             modelBuilder.Entity("TrustSeal.Models.Question", b =>
@@ -626,8 +619,10 @@ namespace TrustSeal.Migrations
             modelBuilder.Entity("TrustSeal.Models.ApplicationTracking", b =>
                 {
                     b.HasOne("TrustSeal.Models.Business", "Business")
-                        .WithMany("ApplicationTracking")
-                        .HasForeignKey("BusinessId");
+                        .WithOne("ApplicationTracking")
+                        .HasForeignKey("TrustSeal.Models.ApplicationTracking", "BusinessId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Business");
                 });
@@ -683,10 +678,6 @@ namespace TrustSeal.Migrations
 
             modelBuilder.Entity("TrustSeal.Models.Notification", b =>
                 {
-                    b.HasOne("TrustSeal.Models.ApplicationTracking", "ApplicationTracking")
-                        .WithMany("Notifications")
-                        .HasForeignKey("ApplicationTrackingId");
-
                     b.HasOne("TrustSeal.Models.BsAnswer", "BsAnswer")
                         .WithMany("Notifications")
                         .HasForeignKey("BsAnswerId");
@@ -719,8 +710,6 @@ namespace TrustSeal.Migrations
                         .WithMany()
                         .HasForeignKey("UserId");
 
-                    b.Navigation("ApplicationTracking");
-
                     b.Navigation("BsAnswer");
 
                     b.Navigation("Business");
@@ -750,11 +739,6 @@ namespace TrustSeal.Migrations
             modelBuilder.Entity("TrustSeal.Areas.Identity.Data.TSUser", b =>
                 {
                     b.Navigation("UserBusinesses");
-                });
-
-            modelBuilder.Entity("TrustSeal.Models.ApplicationTracking", b =>
-                {
-                    b.Navigation("Notifications");
                 });
 
             modelBuilder.Entity("TrustSeal.Models.BsAnswer", b =>
