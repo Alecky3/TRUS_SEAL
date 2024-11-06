@@ -175,11 +175,11 @@
                     <div class="grid md:grid-cols-2 gap-4">
                       <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Copy of KRA</label>
-                        <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file">
+                        <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" name="file" type="file">
                       </div>
                       <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Copy of Business Registration</label>
-                        <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file">
+                        <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" name="file" type="file">
                       </div>
                     </div>
                  </form>
@@ -270,6 +270,7 @@
       var forms = document.querySelectorAll("form#createBusiness");
       var criteriaForms = document.querySelectorAll("form.criteriaAnswer");
       var CaseNumberElem = document.getElementById("CaseNumber");
+      var fileInputs = document.querySelectorAll("input[type='file']")
       console.log(criteriaForms);
       console.log(forms);
       console.log(CaseNumberElem)
@@ -380,10 +381,34 @@
         })
       })
       
-  
+    // File Uploads
+    fileInputs.forEach((input)=>{
+      input.addEventListener("change",(e)=>{
+        let formData = new FormData();
+        let fileInput = e.target;
+        const token = document.querySelector("input[name='__RequestVerificationToken']").value;
+        console.log(token)
+        console.log(fileInput.files[0]);
+        formData.append("file",fileInput.files[0],fileInput.files[0].name);
+
+        fetch("/ApplySeal?handler=FileUploadsWithFile",{
+            method: "POST",
+            headers:{
+                RequestVerificationToken: token
+            },
+            body: formData
+          }).then(res=> res.json())
+            .then(jsonRes=>{
+              console.log(jsonRes)
+            })
+
+      })
+    })
     
     </script>
    
 }
+
+
 
 
