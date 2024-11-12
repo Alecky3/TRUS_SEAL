@@ -44,6 +44,23 @@ namespace TrustSeal.Pages.ApplySeal
         
         public BsAnswer Answer {get;set;} = default!;
 
+        [BindProperty]
+        public IFormFile BusinessRegFile {get;set;}
+
+        [BindProperty]
+        public IFormFile KRAFile {get;set;}
+
+        [BindProperty]
+        public string KRAFileUrl {get;set;}
+         [BindProperty]
+        public string KRAFileDisplayName {get;set;}
+
+        [BindProperty]
+        public string BusinessRegFileUrl {get;set;}
+
+         [BindProperty]
+        public string BusinessRegFileDisplayName {get;set;}
+
     
 
         public async Task OnGetAsync(string? Id)
@@ -54,12 +71,29 @@ namespace TrustSeal.Pages.ApplySeal
             if (Id != null && Id != string.Empty)
             {
                 Business = await _context.Businesses.FirstOrDefaultAsync(b=> b.Id == int.Parse(Id));
+                var kraFile = await _context.BusinessAttachment.FirstOrDefaultAsync(a => 
+                                        a.ForWhichField == "KRAFile" && a.BusinessId == Business.Id);
+                var bsRegFile = await _context.BusinessAttachment.FirstOrDefaultAsync(a => 
+                                        a.ForWhichField == "BusinessRegFile" && a.BusinessId == Business.Id);
+                if (kraFile != null)
+                {
+                    KRAFileUrl = kraFile.FileReference;
+                    KRAFileDisplayName = kraFile.DisplayName;
+                }
+
+                 if (bsRegFile != null)
+                {
+                    BusinessRegFileUrl = bsRegFile.FileReference;
+                    BusinessRegFileDisplayName = bsRegFile.DisplayName;
+                }
                 _logger.LogInformation($"Business {Business.Id}");
             }
             
         }
 
-
+        /** 
+            Handles creation / update of a new business 
+        **/
         public async Task<JsonResult> OnPostNewBusinessAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -96,11 +130,12 @@ namespace TrustSeal.Pages.ApplySeal
 
                     _context.Businesses.Add(emptyBusiness);
                     await _context.SaveChangesAsync();
-                  
+                    Business = emptyBusiness;
                     await _context.Notifications.AddAsync(new Notification {Content=$"Succesfuly Created/Updated Submitted Business Information,Business Name: {Business.LegalName}",
                                                             BusinessId=Business.Id,UserId=user.Id});
+                    await _context.SaveChangesAsync();
                     
-                    Business = emptyBusiness;
+                    
                     _logger.LogInformation($"Created new business with ID: {Business.Id}");
                     
 
@@ -133,7 +168,83 @@ namespace TrustSeal.Pages.ApplySeal
 
           return new JsonResult(new { message = "file uploaded sucessfully",filename =  uploadedFilePath});
         }
+        /**
+             This handler handles file uploads for KRA pin certificate
+        **/
+        public async Task<JsonResult> OnPostKRAFileAsync()
+        {
+        var user = await _userManager.GetUserAsync(User);
+        var uploadedFilePath = string.Empty;
+        var businessId = Request.Form["Business.Id"];
+         if (KRAFile != null && KRAFile.Length > 0)
+         {
+            var randomFile = Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
+             var filePath = Path.Combine("wwwroot\\Uploads",randomFile + KRAFile.FileName);
+             uploadedFilePath = filePath;
+             _logger.LogInformation($"filePath={filePath}");
 
+             using (var stream = new FileStream(filePath,FileMode.Create))
+                    {
+                        await KRAFile.CopyToAsync(stream);
+                    }
+            var bsAttachment = await _context.BusinessAttachment.AddAsync(new BusinessAttachment {FileReference = filePath,
+                                                                    DisplayName=KRAFile.FileName,
+                                                                    BusinessId=int.Parse(businessId),
+                                                                    ForWhichField = KRAFile.Name});
+            await _context.Notifications.AddAsync(new Notification {
+                                                        Content ="Saved Kra attachement successfully",
+                                                        BusinessId=int.Parse(businessId),
+                                                        UserId = user.Id
+                                                         });
+           await  _context.SaveChangesAsync();
+         }
+          var message = new { Message = "in FileUploads Handler"};
+
+          return new JsonResult(new { message = "file uploaded sucessfully",filename =  uploadedFilePath,
+                                        fileUrl = uploadedFilePath, fileDisplayName=KRAFile.FileName});
+        }
+
+        /**
+             This handler handles file uploads for Business Registration certificate
+        **/
+        public async Task<JsonResult> OnPostBusinessRegFileAsync()
+        {
+        _logger.LogInformation("In post business reg form");
+        var user = await _userManager.GetUserAsync(User);
+        var uploadedFilePath = string.Empty;
+        var businessId = Request.Form["Business.Id"];
+         if (BusinessRegFile != null && BusinessRegFile.Length > 0)
+         {
+            var randomFile = Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
+             var filePath = Path.Combine("wwwroot\\Uploads",randomFile + BusinessRegFile.FileName);
+             uploadedFilePath = filePath;
+             _logger.LogInformation($"filePath={filePath}");
+
+             using (var stream = new FileStream(filePath,FileMode.Create))
+                    {
+                        await BusinessRegFile.CopyToAsync(stream);
+                    }
+            await _context.BusinessAttachment.AddAsync(new BusinessAttachment {FileReference = filePath,
+                                                                    DisplayName=BusinessRegFile.FileName,
+                                                                    BusinessId=int.Parse(businessId),
+                                                                    ForWhichField = BusinessRegFile.Name});
+             await _context.Notifications.AddAsync(new Notification {
+                                                        Content ="Saved business registration attachement successfully",
+                                                        BusinessId=int.Parse(businessId),
+                                                        UserId = user.Id
+                                                         });
+           await  _context.SaveChangesAsync();
+         }
+          var message = new { Message = "in FileUploads Handler"};
+
+          return new JsonResult(new { message = "file uploaded sucessfully",filename =  uploadedFilePath,
+                                        fileUrl = uploadedFilePath, fileDisplayName=BusinessRegFile.FileName});
+        }
+
+        /** 
+            This handles creation / update of a Criteria catalog answer for a given 
+            Business
+        **/
         public async Task<JsonResult> OnPostBusinessAnswerAsync()
         {
             var data = Request.Form;
@@ -141,7 +252,7 @@ namespace TrustSeal.Pages.ApplySeal
             && !k.EndsWith("isNextToFinal") && !k.EndsWith("category"));
            var bsAnswers = new List<BsAnswer>();
            var GeneratedCaseNumber =  "";
-            var businessId = data["Business"];
+            var businessId = data["Business.Id"];
             var isFinal = data["isNextToFinal"];
             var categoryName = data["category"];
             _logger.LogInformation($"Business.ID = {businessId}");

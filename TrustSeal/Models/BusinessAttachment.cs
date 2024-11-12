@@ -7,6 +7,10 @@ namespace TrustSeal.Models
         public int Id {get;set;}
         public string FileReference {get;set;}
 
+        public string DisplayName {get;set;}
+
+        public string ForWhichField {get;set;}
+
         public int? BusinessId {get;set;}
 
         [ForeignKey("BusinessId")]
