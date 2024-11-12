@@ -46,11 +46,17 @@ namespace TrustSeal.Pages.ApplySeal
 
     
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string? Id)
         {
-            
+            _logger.LogInformation("In OnGetAsync");
             Criteria = await _context.QuestionCategories
                .Include(q => q.questions).ToListAsync();
+            if (Id != null && Id != string.Empty)
+            {
+                Business = await _context.Businesses.FirstOrDefaultAsync(b=> b.Id == int.Parse(Id));
+                _logger.LogInformation($"Business {Business.Id}");
+            }
+            
         }
 
 

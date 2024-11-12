@@ -59,7 +59,7 @@
           "index": 1
         }'>
           <div class="p-4 w-full bg-gray-50 flex justify-center items-center border border-dashed border-gray-200 rounded-xl dark:bg-neutral-700 dark:border-neutral-600">
-            <input type="text" name="Business"  hidden value="">
+            <input type="text" asp-for="Business.Id"  hidden>
             @*Register a new Business*@
                 <form method="post" enctype="multipart/form-data" novalidate  id="createBusiness" class="w-full">
                    <div asp-validation-summary="ModelOnly" class="text-sm text-red-600 dark:text-red-500"></div>
@@ -263,14 +263,24 @@
     
     <script>
 
-       @* const errorStepper = HSStepper.getInstance('#registerStepper');
-       errorStepper.enableButtons(); *@
-      // errorStepper.disableButtons();
-
       var forms = document.querySelectorAll("form#createBusiness");
       var criteriaForms = document.querySelectorAll("form.criteriaAnswer");
       var CaseNumberElem = document.getElementById("CaseNumber");
       var fileInputs = document.querySelectorAll("input[type='file']")
+      let BusinessIdInput =  document.querySelector("input[name='Business.Id']")
+
+      // If business is already created
+      if(BusinessIdInput.value !== '')
+       {
+        console.log("Business Input has value")
+        let submitBtn = forms[0].querySelector("button[type='submit']");
+        console.log(submitBtn)
+        submitBtn.innerText = "Modify & Save";
+       } else {
+        console.log("Busness input does not have a value",BusinessIdInput.value)
+
+       }
+      let windowURL = new URL(window.location.href);
       console.log(criteriaForms);
       console.log(forms);
       console.log(CaseNumberElem)
@@ -300,9 +310,19 @@
             {
               if (message.business !== 0)
               {
-               let BusinessIdInput =  document.querySelector("input[name='Business']")
+               
                console.log(BusinessIdInput.value);
                BusinessIdInput.value = message.business;
+               // modify query string
+               if (windowURL.searchParams.get("Id")){
+                 windowURL.searchParams.set("Id",message.business);
+                 history.replaceState(null,'',windowURL)
+               }else {
+                 windowURL.searchParams.append("Id",message.business);
+                 history.replaceState(null,'',windowURL)
+               }
+              
+               console.log(windowURL.toString())
                console.log(BusinessIdInput.value);
                submitBtn.innerText = "Saved Business";
                submitBtn.enabled = false;
