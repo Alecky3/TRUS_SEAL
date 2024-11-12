@@ -96,8 +96,13 @@ namespace TrustSeal.Pages.ApplySeal
 
                     _context.Businesses.Add(emptyBusiness);
                     await _context.SaveChangesAsync();
+                  
+                    await _context.Notifications.AddAsync(new Notification {Content=$"Succesfuly Created/Updated Submitted Business Information,Business Name: {Business.LegalName}",
+                                                            BusinessId=Business.Id,UserId=user.Id});
+                    
                     Business = emptyBusiness;
                     _logger.LogInformation($"Created new business with ID: {Business.Id}");
+                    
 
                     var message = new {message="Created Business successfully", business = Business.Id};
 

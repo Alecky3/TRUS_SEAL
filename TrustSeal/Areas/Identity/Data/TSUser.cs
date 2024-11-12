@@ -20,5 +20,7 @@ public class TSUser : IdentityUser
     public string LastName { get; set; } = string.Empty;
 
     public ICollection<Business> UserBusinesses { get; set; }
+
+    public ICollection<Notification> Notifications {get;set;}
 }
 
