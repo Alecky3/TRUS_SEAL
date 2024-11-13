@@ -8,7 +8,8 @@
 <section class="bg-white dark:bg-gray-900">
     <div class="p-4 bg-white rounded-lg shadow-md dark:bg-neutral-800">
     <!-- Stepper -->
-    <div id="registerStepper" data-hs-stepper="">
+    <div id="applSealStepper" data-hs-stepper='{
+    "currentIndex": 2}'>
       <!-- Stepper Nav -->
       <!--Business info Registration-->
       <ul class="relative flex flex-col md:flex-row gap-x-2">
@@ -268,6 +269,9 @@
 @section Scripts {
     
     <script>
+      var stepper;
+      var windowURL = new URL(window.location.href);
+      
 
       var forms = document.querySelectorAll("form#createBusiness");
       var criteriaForms = document.querySelectorAll("form.criteriaAnswer");
@@ -295,12 +299,11 @@
           fileInput.disabled = true;
         })
        }
-
-       
-      let windowURL = new URL(window.location.href);
       console.log(criteriaForms);
       console.log(forms);
       console.log(CaseNumberElem)
+
+      // Saving Business information
       forms.forEach(form=>{
         form.addEventListener("submit",(e)=>{
           event.preventDefault();
@@ -330,6 +333,11 @@
                
                console.log(BusinessIdInput.value);
                BusinessIdInput.value = message.business;
+               // enable next button
+               if (stepper)
+                {
+                  stepper.enableButtons();
+                }
                //enable file inputs
                fileInputs.forEach(fileInput=>{
                   fileInput.disabled = false;
@@ -471,6 +479,36 @@
         })
       }
     })
+
+    // stepper actions
+    window.addEventListener("load",(e=>{
+        stepper = window.HSStepper.getInstance(document.getElementById("applSealStepper"));
+        // Initially stepper next button is disbled
+        if (stepper)
+        {
+          if (windowURL.searchParams.get("CurrentIndex"))
+          {
+            var hsStepper =document.getElementById("applSealStepper")
+            hsStepper.setAttribute("data-hs-stepper",`{"currentIndex":${windowURL.searchParams.get("CurrentIndex")}}`);
+            console.log(hsStepper.getAttribute("data-hs-stepper"))
+            stepper.currentIndex = windowURL.searchParams.get("CurrentIndex")
+          } else {
+            stepper.currentIndex = '1'
+          }
+          if (BusinessIdInput.value == '')
+            stepper.disableButtons();
+          stepper.on("next",currentIndex=>{
+            if (windowURL.searchParams.get("CurrentIndex")){
+                 windowURL.searchParams.set("CurrentIndex",currentIndex);
+                 history.replaceState(null,'',windowURL)
+               }else {
+                 windowURL.searchParams.append("CurrentIndex",currentIndex);
+                 history.replaceState(null,'',windowURL)
+               }
+          })
+        }
+        console.log(stepper);
+      }))
     
     </script>
    
