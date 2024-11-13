@@ -480,7 +480,7 @@
     })
 
     // stepper actions
-    window.addEventListener("load",(e=>{
+    /*window.addEventListener("load",(e=>{
         stepper = window.HSStepper.getInstance(document.getElementById("applSealStepper"));
         // Initially stepper next button is disbled
         if (stepper)
@@ -488,15 +488,16 @@
           if (windowURL.searchParams.get("CurrentIndex"))
           {
             var hsStepper =document.getElementById("applSealStepper")
-            hsStepper.setAttribute("data-hs-stepper",`{"currentIndex":${windowURL.searchParams.get("CurrentIndex")}}`);
+            @* hsStepper.setAttribute("data-hs-stepper",`{"currentIndex":${windowURL.searchParams.get("CurrentIndex")}}`);
             console.log(hsStepper.getAttribute("data-hs-stepper"))
-            stepper.currentIndex = windowURL.searchParams.get("CurrentIndex")
+            stepper.currentIndex = windowURL.searchParams.get("CurrentIndex") *@
           } else {
             stepper.currentIndex = '1'
           }
           if (BusinessIdInput.value == '')
             stepper.disableButtons();
-          stepper.on("next",currentIndex=>{
+            /**
+            stepper.on("next",currentIndex=>{
             if (windowURL.searchParams.get("CurrentIndex")){
                  windowURL.searchParams.set("CurrentIndex",currentIndex);
                  history.replaceState(null,'',windowURL)
@@ -505,9 +506,11 @@
                  history.replaceState(null,'',windowURL)
                }
           })
+          
         }
         console.log(stepper);
       }))
+      */
     
     </script>
    
