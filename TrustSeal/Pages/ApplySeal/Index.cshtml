@@ -8,8 +8,7 @@
 <section class="bg-white dark:bg-gray-900">
     <div class="p-4 bg-white rounded-lg shadow-md dark:bg-neutral-800">
     <!-- Stepper -->
-    <div id="applSealStepper" data-hs-stepper='{
-    "currentIndex": 1}'>
+    <div id="applSealStepper" data-hs-stepper>
       <!-- Stepper Nav -->
       <!--Business info Registration-->
       <ul class="relative flex flex-col md:flex-row gap-x-2">
@@ -381,8 +380,8 @@
           submitBtn.innerText = "Saving Answers...";
           submitBtn.disabled = true;
           let formData = new FormData(e.target);
-          let BusinessIdInput = document.querySelector("input[name='Business']");
-          formData.append("Business",BusinessIdInput.value);
+          let BusinessIdInput = document.querySelector("input[name='Business.Id']");
+          formData.append("Business.Id",BusinessIdInput.value);
           const token = document.querySelector("input[name='__RequestVerificationToken']").value;
           console.log(token)
           fetch("/ApplySeal?handler=BusinessAnswer",{

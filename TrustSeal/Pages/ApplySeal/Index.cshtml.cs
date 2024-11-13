@@ -248,7 +248,7 @@ namespace TrustSeal.Pages.ApplySeal
         public async Task<JsonResult> OnPostBusinessAnswerAsync()
         {
             var data = Request.Form;
-            var questionKeys = data.Keys.Where(k => ! k.EndsWith("AnswerText") && ! k.EndsWith("Business") 
+            var questionKeys = data.Keys.Where(k => ! k.EndsWith("AnswerText") && ! k.EndsWith("Business.Id") 
             && !k.EndsWith("isNextToFinal") && !k.EndsWith("category"));
            var bsAnswers = new List<BsAnswer>();
            var GeneratedCaseNumber =  "";
