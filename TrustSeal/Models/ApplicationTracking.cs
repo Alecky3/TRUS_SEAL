@@ -17,6 +17,10 @@ namespace TrustSeal.Models
 
         public bool StepVerified {get;set;} = false;
 
+        public bool NeedsAttention {get;set;}
+
+        public int Order {get;set;}
+
         public int? BusinessId {get;set;}
 
         [ForeignKey("BusinessId")]

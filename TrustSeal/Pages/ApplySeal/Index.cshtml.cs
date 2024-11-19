@@ -36,13 +36,12 @@ namespace TrustSeal.Pages.ApplySeal
             _logger = logger;
             _userManager = userManager;
         }
-
         [BindProperty]
         public Business Business { get; set; } = default!;
 
         public IList<QuestionCategory> Criteria { get; set;}
         
-        public BsAnswer Answer {get;set;} = default!;
+        public List<BsAnswer> SubmittedAnswers {get;set;} = new List<BsAnswer>();
 
         [BindProperty]
         public IFormFile BusinessRegFile {get;set;}
@@ -71,6 +70,10 @@ namespace TrustSeal.Pages.ApplySeal
             if (Id != null && Id != string.Empty)
             {
                 Business = await _context.Businesses.FirstOrDefaultAsync(b=> b.Id == int.Parse(Id));
+                if (Business != null)
+                {
+                   
+                }
                 var kraFile = await _context.BusinessAttachment.FirstOrDefaultAsync(a => 
                                         a.ForWhichField == "KRAFile" && a.BusinessId == Business.Id);
                 var bsRegFile = await _context.BusinessAttachment.FirstOrDefaultAsync(a => 
