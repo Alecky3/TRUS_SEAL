@@ -21,6 +21,7 @@ namespace TrustSeal.Models
 
         public int Order {get;set;}
 
+        public bool IsMain {get;set;} = true;
         public int? BusinessId {get;set;}
 
         [ForeignKey("BusinessId")]

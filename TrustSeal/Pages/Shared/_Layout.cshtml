@@ -4,9 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - TrustSeal</title>
+    <link rel="stylesheet" href="~/css/semantic.min.css">
+    <link rel="stylesheet" href="~/css/dataTables.semanticui.css">
 
     <link rel="stylesheet" href="~/css/tailwind/tailwind_main_out.css">
     <link rel="shortcut icon" href="~/assets/images/favicon.ico">
+    @* <link rel="stylesheet" href="~/css/dataTables.dataTables.css"> *@
+
+    
 </head>
 <body class="">
     @using Microsoft.AspNetCore.Identity
@@ -368,6 +373,8 @@
     }
 
     <!-- Scripts -->
+    <script src="~/js/jquery-3.7.1.min.js"></script>
+    <script src="~/js/datatables.min.js"></script>
     <script src="~/js/flowbite.min.js"></script>
      <script src="~/js/preline.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
