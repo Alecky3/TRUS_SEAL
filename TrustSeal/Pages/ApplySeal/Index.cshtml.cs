@@ -311,6 +311,7 @@ namespace TrustSeal.Pages.ApplySeal
                 return result.ToUpper();
          }
         
+        
     }
 
 }
