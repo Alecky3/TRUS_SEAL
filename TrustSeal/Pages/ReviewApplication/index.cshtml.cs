@@ -115,6 +115,7 @@ namespace TrustSeal.Pages.ReviewApplication
                         return new JsonResult(new {error = "Seal already Generated, you can renew it if expired"});
                     }
                     var sealId = await GenerateSealReadableId(bsName);
+                
                     business.SealReadableId = sealId;
                     business.Seal = new Seals();
                     SealReadableId = sealId;

@@ -1,0 +1,68 @@
+@page
+@model TrustSeal.Pages.TsSeals.IndexModel
+@using Microsoft.AspNetCore.Identity
+@using TrustSeal.Areas.Identity.Data
+
+@inject UserManager<TSUser> UserManager
+
+@{
+    ViewData["Title"] = "Business Details";
+    TSUser user = await UserManager.GetUserAsync(User);
+    var role = await UserManager.GetRolesAsync(user);
+    var IsAdmin = role.Contains("Admin");
+}
+
+<section class="container mx-auto over">
+    
+    <div class="w-full">
+        <table id="sealsDatatable" class="cell-border compact stripe" style="width: 100%;">
+            <thead>
+                <tr>
+                    <td>Created At</td>
+                    <td>Expires At</td>
+                    <td>Businesses Legal Name</td>
+                    <td>Seal Code</td>
+                    <td >Actions</td>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        $(document).ready(function(){
+            let businessDataTable = $("#sealsDatatable").DataTable({
+                deferRender:true,
+                responsive: true,
+                ajax: {
+                    url: '/TsSeals?handler=AllSeals',
+                    dataSrc:'',
+                },
+                columns: [
+                    {data:'createdAt'},
+                    {data:'expiresAt'},
+                    {data:'businessLegalName'},
+                    {data:'sealReadableId'},
+                    {data:"sealCode"}
+                ],
+                columnDefs:[
+                {
+                    targets:-1,
+                    render:function(data,type,row)
+                    {
+                        
+                        return `
+                                <a href='/SealPreview?SealCode=${row.sealCode}' class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Preview</a>
+                                `
+                        
+                    }
+                },
+                ]
+                })
+            })
+    </script>
+}
