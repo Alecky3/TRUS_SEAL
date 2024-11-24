@@ -281,6 +281,9 @@
       form.addEventListener("submit",(e)=>{
         e.preventDefault();
          let event=e.target;
+        let clickedBtn = e.target.querySelector("button[type='submit']");
+        clickedBtn.disabled = true
+        console.log("Clicked Buttons",clickedBtn)
         let trackingId = e.target.querySelector("input[name='applicationTrackingId']").value;
         let isFinalStep = e.target.querySelector("input[name ^='isFinalStep']").value;
         
@@ -312,13 +315,83 @@
            body: formData,
         }).then(res=> res.json())
         .then(json=>{
+          @* console.log(json); *@
+          var mess = json;
+          if (mess.error)
+          {
+            createShoewToast("error",mess.error)
+          } else if(mess.sealId !== "")
+          {
+            let content = `<p class="text-gray-500 dark:text-gray-400">Navigate to Generated Seal Page<a href="/Seals?sealId=${mess.sealId}" class="inline-flex items-center font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                              ${mess.sealId}
+                              <svg class="w-4 h-4 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                              </svg>
+                          </a></p>`
+            createShoewToast("seal",content)
+          }
+          else {
+            createShoewToast("success",mess.message)
+          }
           console.log(json)
+          setTimeout(()=>{
+            clickedBtn.disabled =false;
+          },3000)
         })
         .catch(err=>{
           console.log(err)
+          setTimeout(()=>{
+            clickedBtn.disabled =false;
+          },2000)
         })
       })
     })
+
+    // show toastr 
+    function createShoewToast(status,content)
+    {
+      if (status !== "error" && status != "seal")
+      {
+        
+      toastr[status](content);
+        toastr.options = {
+          "closeButton": true,
+          "debug": false,
+          "newestOnTop": false,
+          "progressBar": true,
+          "positionClass": "toast-bottom-left",
+          "preventDuplicates": false,
+          "onclick": null,
+          "showDuration": "300",
+          "hideDuration": "1000",
+          "timeOut": "5000",
+          "extendedTimeOut": "1000",
+          "showEasing": "swing",
+          "hideEasing": "linear",
+          "showMethod": "fadeIn",
+          "hideMethod": "fadeOut"
+        }
+      } else if (status == "seal")
+      {
+         Swal.fire({
+          title: 'Successfully Validated Application & Generated Seal!',
+          html: content,
+          icon: 'success',
+          confirmButtonText: 'Close',
+          allowOutsideClick:false
+        })
+      }
+      else {
+          Swal.fire({
+          title: 'Error!',
+          text: content,
+          icon: 'error',
+          confirmButtonText: 'Close',
+          allowOutsideClick:false
+        })
+      }
+    }
+
 
   </script>
 }

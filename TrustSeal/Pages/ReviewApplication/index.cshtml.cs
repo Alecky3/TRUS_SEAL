@@ -110,6 +110,10 @@ namespace TrustSeal.Pages.ReviewApplication
                     }
 
                     string bsName = business.LegalName[0].ToString() + business.LegalName[1].ToString();
+                    if (business.SealReadableId != string.Empty)
+                    {
+                        return new JsonResult(new {error = "Seal already Generated, you can renew it if expired"});
+                    }
                     var sealId = await GenerateSealReadableId(bsName);
                     business.SealReadableId = sealId;
                     business.Seal = new Seals();
