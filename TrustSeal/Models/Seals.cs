@@ -8,13 +8,13 @@ namespace TrustSeal.Models
 
         public Guid SealCode {get;set;} = Guid.NewGuid();
 
-        public DateTime CreatedAt {get;set;}
+        public DateTime CreatedAt {get;set;} = DateTime.Now;
 
-        public DateTime UpdatedAt {get;set;}
+        public DateTime UpdatedAt {get;set;} = DateTime.Now;
 
-        public DateTime ExpiresAt {get;set;}
+        public DateTime ExpiresAt {get;set;} = DateTime.Now.AddYears(1);
 
-        public DateTime RenewedAt {get;set;}
+        public DateTime RenewedAt {get;set;} = DateTime.Now;
 
         public Business Business {get;set;}
 

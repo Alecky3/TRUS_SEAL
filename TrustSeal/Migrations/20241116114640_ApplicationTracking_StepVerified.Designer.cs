@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrustSeal.Areas.Identity.Data;
 
@@ -11,13 +12,15 @@ using TrustSeal.Areas.Identity.Data;
 namespace TrustSeal.Migrations
 {
     [DbContext(typeof(TSAuth))]
-    partial class TSAuthModelSnapshot : ModelSnapshot
+    [Migration("20241116114640_ApplicationTracking_StepVerified")]
+    partial class ApplicationTracking_StepVerified
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.11")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -251,15 +254,6 @@ namespace TrustSeal.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsMain")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("NeedsAttention")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
                     b.Property<bool>("Required")
                         .HasColumnType("bit");
 
@@ -386,9 +380,6 @@ namespace TrustSeal.Migrations
 
                     b.Property<int?>("SealId")
                         .HasColumnType("int");
-
-                    b.Property<string>("SealReadableId")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
@@ -559,9 +550,6 @@ namespace TrustSeal.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Order")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

@@ -59,12 +59,14 @@ namespace TrustSeal.Models
 
         public string CaseNumber {get;set;} = string.Empty;
 
+        public string SealReadableId {get;set;} = string.Empty;
+
         public int? SealId {get;set;}
 
         [ForeignKey("SealId")]
         public Seals Seal {get;set;}
 
-        public List<ApplicationTracking> ApplicationTracking {get;set;}
+        public List<ApplicationTracking> ApplicationTracking {get;set;} = new List<ApplicationTracking>();
 
         public List<Notification> Notifications {get;set;} = new List<Notification>();
 

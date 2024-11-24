@@ -36,13 +36,12 @@ namespace TrustSeal.Pages.ApplySeal
             _logger = logger;
             _userManager = userManager;
         }
-
         [BindProperty]
         public Business Business { get; set; } = default!;
 
         public IList<QuestionCategory> Criteria { get; set;}
         
-        public BsAnswer Answer {get;set;} = default!;
+        public List<BsAnswer> SubmittedAnswers {get;set;} = new List<BsAnswer>();
 
         [BindProperty]
         public IFormFile BusinessRegFile {get;set;}
@@ -63,7 +62,7 @@ namespace TrustSeal.Pages.ApplySeal
 
     
 
-        public async Task OnGetAsync(string? Id)
+        public async Task<IActionResult> OnGetAsync(string? Id)
         {
             _logger.LogInformation("In OnGetAsync");
             Criteria = await _context.QuestionCategories
@@ -71,6 +70,9 @@ namespace TrustSeal.Pages.ApplySeal
             if (Id != null && Id != string.Empty)
             {
                 Business = await _context.Businesses.FirstOrDefaultAsync(b=> b.Id == int.Parse(Id));
+                if (Business != null)
+                {
+                   
                 var kraFile = await _context.BusinessAttachment.FirstOrDefaultAsync(a => 
                                         a.ForWhichField == "KRAFile" && a.BusinessId == Business.Id);
                 var bsRegFile = await _context.BusinessAttachment.FirstOrDefaultAsync(a => 
@@ -87,8 +89,12 @@ namespace TrustSeal.Pages.ApplySeal
                     BusinessRegFileDisplayName = bsRegFile.DisplayName;
                 }
                 _logger.LogInformation($"Business {Business.Id}");
+               
+                }
+
+                 return Page();
             }
-            
+            return Page();
         }
 
         /** 
@@ -291,6 +297,31 @@ namespace TrustSeal.Pages.ApplySeal
                             business.CaseNumber = CaseNumber.ToString();
                             await _context.SaveChangesAsync();
                             GeneratedCaseNumber = CaseNumber;
+                            var bsTracking = await _context.ApplicationTrackings
+                                                    .Where(t => t.IsMain == true)
+                                                    .ToListAsync();
+                            _logger.LogInformation($"bs Tracking count {bsTracking.Count()} {business.Id}");
+                            foreach(var status in bsTracking)
+                            {
+                                // _logger.LogInformation("in For each");
+                                var appTracking = new ApplicationTracking
+                                {
+                                Status = status.Status,
+                                Comments = string.Empty,
+                                BusinessId = business.Id,
+                                Required = true,
+                                StepVerified = false,
+                                NeedsAttention = false,
+                                Order = status.Order,
+                                IsMain = false,
+                                CreatedAt = DateTime.Now,
+                                UpdatedAt = DateTime.Now
+                                };
+                                await _context.ApplicationTrackings.AddAsync(appTracking);
+                                await _context.SaveChangesAsync();
+                                // _logger.LogInformation("End in For each");
+                            }
+                            await _context.SaveChangesAsync();
                         }
                     }
                     return new JsonResult(new {message = "Saved Answers successfuly",count = bsAnswers.Count(),CaseNumber = GeneratedCaseNumber });
