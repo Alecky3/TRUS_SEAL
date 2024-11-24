@@ -48,7 +48,9 @@ namespace TrustSeal.Pages.ApplySeal
                 return NotFound();
             }
             Business = await _context.Businesses.FirstOrDefaultAsync(b => b.Id == Id);
-            ApplicationTrackings = await _context.ApplicationTrackings.ToListAsync();
+            ApplicationTrackings = await _context.ApplicationTrackings
+                                            .Where(t => t.BusinessId == Business.Id)
+                                            .ToListAsync();
 
             if (Business == null)
             {

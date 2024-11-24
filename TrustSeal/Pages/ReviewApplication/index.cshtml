@@ -1,0 +1,397 @@
+@page
+@model TrustSeal.Pages.ReviewApplication.IndexModel
+
+@{
+    ViewData["Title"] = "Review Business Application";
+}
+
+<section class="bg-white dark:bg-gray-900">
+ <div class="grid gap-px grid-cols-2 md:grid-cols-3 md:gap-2">
+  @* Business Submissions Here *@
+  <div class="col-span-2 border border-b-1 border-gray-200 rounded-t-xl">
+     <div id="accordion-collapse" data-accordion="collapse" >
+      @* Business Info Header *@
+        <h2 id="accordion-collapse-business-info-header">
+          <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3" data-accordion-target="#accordion-collapse-business-info" aria-expanded="true" aria-controls="accordion-collapse-business-info">
+            <span>Business Information</span>
+            <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+            </svg>
+          </button>
+        </h2>
+      @* End of Business Info Header  *@
+      @* Business Info Body *@
+        <div id="accordion-collapse-business-info" class="hidden" aria-labelledby="accordion-collapse-business-info-header">
+          <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+            @*  *@
+              <div asp-validation-summary="ModelOnly" class="text-sm text-red-600 dark:text-red-500"></div>
+                    <div class="grid gap-4 md:grid-cols-2 sm:gap-2 md:gap-4">
+                        <div class="sm:col-span-2">
+                            <label asp-for="Business.LegalName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Legal Name</label>
+                            <input asp-for="Business.LegalName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" >
+                        </div>
+                        <div>
+                            <label asp-for="Business.RegistrationNumber" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Registration Number</label>
+                            <input asp-for="Business.RegistrationNumber" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <span asp-validation-for="Business.RegistrationNumber" class="text-sm text-red-600 dark:text-red-500"></span>
+                        </div>
+                        <div>
+                            <label asp-for="Business.TaxIdentificationNumber" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tax ID</label>
+                            <input asp-for="Business.TaxIdentificationNumber" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <span asp-validation-for="Business.TaxIdentificationNumber" class="text-sm text-red-600 dark:text-red-500"></span>
+                        </div>
+                        <div>
+                            <label asp-for="Business.IncorporationDate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Incorporation Date</label>
+                            <input asp-for="Business.IncorporationDate" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <span asp-validation-for="Business.IncorporationDate" class="text-sm text-red-600 dark:text-red-500"></span>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label asp-for="Business.StreetAddress" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Street Address</label>
+                            <input asp-for="Business.StreetAddress" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <span asp-validation-for="Business.StreetAddress" class="text-sm text-red-600 dark:text-red-500"></span>
+                        </div>
+                        <div>
+                            <label asp-for="Business.City" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">City</label>
+                            <input asp-for="Business.City" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <span asp-validation-for="Business.City" class="text-sm text-red-600 dark:text-red-500"></span>
+                        </div>
+                        <div>
+                            <label asp-for="Business.PostalCode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Postal Code</label>
+                            <input asp-for="Business.PostalCode" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <span asp-validation-for="Business.PostalCode" class="text-sm text-red-600 dark:text-red-500"></span>
+                        </div>
+                        <div>
+                            <label asp-for="Business.Country" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Country</label>
+                            <input asp-for="Business.Country" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <span asp-validation-for="Business.Country" class="text-sm text-red-600 dark:text-red-500"></span>
+                        </div>
+                        <div>
+                            <label asp-for="Business.PhoneNumber" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone Number</label>
+                            <input asp-for="Business.PhoneNumber" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <span asp-validation-for="Business.PhoneNumber" class="text-sm text-red-600 dark:text-red-500"></span>
+                        </div>
+                        <div>
+                            <label asp-for="Business.Email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                            <input asp-for="Business.Email" type="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <span asp-validation-for="Business.Email" class="text-sm text-red-600 dark:text-red-500"></span>
+                        </div>
+                        <div>
+                            <label asp-for="Business.Website" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Website</label>
+                            <input asp-for="Business.Website" type="url" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <span asp-validation-for="Business.Website" class="text-sm text-red-600 dark:text-red-500"></span>
+                        </div>
+                        <div>
+                            <label asp-for="Business.PrimaryContactName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Primary Contact Name</label>
+                            <input asp-for="Business.PrimaryContactName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <span asp-validation-for="Business.PrimaryContactName" class="text-sm text-red-600 dark:text-red-500"></span>
+                        </div>
+                        <div>
+                            <label asp-for="Business.PrimaryContactPhone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Primary Contact Phone</label>
+                            <input asp-for="Business.PrimaryContactPhone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <span asp-validation-for="Business.PrimaryContactPhone" class="text-sm text-red-600 dark:text-red-500"></span>
+                        </div>
+                        <div>
+                            <label asp-for="Business.PrimaryContactEmail" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Primary Contact Email</label>
+                            <input asp-for="Business.PrimaryContactEmail" type="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <span asp-validation-for="Business.PrimaryContactEmail" class="text-sm text-red-600 dark:text-red-500"></span>
+                        </div>
+                        <div>
+                            <label asp-for="Business.BusinessType" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Business Type</label>
+                            <input asp-for="Business.BusinessType" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" />
+                            <span asp-validation-for="Business.BusinessType" class="text-sm text-red-600 dark:text-red-500"></span>
+                        </div>
+
+                        <div>
+                            <label asp-for="Business.IndustryCategory" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Industry Category</label>
+                            <input asp-for="Business.IndustryCategory" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" />
+                            <span asp-validation-for="Business.IndustryCategory" class="text-sm text-red-600 dark:text-red-500"></span>
+                        </div>
+
+                        <div>
+                            <label asp-for="Business.SubmissionDate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Submission Date</label>
+                            <input asp-for="Business.SubmissionDate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" />
+                            <span asp-validation-for="Business.SubmissionDate" class="text-sm text-red-600 dark:text-red-500"></span>
+                      </div>
+                </div>
+            @*  *@
+          </div>
+        </div>
+      @* End of business Info body *@
+      @* Business Attachments Header *@
+      <h2 id="accordion-collapse-business-attachments-header">
+          <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200  focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3" data-accordion-target="#accordion-collapse-business-attachments" aria-expanded="false" aria-controls="accordion-collapse-business-attachments">
+            <span>Business Attachments</span>
+            <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+            </svg>
+          </button>
+      </h2>
+      @* End of Business attachements header *@
+      @* Business Attachments Body *@
+        <div id="accordion-collapse-business-attachments" class="hidden" aria-labelledby="accordion-collapse-business-attachments-header">
+          <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
+            <div class="grid md:grid-cols-2 gap-4">
+                      @foreach(var file in Model.BusinessAttachments)
+                      {
+                        <div>
+                          <div>
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">@file.ForWhichField</span>
+                          </div>
+                            <a href="@file.FileReference" data-name="BusinessRegFile" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">@file.DisplayName</a>
+                          
+                        </div>
+                      }
+                    </div>
+          </div>
+        </div>
+      @* End of Business Attachments Body *@
+      @* Business Answer Header *@
+      @foreach(var (category,index) in Model.Categories.Select((category,index)=>(category,index)))
+      {
+        <h2 id="accordion-collapse-business-answer-header-@category.Id">
+          <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200  focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3" data-accordion-target="#accordion-collapse-business-answer-@category.Id" aria-expanded="false" aria-controls="accordion-collapse-business-answer-@category.Id">
+            <span>@category.Name</span>
+            <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+            </svg>
+          </button>
+        </h2>
+         @* Business Answer Body *@
+           <div id="accordion-collapse-business-answer-@category.Id" class="hidden" aria-labelledby="accordion-collapse-business-answer-header-@category.Id">
+              <div class="p-5 border border-b-1 border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+                @{
+                  var answers = Model.BsAnswer.Where(a => a.Question.CategoryId == category.Id)
+                                              .ToList();
+                }
+              @* Loop Answers for this category *@
+                @foreach (var question in answers)
+                          {
+                                <div>
+                                  <label for="@question.Question.Id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">@question.Question.QuestionText</label>
+                                  <input name="@question.Question.Id" value="@question.AnswerText" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" />
+                                </div>
+   
+                  }
+              @* End loop for answers for this category *@
+              </div>
+            </div>
+      @* End of Business Answer Body *@
+      }
+      @* End of Business Answer Header *@
+    
+     </div>
+  </div>
+  @* End of business Submissions *@
+  @* Business Statuses *@
+ <div class="border border-1 border-gray-200">
+  <div id="accordion-collapse-application-status" data-accordion="collapse" >
+      @* Business Status Step *@
+       @{
+          var count = 1;
+        }
+      @foreach(var status in Model.BusinessApplicationTrackings)
+      {
+       
+        @* Header *@
+          <h2 id="accordion-collapse-business-status-header-@status.Id">
+          <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200  focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3" data-accordion-target="#accordion-collapse-business-status-@status.Id" aria-expanded="@(count == 1 ? "true" : "false")" aria-controls="accordion-collapse-business-status-@status.Id">
+            <span>@status.Status</span>
+            <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+            </svg>
+          </button>
+        </h2>
+        @* End  Header *@
+        @* Body *@
+        <div id="accordion-collapse-business-status-@status.Id" class="hidden" aria-labelledby="accordion-collapse-business-status-header-@status.Id">
+          <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+            <form  class="statusForm">
+              <input type="text" hidden value="@status.Id" name="applicationTrackingId">
+              <input type="text" name="isFinalStep-@count" hidden value="@(count == Model.BusinessApplicationTrackings.Count() ? "true" : "false")">
+              <div class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+                                        <div class="p-2 bg-white rounded-t-lg dark:bg-gray-800">
+                                            <label for="trackingComment-@status.Id" >Your comment</label>
+                                            <textarea name="trackingComment-@status.Id" id="trackingComment-@status.Id" rows="2" class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write a comment..." required>@status.Comments</textarea>
+                                        </div>
+                                        <div class="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600">
+                                            <button type="submit" class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
+                                            Save
+                                            </button>
+                                            <div class="flex items-center  ps-0 space-x-2 rtl:space-x-reverse sm:ps-2">
+                                              <div class="flex items-center mb-4">
+                                                  <input id="trackingRequired-@status.Id" type="checkbox" name="trackingRequired-@status.Id" checked="@status.Required" value="@(status.Required ? "true" : "false")"  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                                  <label for="trackingRequired-@status.Id" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Required</label>
+                                              </div>
+                                              <div class="flex items-center mb-4">
+                                                  <input id="trackingVerified-@status.Id" type="checkbox" name="trackingVerified-@status.Id" checked="@status.StepVerified" value="@(status.StepVerified ? "true" : "false")" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                                  <label for="trackingVerified-@status.Id" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Verified</label>
+                                              </div>
+                                            </div>
+                                        </div>
+               </div>
+            </form>
+          </div>
+        </div>
+        @* Body *@
+        count += 1;
+      }
+      @* End of Business Step *@
+  </div>
+ </div>
+  @* End of business Statuses *@
+ </div>
+</section>
+
+@section Scripts {
+  <script>
+    @* Disable Inputs by default they are only required for display purposes *@
+    var inputs = document.querySelectorAll("input[type='text'],input[type='date'],input[type='datetime-local']");
+    @* console.log(inputs); *@
+    inputs.forEach(input=> input.disabled = true)
+
+    // checkbox change event
+        let trackingRequired = document.querySelectorAll("input[name ^='trackingRequired']")
+        trackingRequired.forEach(check => {
+            check.addEventListener("change",(e)=>{
+                if(!e.target.checked)
+                {
+                  e.target.value="false"
+                } else {
+                  e.target.value="true"
+                }
+          })
+        })
+        
+        let trackingVerified = document.querySelectorAll("input[name ^='trackingVerified']")
+        trackingVerified.forEach(check => {
+          check.addEventListener("change",(e)=>{
+            console.log("trackingVerified Changed")
+            if(!e.target.checked)
+            {
+              e.target.value="false"
+            } else {
+              e.target.value="true"
+            }
+        })
+        })
+    //end of checkbox change event
+
+    var statusForms = document.querySelectorAll("form.statusForm");
+    statusForms.forEach(form=>{
+      form.addEventListener("submit",(e)=>{
+        e.preventDefault();
+         let event=e.target;
+        let clickedBtn = e.target.querySelector("button[type='submit']");
+        clickedBtn.disabled = true
+        console.log("Clicked Buttons",clickedBtn)
+        let trackingId = e.target.querySelector("input[name='applicationTrackingId']").value;
+        let isFinalStep = e.target.querySelector("input[name ^='isFinalStep']").value;
+        
+        console.log(form);
+        console.log(isFinalStep);
+        let formData = new FormData(form);
+        formData.append("trackingId",trackingId);
+        formData.append("isFinalStep",isFinalStep);
+        if (!trackingRequired.checked)
+        {
+          formData.append("trackingRequired","false");
+        }
+        
+        if (!trackingVerified.checked)
+        {
+          formData.append("trackingVerified","false");
+        } 
+        for(var [k,v] of formData)
+        {
+          console.log(k,v)
+        }
+        const token = document.querySelector("input[name='__RequestVerificationToken']").value;
+        fetch("/ReviewApplication?handler=BusinessApplicationStatus",
+        {
+          method:"POST",
+          headers:{
+            RequestVerificationToken: token
+          },
+           body: formData,
+        }).then(res=> res.json())
+        .then(json=>{
+          @* console.log(json); *@
+          var mess = json;
+          if (mess.error)
+          {
+            createShoewToast("error",mess.error)
+          } else if(mess.sealId !== "")
+          {
+            let content = `<p class="text-gray-500 dark:text-gray-400">Navigate to Generated Seal Page<a href="/Seals?sealId=${mess.sealId}" class="inline-flex items-center font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                              ${mess.sealId}
+                              <svg class="w-4 h-4 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                              </svg>
+                          </a></p>`
+            createShoewToast("seal",content)
+          }
+          else {
+            createShoewToast("success",mess.message)
+          }
+          console.log(json)
+          setTimeout(()=>{
+            clickedBtn.disabled =false;
+          },3000)
+        })
+        .catch(err=>{
+          console.log(err)
+          setTimeout(()=>{
+            clickedBtn.disabled =false;
+          },2000)
+        })
+      })
+    })
+
+    // show toastr 
+    function createShoewToast(status,content)
+    {
+      if (status !== "error" && status != "seal")
+      {
+        
+      toastr[status](content);
+        toastr.options = {
+          "closeButton": true,
+          "debug": false,
+          "newestOnTop": false,
+          "progressBar": true,
+          "positionClass": "toast-bottom-left",
+          "preventDuplicates": false,
+          "onclick": null,
+          "showDuration": "300",
+          "hideDuration": "1000",
+          "timeOut": "5000",
+          "extendedTimeOut": "1000",
+          "showEasing": "swing",
+          "hideEasing": "linear",
+          "showMethod": "fadeIn",
+          "hideMethod": "fadeOut"
+        }
+      } else if (status == "seal")
+      {
+         Swal.fire({
+          title: 'Successfully Validated Application & Generated Seal!',
+          html: content,
+          icon: 'success',
+          confirmButtonText: 'Close',
+          allowOutsideClick:false
+        })
+      }
+      else {
+          Swal.fire({
+          title: 'Error!',
+          text: content,
+          icon: 'error',
+          confirmButtonText: 'Close',
+          allowOutsideClick:false
+        })
+      }
+    }
+
+
+  </script>
+}
