@@ -6,7 +6,7 @@
 @inject UserManager<TSUser> UserManager
 
 @{
-    ViewData["Title"] = "Business Details";
+    ViewData["Title"] = "Seals";
     TSUser user = await UserManager.GetUserAsync(User);
     var role = await UserManager.GetRolesAsync(user);
     var IsAdmin = role.Contains("Admin");
