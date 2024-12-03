@@ -61,16 +61,19 @@
                     {data:'isVerified'},
                     {data:'submissionDate'},
                     {data:"caseNumber"},
+                    
                 ],
                 columnDefs:[
                 {
                     targets:-1,
-                    visible: IsAdmin.toString() == "True" ? true : false,
+                    @* visible: IsAdmin.toString() == "True" ? true : false, *@
                     render:function(data,type,row)
                     {
                         
-                        return `
+                        return IsAdmin.toString()  == "True" ? `
                                 <a href='/ReviewApplication?CaseNumber=${row.caseNumber}' class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Review</a>
+                                ` : `
+                                <a href='/ApplySeal/TrackSealApplication?handler=ByCaseNumber&CaseNumber=${row.caseNumber}' class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Track Progress</a>
                                 `
                         
                     }
