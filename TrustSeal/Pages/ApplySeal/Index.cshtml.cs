@@ -72,6 +72,9 @@ namespace TrustSeal.Pages.ApplySeal
                 Business = await _context.Businesses.FirstOrDefaultAsync(b=> b.Id == int.Parse(Id));
                 if (Business != null)
                 {
+                SubmittedAnswers = await _context.BsAnswer.Where(b=> b.BusinessID == Business.Id)
+                                    .Include(b=>b.Question)
+                                    .ToListAsync();
                    
                 var kraFile = await _context.BusinessAttachment.FirstOrDefaultAsync(a => 
                                         a.ForWhichField == "KRAFile" && a.BusinessId == Business.Id);
@@ -133,7 +136,7 @@ namespace TrustSeal.Pages.ApplySeal
                     // Explicitly set properties not included in the form
                     emptyBusiness.IsVerified = false;
                     emptyBusiness.Status = "Business Information Submitted";
-
+                    _logger.LogInformation("Try to create Business");
                     _context.Businesses.Add(emptyBusiness);
                     await _context.SaveChangesAsync();
                     Business = emptyBusiness;

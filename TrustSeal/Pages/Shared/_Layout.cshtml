@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - TrustSeal</title>
     <link rel="stylesheet" href="~/css/semantic.min.css">
     <link rel="stylesheet" href="~/css/dataTables.semanticui.css">
+    <link rel="stylesheet" href="~/css/smart_wizard_all.min.css">
 
     <link rel="stylesheet" href="~/css/tailwind/tailwind_main_out.css">
     <link rel="shortcut icon" href="~/assets/images/favicon.ico">
@@ -20,18 +21,29 @@
 <body class="">
     @using Microsoft.AspNetCore.Identity
     @using TrustSeal.Areas.Identity.Data
+    @using TrustSeal.Models
+    @using System.Collections.Generic
 
     @inject SignInManager<TSUser> SignInManager
     @inject UserManager<TSUser> UserManager
     @inject RoleManager<IdentityRole> RoleManager
+    @inject TSAuth db
 
      @{
             var pageName = ViewData["Title"];
+            List<Business> businesses = new List<Business>();
+            @if (SignInManager.IsSignedIn(User))
+            {
+                var  user = await UserManager.GetUserAsync(User);
+                businesses = db.Businesses.Where(b => b.OwnerId == user.Id).ToList();
+            }
+            
      }
 
     @if (SignInManager.IsSignedIn(User))
     {
         TSUser user = await UserManager.GetUserAsync(User);
+       
 
         if (user != null)
         {
@@ -58,14 +70,13 @@
             </div>
         </nav>
 
-
-
         <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
-
-            <div class="px-4 py-4">
-                <a href="/ApplySeal" class="text-white bg-gray-800 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Apply</a>
-
-            </div>
+           
+                 <div class="px-4 py-4">
+                         <a href="/ApplySeal" class="text-white bg-gray-800 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Apply</a>
+                 </div>
+           
+           
             <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
                 <ul class="flex flex-col h-full space-y-2 font-medium text-xs ">
                     <li>
@@ -392,6 +403,7 @@
     <script src="~/js/datatables.min.js"></script>
     <script src="~/js/flowbite.min.js"></script>
      <script src="~/js/preline.js"></script>
+     <script src="~/js/jquery.smartWizard.min.js"></script>
      <script src="~/js/toastr.min.js"></script>
      <script src="~/js/sweetalert2.all.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)

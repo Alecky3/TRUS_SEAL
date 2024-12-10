@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
+using System.Text.Json.Serialization;
 using TrustSeal.Areas.Identity.Data;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("TSAuthConnection") ?? throw new InvalidOperationException("Connection string 'TSAuthConnection' not found.");
