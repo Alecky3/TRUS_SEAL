@@ -33,9 +33,28 @@ namespace TrustSeal.Pages.TsBusinesses
         public IList<Business> Business { get;set; } = default!;
     
 
-        public async Task OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
-            
+            var user = await _userManager.GetUserAsync(User);
+                if(user !=null)
+                {
+                    var roles = await _userManager.GetRolesAsync(user);
+
+                    if (roles.Contains("Admin"))
+                    {
+                        Business = await _context.Businesses
+                                                    .ToListAsync();
+
+                        return Page();
+
+                    } else {
+                        Business = await _context.Businesses.Where(b=> b.OwnerId == user.Id)
+                        .ToListAsync();
+                       return Page();
+                    }
+                }
+              
+            return NotFound();
         }
         public async Task<IActionResult> OnGetBusinessesAsync()
         {

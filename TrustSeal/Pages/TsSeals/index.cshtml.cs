@@ -45,7 +45,28 @@ namespace TrustSeal.Pages.TsSeals
 
         public async Task OnGet()
         {
-            
+             TSUser user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                var role = await _userManager.GetRolesAsync(user);
+                if (role.Contains("Admin"))
+                {
+                } else {
+                    Seals = await _context.Seals
+                                                .Include(s=>s.Business)
+                                                .ThenInclude(b=>b.Owner)
+                                                .Where(s=>s.Business.OwnerId == user.Id)
+                                                .Select(s => new AllSeals
+                                                {
+                                                    CreatedAt = s.CreatedAt,
+                                                    ExpiresAt = s.ExpiresAt,
+                                                    BusinessLegalName = s.Business.LegalName,
+                                                    SealReadableId = s.Business.SealReadableId,
+                                                    SealCode = s.SealCode
+                                                })
+                                                .ToListAsync();
+                }
+            }
         }
         public async Task<IActionResult> OnGetAllSealsAsync()
         {
@@ -86,5 +107,8 @@ namespace TrustSeal.Pages.TsSeals
             }
            return new JsonResult(Seals);
         }
+
+        
     }
+    
 }

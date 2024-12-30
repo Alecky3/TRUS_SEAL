@@ -69,6 +69,7 @@ namespace TrustSeal.Pages.ApplySeal
                  }
                 ApplicationTrackings = await _context.ApplicationTrackings
                                             .Where(t => t.BusinessId == Business.Id && t.Required == true)
+                                            .OrderBy(a=>a.Order)
                                             .ToListAsync();
                 return Page();
             }

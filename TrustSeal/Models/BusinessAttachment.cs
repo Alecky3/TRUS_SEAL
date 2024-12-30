@@ -11,6 +11,8 @@ namespace TrustSeal.Models
 
         public string ForWhichField {get;set;}
 
+        public string CategoryName {get;set;}
+
         public int? BusinessId {get;set;}
 
         [ForeignKey("BusinessId")]

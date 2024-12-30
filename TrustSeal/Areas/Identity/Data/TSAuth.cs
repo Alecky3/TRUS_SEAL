@@ -70,4 +70,8 @@ public class TSAuth : IdentityDbContext<TSUser>
 
     public DbSet<Seals> Seals {get;set;}
 
+    public DbSet<AttachmentConfigs> AttachmentConfigs {get;set;}
+
+    public DbSet<Billing> Billings {get;set;}
+
 }

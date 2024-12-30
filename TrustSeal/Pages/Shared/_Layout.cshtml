@@ -1,16 +1,16 @@
 ﻿<!DOCTYPE html>
-<html lang="en" class=" bg-gray-100 dark:bg-gray-900">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - TrustSeal</title>
-    <link rel="stylesheet" href="~/css/semantic.min.css">
-    <link rel="stylesheet" href="~/css/dataTables.semanticui.css">
+    @* <link rel="stylesheet" href="~/css/semantic.min.css">
+    <link rel="stylesheet" href="~/css/dataTables.semanticui.css"> *@
     <link rel="stylesheet" href="~/css/smart_wizard_all.min.css">
 
     <link rel="stylesheet" href="~/css/tailwind/tailwind_main_out.css">
     <link rel="shortcut icon" href="~/assets/images/favicon.ico">
-    @* <link rel="stylesheet" href="~/css/dataTables.dataTables.css"> *@
+    @* <link rel="stylesheet" href="~/css/tailwind/dataTables.css"> *@
 
     @* toastr *@
     <link rel="stylesheet" href="~/css/toastr.min.css">
@@ -18,7 +18,7 @@
 
     
 </head>
-<body class="">
+<body>
     @using Microsoft.AspNetCore.Identity
     @using TrustSeal.Areas.Identity.Data
     @using TrustSeal.Models
@@ -400,12 +400,15 @@
 
     <!-- Scripts -->
     <script src="~/js/jquery-3.7.1.min.js"></script>
-    <script src="~/js/datatables.min.js"></script>
+    
     <script src="~/js/flowbite.min.js"></script>
+    <script src="~/js/simple-datatables.min.js"></script>
+    <script src="~/js/popper.js"></script>
      <script src="~/js/preline.js"></script>
      <script src="~/js/jquery.smartWizard.min.js"></script>
      <script src="~/js/toastr.min.js"></script>
      <script src="~/js/sweetalert2.all.min.js"></script>
+     <script src="~/js/just-validate.production.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
