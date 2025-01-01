@@ -1,18 +1,7 @@
-﻿@page
-@model TrustSeal.Pages.TsBusinesses.IndexModel
-@using Microsoft.AspNetCore.Identity
-@using TrustSeal.Areas.Identity.Data
+@page
+@model TrustSeal.Pages.ReviewApplication.PendingReviews
 
-@inject UserManager<TSUser> UserManager
-
-@{
-    ViewData["Title"] = "Business Details";
-    TSUser user = await UserManager.GetUserAsync(User);
-    var role = await UserManager.GetRolesAsync(user);
-    var IsAdmin = role.Contains("Admin");
-}
-
-<table id="default-table">
+<table id="pending-reviews">
     <thead>
         <tr>
             <th>
@@ -47,6 +36,14 @@
                     </svg>
                 </span>
             </th>
+            <th>
+                <span class="flex items-center">
+                      Case Number
+                    <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4"/>
+                    </svg>
+                </span>
+            </th>
              <th>
                 <span class="flex items-center">
                       Actions
@@ -58,7 +55,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach(var bs in Model.Business)
+        @foreach(var bs in Model.Businesses)
         {
           <tr>
             <td class="font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -69,6 +66,7 @@
               </td>
             <td>@bs.RegistrationNumber</td>
             <td>@bs.TaxIdentificationNumber</td>
+            <td>@bs.CaseNumber</td>
             <td>
                @* Actions *@
               <div class="hs-dropdown relative inline-flex">
@@ -79,22 +77,15 @@
 
                 <div class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg mt-2 dark:bg-neutral-800 dark:border dark:border-neutral-700 dark:divide-neutral-700 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full" style="z-index: 1000;" role="menu" aria-orientation="vertical" aria-labelledby="@bs.Id">
                   <div class="p-1 space-y-0.5">
-                    <a href="/ApplySeal/index?Id=@bs.Id" class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700" href="#">
+                    <a href="/ApplySeal/index?Id=@bs.Id" class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700">
                       View/Edit
                     </a>
-                    <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700" href="#">
+                    <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700">
                       Remove Business
                     </a>
-                    @if(IsAdmin)
-                    {
-                      <a href="/ReviewApplication?CaseNumber=@bs.CaseNumber" class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700" href="#">
-                      Review Application
+                    <a href="/ReviewApplication?CaseNumber=@bs.CaseNumber" class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700">
+                    Review Application
                     </a>
-                    } else {
-                      <a href="/ApplySeal/TrackSealApplication?handler=ById&Id=@bs.Id" class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700" href="#">
-                      Track Application
-                    </a>
-                    }
                   </div>
                 </div>
               </div>
@@ -105,14 +96,13 @@
     </tbody>
 </table>
 
-
 @section Scripts {
     <script>
-      var IsAdmin = "@IsAdmin";
-       window.addEventListener("DOMContentLoaded",function(event){
+         @* Datatable *@
+     window.addEventListener("DOMContentLoaded",function(event){
         
-          if (document.getElementById("default-table") && typeof simpleDatatables.DataTable !== 'undefined') {
-              const dataTable = new simpleDatatables.DataTable("#default-table", {
+          if (document.getElementById("pending-reviews") && typeof simpleDatatables.DataTable !== 'undefined') {
+              const dataTable = new simpleDatatables.DataTable("#pending-reviews", {
                   searchable: true,
                   sortable: true,
                   perPage:5,
@@ -163,5 +153,6 @@
           }
 
        })
+    @* End datatable *@
     </script>
 }

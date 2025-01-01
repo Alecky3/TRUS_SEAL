@@ -48,6 +48,8 @@ namespace TrustSeal.Pages.ApplySeal
                 ApplicationTrackings = await _context.ApplicationTrackings
                                             .Where(t => t.BusinessId == Business.Id && t.Required == true)
                                             .ToListAsync();
+                _logger.LogInformation(Business.LegalName);
+                _logger.LogInformation("ById");
        
             
             if (Business == null)

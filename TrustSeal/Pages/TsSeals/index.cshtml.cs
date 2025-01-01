@@ -49,10 +49,7 @@ namespace TrustSeal.Pages.TsSeals
             if (user != null)
             {
                 var role = await _userManager.GetRolesAsync(user);
-                if (role.Contains("Admin"))
-                {
-                } else {
-                    Seals = await _context.Seals
+                Seals = await _context.Seals
                                                 .Include(s=>s.Business)
                                                 .ThenInclude(b=>b.Owner)
                                                 .Where(s=>s.Business.OwnerId == user.Id)
@@ -65,7 +62,7 @@ namespace TrustSeal.Pages.TsSeals
                                                     SealCode = s.SealCode
                                                 })
                                                 .ToListAsync();
-                }
+                
             }
         }
         public async Task<IActionResult> OnGetAllSealsAsync()

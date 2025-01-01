@@ -398,7 +398,7 @@ namespace TrustSeal.Pages.ApplySeal
                     }
                     return new JsonResult(new {message = "Saved Answers successfuly",count = bsAnswers.Count(),CaseNumber = GeneratedCaseNumber });
                 }else {
-                    return new JsonResult(new {message = "Could not save answers",count = bsAnswers.Count()});
+                    return new JsonResult(new {error = "Could not save answers",count = bsAnswers.Count()});
              }
         }
 

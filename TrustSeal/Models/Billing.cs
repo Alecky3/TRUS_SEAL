@@ -8,10 +8,9 @@ namespace TrustSeal.Models {
 
         public DateTime DatePaid {get;set;} = DateTime.Now;
 
-        public string PaidByiD {get;set;}
+        public string PaidById {get;set;}
         
-        [ForeignKey("PaidById")]
-        public TSUser PaidBy {get;set;}
+        public TSUser UserId {get;set;}
 
         public Decimal Amount {get;set;}
 

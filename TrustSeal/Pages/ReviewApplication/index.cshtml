@@ -1,8 +1,14 @@
 @page
 @model TrustSeal.Pages.ReviewApplication.IndexModel
+@using Microsoft.AspNetCore.Identity
+@using TrustSeal.Areas.Identity.Data
+@inject UserManager<TSUser> UserManager
 
 @{
     ViewData["Title"] = "Review Business Application";
+    TSUser user = await UserManager.GetUserAsync(User);
+    var role = await UserManager.GetRolesAsync(user);
+    var IsAdmin = role.Contains("Admin");
 }
 
 <section class="bg-white dark:bg-gray-900">
@@ -242,6 +248,7 @@
  </div>
 </section>
 
+
 @section Scripts {
   <script>
     @* Disable Inputs by default they are only required for display purposes *@
@@ -392,7 +399,7 @@
         })
       }
     }
-
+   
 
   </script>
 }
