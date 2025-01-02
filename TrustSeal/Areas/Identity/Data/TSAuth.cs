@@ -72,6 +72,6 @@ public class TSAuth : IdentityDbContext<TSUser>
 
     public DbSet<AttachmentConfigs> AttachmentConfigs {get;set;}
 
-    public DbSet<Billing> Billings {get;set;}
+    public DbSet<Payments> Billings {get;set;}
 
 }

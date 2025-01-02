@@ -12,8 +12,8 @@ using TrustSeal.Areas.Identity.Data;
 namespace TrustSeal.Migrations
 {
     [DbContext(typeof(TSAuth))]
-    [Migration("20241230181434_Billing")]
-    partial class Billing
+    [Migration("20250102043641_Payments")]
+    partial class Payments
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -310,42 +310,6 @@ namespace TrustSeal.Migrations
                     b.ToTable("AttachmentConfigs");
                 });
 
-            modelBuilder.Entity("TrustSeal.Models.Billing", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("CreatedById")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DatePaid")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PaidById")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PaymentCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Reason")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserIdId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserIdId");
-
-                    b.ToTable("Billings");
-                });
-
             modelBuilder.Entity("TrustSeal.Models.BsAnswer", b =>
                 {
                     b.Property<int>("Id")
@@ -586,6 +550,39 @@ namespace TrustSeal.Migrations
                     b.ToTable("Notifications");
                 });
 
+            modelBuilder.Entity("TrustSeal.Models.Payments", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DatePaid")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaidById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PaymentCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaidById");
+
+                    b.ToTable("Billings");
+                });
+
             modelBuilder.Entity("TrustSeal.Models.Question", b =>
                 {
                     b.Property<int>("Id")
@@ -726,15 +723,6 @@ namespace TrustSeal.Migrations
                     b.Navigation("Business");
                 });
 
-            modelBuilder.Entity("TrustSeal.Models.Billing", b =>
-                {
-                    b.HasOne("TrustSeal.Areas.Identity.Data.TSUser", "UserId")
-                        .WithMany()
-                        .HasForeignKey("UserIdId");
-
-                    b.Navigation("UserId");
-                });
-
             modelBuilder.Entity("TrustSeal.Models.BsAnswer", b =>
                 {
                     b.HasOne("TrustSeal.Models.Business", "Business")
@@ -837,6 +825,15 @@ namespace TrustSeal.Migrations
                     b.Navigation("ReplyToNotification");
 
                     b.Navigation("Seals");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.Payments", b =>
+                {
+                    b.HasOne("TrustSeal.Areas.Identity.Data.TSUser", "PaidBy")
+                        .WithMany()
+                        .HasForeignKey("PaidById");
+
+                    b.Navigation("PaidBy");
                 });
 
             modelBuilder.Entity("TrustSeal.Models.Question", b =>

@@ -3,14 +3,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 using TrustSeal.Areas.Identity.Data;
 
 namespace TrustSeal.Models {
-    public class Billing {
+    public class Payments {
         public int Id {get;set;}
 
         public DateTime DatePaid {get;set;} = DateTime.Now;
 
         public string PaidById {get;set;}
         
-        public TSUser UserId {get;set;}
+        [ForeignKey("PaidById")]
+        public TSUser PaidBy {get;set;}
 
         public Decimal Amount {get;set;}
 
