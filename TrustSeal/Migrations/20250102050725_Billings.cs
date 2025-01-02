@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TrustSeal.Migrations
 {
     /// <inheritdoc />
-    public partial class Payments : Migration
+    public partial class Billings : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -208,23 +208,24 @@ namespace TrustSeal.Migrations
             //     });
 
             // migrationBuilder.CreateTable(
-            //     name: "Billings",
+            //     name: "Payments",
             //     columns: table => new
             //     {
             //         Id = table.Column<int>(type: "int", nullable: false)
             //             .Annotation("SqlServer:Identity", "1, 1"),
-            //         DatePaid = table.Column<DateTime>(type: "datetime2", nullable: false),
             //         PaidById = table.Column<string>(type: "nvarchar(450)", nullable: true),
-            //         Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-            //         Reason = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //         Amount = table.Column<double>(type: "float", nullable: false),
             //         CreatedById = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //         PaymentCode = table.Column<string>(type: "nvarchar(max)", nullable: true)
+            //         DatePaid = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //         PaymentCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //         Reason = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //         PaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: true)
             //     },
             //     constraints: table =>
             //     {
-            //         table.PrimaryKey("PK_Billings", x => x.Id);
+            //         table.PrimaryKey("PK_Payments", x => x.Id);
             //         table.ForeignKey(
-            //             name: "FK_Billings_AspNetUsers_PaidById",
+            //             name: "FK_Payments_AspNetUsers_PaidById",
             //             column: x => x.PaidById,
             //             principalTable: "AspNetUsers",
             //             principalColumn: "Id");
@@ -497,11 +498,6 @@ namespace TrustSeal.Migrations
             //     filter: "[NormalizedUserName] IS NOT NULL");
 
             // migrationBuilder.CreateIndex(
-            //     name: "IX_Billings_PaidById",
-            //     table: "Billings",
-            //     column: "PaidById");
-
-            // migrationBuilder.CreateIndex(
             //     name: "IX_BsAnswer_BusinessID",
             //     table: "BsAnswer",
             //     column: "BusinessID");
@@ -579,6 +575,11 @@ namespace TrustSeal.Migrations
             //     column: "UserId");
 
             // migrationBuilder.CreateIndex(
+            //     name: "IX_Payments_PaidById",
+            //     table: "Payments",
+            //     column: "PaidById");
+
+            // migrationBuilder.CreateIndex(
             //     name: "IX_Questions_CategoryId",
             //     table: "Questions",
             //     column: "CategoryId");
@@ -607,6 +608,9 @@ namespace TrustSeal.Migrations
 
             migrationBuilder.DropTable(
                 name: "Notifications");
+
+            migrationBuilder.DropTable(
+                name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

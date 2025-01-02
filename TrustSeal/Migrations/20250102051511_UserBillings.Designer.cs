@@ -12,8 +12,8 @@ using TrustSeal.Areas.Identity.Data;
 namespace TrustSeal.Migrations
 {
     [DbContext(typeof(TSAuth))]
-    [Migration("20241227115735_Business_Attachments_remove_category")]
-    partial class Business_Attachments_remove_category
+    [Migration("20250102051511_UserBillings")]
+    partial class UserBillings
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -282,6 +282,34 @@ namespace TrustSeal.Migrations
                     b.ToTable("ApplicationTrackings");
                 });
 
+            modelBuilder.Entity("TrustSeal.Models.AttachmentConfigs", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Category")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ForWhichField")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Required")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AttachmentConfigs");
+                });
+
             modelBuilder.Entity("TrustSeal.Models.BsAnswer", b =>
                 {
                     b.Property<int>("Id")
@@ -433,6 +461,9 @@ namespace TrustSeal.Migrations
 
                     b.Property<int?>("BusinessId")
                         .HasColumnType("int");
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -597,6 +628,42 @@ namespace TrustSeal.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Seals");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.UserBillings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DatePaid")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaidById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PaymentCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentMethod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaidById");
+
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -774,8 +841,19 @@ namespace TrustSeal.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("TrustSeal.Models.UserBillings", b =>
+                {
+                    b.HasOne("TrustSeal.Areas.Identity.Data.TSUser", "PaidBy")
+                        .WithMany("Billings")
+                        .HasForeignKey("PaidById");
+
+                    b.Navigation("PaidBy");
+                });
+
             modelBuilder.Entity("TrustSeal.Areas.Identity.Data.TSUser", b =>
                 {
+                    b.Navigation("Billings");
+
                     b.Navigation("Notifications");
 
                     b.Navigation("UserBusinesses");

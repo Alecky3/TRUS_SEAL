@@ -547,39 +547,6 @@ namespace TrustSeal.Migrations
                     b.ToTable("Notifications");
                 });
 
-            modelBuilder.Entity("TrustSeal.Models.Payments", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("CreatedById")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DatePaid")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PaidById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("PaymentCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Reason")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PaidById");
-
-                    b.ToTable("Billings");
-                });
-
             modelBuilder.Entity("TrustSeal.Models.Question", b =>
                 {
                     b.Property<int>("Id")
@@ -658,6 +625,42 @@ namespace TrustSeal.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Seals");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.UserBillings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DatePaid")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaidById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PaymentCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentMethod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaidById");
+
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -824,15 +827,6 @@ namespace TrustSeal.Migrations
                     b.Navigation("Seals");
                 });
 
-            modelBuilder.Entity("TrustSeal.Models.Payments", b =>
-                {
-                    b.HasOne("TrustSeal.Areas.Identity.Data.TSUser", "PaidBy")
-                        .WithMany()
-                        .HasForeignKey("PaidById");
-
-                    b.Navigation("PaidBy");
-                });
-
             modelBuilder.Entity("TrustSeal.Models.Question", b =>
                 {
                     b.HasOne("TrustSeal.Models.QuestionCategory", "Category")
@@ -844,8 +838,19 @@ namespace TrustSeal.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("TrustSeal.Models.UserBillings", b =>
+                {
+                    b.HasOne("TrustSeal.Areas.Identity.Data.TSUser", "PaidBy")
+                        .WithMany("Billings")
+                        .HasForeignKey("PaidById");
+
+                    b.Navigation("PaidBy");
+                });
+
             modelBuilder.Entity("TrustSeal.Areas.Identity.Data.TSUser", b =>
                 {
+                    b.Navigation("Billings");
+
                     b.Navigation("Notifications");
 
                     b.Navigation("UserBusinesses");

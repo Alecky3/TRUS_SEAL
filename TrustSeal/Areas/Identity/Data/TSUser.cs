@@ -22,5 +22,7 @@ public class TSUser : IdentityUser
     public ICollection<Business> UserBusinesses { get; set; }
 
     public ICollection<Notification> Notifications {get;set;}
+
+    public ICollection<UserBillings> Billings {get;set;}
 }
 
