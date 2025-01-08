@@ -74,4 +74,6 @@ public class TSAuth : IdentityDbContext<TSUser>
 
     public DbSet<UserBillings> Payments {get;set;}
 
+    public DbSet<DocumentPath> DocumentPaths {get;set;}
+
 }
