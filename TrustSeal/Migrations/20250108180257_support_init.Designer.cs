@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrustSeal.Areas.Identity.Data;
 
@@ -11,9 +12,11 @@ using TrustSeal.Areas.Identity.Data;
 namespace TrustSeal.Migrations
 {
     [DbContext(typeof(TSAuth))]
-    partial class TSAuthModelSnapshot : ModelSnapshot
+    [Migration("20250108180257_support_init")]
+    partial class support_init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -681,36 +684,6 @@ namespace TrustSeal.Migrations
                     b.ToTable("Support");
                 });
 
-            modelBuilder.Entity("TrustSeal.Models.SupportAttachment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DisplayName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FileUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SupportMessageId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SupportMessageId");
-
-                    b.ToTable("SupportAttachment");
-                });
-
             modelBuilder.Entity("TrustSeal.Models.UserBillings", b =>
                 {
                     b.Property<int>("Id")
@@ -937,17 +910,6 @@ namespace TrustSeal.Migrations
                     b.Navigation("SendBy");
                 });
 
-            modelBuilder.Entity("TrustSeal.Models.SupportAttachment", b =>
-                {
-                    b.HasOne("TrustSeal.Models.Support", "SupportMessage")
-                        .WithMany("SupportAttachments")
-                        .HasForeignKey("SupportMessageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SupportMessage");
-                });
-
             modelBuilder.Entity("TrustSeal.Models.UserBillings", b =>
                 {
                     b.HasOne("TrustSeal.Areas.Identity.Data.TSUser", "PaidBy")
@@ -1011,11 +973,6 @@ namespace TrustSeal.Migrations
                     b.Navigation("Business");
 
                     b.Navigation("Notifications");
-                });
-
-            modelBuilder.Entity("TrustSeal.Models.Support", b =>
-                {
-                    b.Navigation("SupportAttachments");
                 });
 #pragma warning restore 612, 618
         }

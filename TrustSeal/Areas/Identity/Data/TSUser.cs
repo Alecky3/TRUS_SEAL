@@ -24,5 +24,7 @@ public class TSUser : IdentityUser
     public ICollection<Notification> Notifications {get;set;}
 
     public ICollection<UserBillings> Billings {get;set;}
+
+    public ICollection<Support> SupportTickets {get;set;}
 }
 
