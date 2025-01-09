@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrustSeal.Areas.Identity.Data;
 
@@ -11,9 +12,11 @@ using TrustSeal.Areas.Identity.Data;
 namespace TrustSeal.Migrations
 {
     [DbContext(typeof(TSAuth))]
-    partial class TSAuthModelSnapshot : ModelSnapshot
+    [Migration("20250109191630_SupportAttachment_supportmessage_optional")]
+    partial class SupportAttachment_supportmessage_optional
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -678,7 +681,7 @@ namespace TrustSeal.Migrations
 
                     b.HasIndex("SendById");
 
-                    b.ToTable("SupportMessages");
+                    b.ToTable("Support");
                 });
 
             modelBuilder.Entity("TrustSeal.Models.SupportAttachment", b =>
@@ -708,7 +711,7 @@ namespace TrustSeal.Migrations
 
                     b.HasIndex("SupportMessageId");
 
-                    b.ToTable("SupportAttachments");
+                    b.ToTable("SupportAttachment");
                 });
 
             modelBuilder.Entity("TrustSeal.Models.UserBillings", b =>

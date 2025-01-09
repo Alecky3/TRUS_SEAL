@@ -10,8 +10,8 @@ namespace TrustSeal.Models
         public string TicketNumber {get;set;}
         public string Message {get;set;}
 
-        public DateTime CreatedAt {get;set;}
-        public DateTime UpdatedAt {get;set;}
+        public DateTime CreatedAt {get;set;} = DateTime.Now;
+        public DateTime UpdatedAt {get;set;} = DateTime.Now;
         public bool Read {get;set;} = true;
         public string SendById {get;set;}
 

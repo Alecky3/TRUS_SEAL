@@ -76,4 +76,8 @@ public class TSAuth : IdentityDbContext<TSUser>
 
     public DbSet<DocumentPath> DocumentPaths {get;set;}
 
+    public DbSet<Support> SupportMessages {get;set;}
+
+    public DbSet<SupportAttachment> SupportAttachments {get;set;}
+
 }

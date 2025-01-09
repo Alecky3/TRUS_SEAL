@@ -15,7 +15,7 @@ namespace TrustSeal.Models
 
         public DateTime UpdatedAt {get;set;}
 
-        public int SupportMessageId {get;set;}
+        public int? SupportMessageId {get;set;}
         public Support SupportMessage {get;set;}
     }
 }
