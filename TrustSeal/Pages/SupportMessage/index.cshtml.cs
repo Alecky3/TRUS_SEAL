@@ -86,7 +86,7 @@ namespace TrustSeal.Pages.SupportMessage
                                                             .FirstOrDefaultAsync();
                     if(supportAttachment!=null)
                     {
-                        supportAttachment.SupportMessageId = supportAttachment.Id;
+                        supportAttachment.SupportMessageId = SupportMessage.Id;
                         await _context.SaveChangesAsync();
                     }
                 }
@@ -113,7 +113,7 @@ namespace TrustSeal.Pages.SupportMessage
                _logger.LogInformation(baseUrl.BaseUrl);
                if(!Directory.Exists(uploadPath))
                {
-                Directory.CreateDirectory(baseUrl.BaseUrl);
+                Directory.CreateDirectory(uploadPath);
                }
                var uniqueFilename = $"{Guid.NewGuid()}_{files[0].FileName}";
                var filePath = Path.Combine(uploadPath,uniqueFilename);
@@ -132,7 +132,7 @@ namespace TrustSeal.Pages.SupportMessage
 
                await _context.SaveChangesAsync();
 
-               return new JsonResult(new {success=true,Message="uploaded suceessfully",attachmentId=supportAttachment.Id});
+               return new JsonResult(new {success=true,Message="uploaded suceessfully",attachmentId=supportAttachment.Id,files[0].FileName});
             }
            return new JsonResult(new {success=false,Message="could not upload file"});
          }
@@ -173,7 +173,7 @@ namespace TrustSeal.Pages.SupportMessage
                .SqlQuery<int>($"SELECT NEXT VALUE FOR SupportTicket AS CurrentValue").AsEnumerable().FirstOrDefault();
                var CurrentDate = DateTime.Now.ToShortDateString();
 
-               var result = "S-TICKET#"+ CurrentSupportTicketSequence.ToString() +"-";
+               var result = "S-TICKET#"+ CurrentSupportTicketSequence.ToString();
 
                 return result.ToUpper();
          }

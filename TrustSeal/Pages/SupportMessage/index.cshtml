@@ -54,44 +54,60 @@
         dark:[&::-webkit-scrollbar-track]:bg-neutral-700
         dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
         <ul id="message-list" class="px-2 py-4">
-            
-            <div class="flex items-start gap-2.5">
-            <div class="flex flex-col gap-1 w-full max-w-[320px]">
-                <div class="flex items-center space-x-2 rtl:space-x-reverse">
-                    <span class="text-sm font-semibold text-gray-900 dark:text-white">You</span>
-                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400">@DateTime.Today</span>
+            @foreach(var mssg in Model.SupportMessages)
+            {
+                <div class="flex items-start gap-2.5">
+                    <div class="flex flex-col gap-1 w-full max-w-[320px]">
+                        <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                            <span class="text-sm font-semibold text-gray-900 dark:text-white">You</span>
+                            <span class="text-sm font-normal text-gray-500 dark:text-gray-400">@mssg.CreatedAt</span>
+                            <span class="text-sm font-normal text-gray-500 dark:text-gray-400 ms-4">@mssg.TicketNumber</span>
+                        </div>
+                        <div class="flex flex-col leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
+                            <p class="text-sm font-normal text-gray-900 dark:text-white">@mssg.Message</p>
+                            <div>
+                                @if(@mssg.SupportAttachments !=null)
+                                {
+                                    @foreach(var file in mssg.SupportAttachments)
+                                    {
+                                    <p><a class="text-blue-600 underline underline-offset-1 decoration-blue-600 hover:opacity-80 focus:outline-none focus:opacity-80" href="/SupportMessage?handler=SupportAttachment&id=@file.Id">@file.DisplayName</a></p>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <button id="dropdownMenuIconButton-@mssg.Id" data-dropdown-toggle="dropdownDots-@mssg.Id" data-dropdown-placement="bottom-start" class="inline-flex self-center items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:focus:ring-gray-600" type="button">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                            <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                        </svg>
+                    </button>
+                    <div id="dropdownDots-@mssg.Id" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-40 dark:bg-gray-700 dark:divide-gray-600">
+                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton">
+                            <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Reply</a>
+                            </li>
+                            <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                            </li>
+                            <li>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="flex flex-col leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
-                    <p class="text-sm font-normal text-gray-900 dark:text-white"> That's awesome. I think our users will really appreciate the improvements.</p>
-                </div>
-                
-            </div>
-            <button id="dropdownMenuIconButton" data-dropdown-toggle="dropdownDots" data-dropdown-placement="bottom-start" class="inline-flex self-center items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:focus:ring-gray-600" type="button">
-                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
-                    <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
-                </svg>
-            </button>
-            <div id="dropdownDots" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-40 dark:bg-gray-700 dark:divide-gray-600">
-                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton">
-                    <li>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Reply</a>
-                    </li>
-                     <li>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
-                    </li>
-                    <li>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
-                    </li>
-                </ul>
-            </div>
-            </div>
-
+            }
         </ul>
         </div>
         <div style="margin-top: auto;">
+            <div id="attached-uposted-files" class="p-2">
+               
+            </div>
             <!-- Textarea -->
             <div class="relative">
-            <textarea id="hs-textarea-ex-2" class="p-4 pb-12 block w-full bg-gray-100 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" placeholder="Type You Message Here" data-hs-textarea-auto-height=""></textarea>
+            <form action="" method="post" class="mb-2">
+              <textarea id="message-content" class="p-4 pb-12 block w-full bg-gray-100 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" placeholder="Type You Message Here" data-hs-textarea-auto-height=""></textarea>
+            </form>
 
             <!-- Toolbar -->
             <div class="absolute bottom-px inset-x-px p-2 rounded-b-md bg-gray-100 dark:bg-neutral-800">
@@ -100,7 +116,10 @@
                 <div class="flex items-center">
 
                     <!-- Attach Button -->
-                    <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                    <button type="button" id="message-attach-file" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                    <form action="" method="post">
+                        <input type="file" hidden name="message-attachment">
+                    </form>
                     <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
                     </svg>
@@ -113,7 +132,7 @@
                 <div class="flex items-center gap-x-1">
                    
                     <!-- Send Button -->
-                    <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                    <button type="button" id="message-send" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                     <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                         <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"></path>
                     </svg>
@@ -130,5 +149,104 @@
     </div>
     }
 </section>
+
+@section Scripts{
+    <script>
+        let attachBtn =document.querySelectorAll('#message-attach-file')[0]
+        let sendMessageBtn=document.querySelectorAll("#message-send")[0]
+        sendMessageBtn.disabled=true;
+        let attachedFilesCon = document.querySelectorAll("#attached-uposted-files")[0]
+        let messageTextArea =document.querySelectorAll("#message-content")[0];
+        messageTextArea.addEventListener("change",e=>
+            {
+                sendMessageBtn.disabled=false;
+
+            }
+        )
+        attachBtn.addEventListener("click",(e)=>{
+            let attachInput = document.querySelectorAll("input[name='message-attachment']")[0];
+            attachBtn.addEventListener("change",handlePostSupportFiles);
+            if(attachInput)
+            {
+                attachInput.click();
+            }
+        })
+        sendMessageBtn.addEventListener("click",handlePostNewMessage);
+
+        function handlePostSupportFiles(e)
+        {
+            let input=e.target;
+            let formData = new FormData();
+            for(let file of input.files)
+            {
+                formData.append("file",file,file.name);
+            }
+            const token = document.querySelector("input[name='__RequestVerificationToken']").value;
+            fetch("/SupportMessage?handler=SupportFile", {
+                method: "POST",
+                headers: {
+                    RequestVerificationToken: token
+                },
+                body: formData
+            }).then(res=>res.json())
+            .then(jsonRes=>{
+                let fileLink = document.createElement('p');
+                fileLink.innerHTML =`<a class="text-blue-600 underline underline-offset-1 decoration-blue-600 hover:opacity-80 focus:outline-none focus:opacity-80" href="/SupportMessage?handler=SupportAttachment&id=${jsonRes.attachmentId}">${jsonRes.fileName}</a>
+                <input hidden value='${jsonRes.attachmentId}'/>`
+                attachedFilesCon.appendChild(fileLink);
+                console.log(jsonRes)
+            }).catch(err=>{
+                console.error(err)
+            })
+            
+        }
+
+        function handlePostNewMessage(e)
+        {
+            messageTextArea.disabled=true;
+            let message=messageTextArea.value;
+            let attachedFiles =attachedFilesCon.querySelectorAll('input');
+            let formData =new FormData();
+            formData.append("message",message);
+            attachedFiles.forEach(input=>{
+                formData.append('fileId',input.value)
+            })
+            const token = document.querySelector("input[name='__RequestVerificationToken']").value;
+            fetch("/SupportMessage", {
+                method: "POST",
+                headers: {
+                    RequestVerificationToken: token
+                },
+                body: formData
+            }).then(res=>res.json())
+            .then(jsonRes=>{
+                console.log(jsonRes)
+                messageTextArea.value=''
+                messageTextArea.disabled=false;
+                Swal.fire({
+                  text: "Successfully Created Ticket",
+                  toast: true,
+                  position: "top-right",
+                  timerProgressBar: true,
+                  icon: "success",
+                  timer: 1500,
+                  showConfirmButton: false
+                })
+            }).catch(err=>{
+                console.error(err)
+                messageTextArea.disabled=false;
+                Swal.fire({
+                  text: "Error Creating Ticket",
+                  toast: true,
+                  position: "top-right",
+                  timerProgressBar: true,
+                  icon: "error",
+                  timer: 1500,
+                  showConfirmButton: false
+                })
+            })
+        }
+    </script>
+}
 
 
