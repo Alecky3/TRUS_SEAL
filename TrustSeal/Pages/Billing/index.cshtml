@@ -216,27 +216,54 @@
 
        let billingForm = document.querySelectorAll("#billing-form")[0];
        console.log(billingForm)
-       billingForm.addEventListener("submit",(e)=>{
-        e.preventDefault();
-        console.log(e.target)
-        let form = e.target.querySelector("button[type='submit']");
-        let data = new FormData(e.target);
-        const token = billingForm.querySelector("input[name='__RequestVerificationToken']").value;
-        form.disabled = true;
-         fetch(`/Billing`,{
-            method: "POST",
-            headers:{
-                RequestVerificationToken: token
-            },
-            body: data
-          }).then(res=>{
-            console.log(res)
-             form.disabled = false;
-          }).catch(error=>{
-            console.error(error)
-             form.disabled = false;
-          })
-       })
+       if(billingForm)
+       {
+             billingForm.addEventListener("submit",(e)=>{
+                e.preventDefault();
+                console.log(e.target)
+                let submitBtn = e.target.querySelector("button[type='submit']");
+                 submitBtn.innerHTML=`<span class="animate-spin inline-block size-4 border-[3px] border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"></span>
+                            Saving...`
+                let data = new FormData(e.target);
+                const token = billingForm.querySelector("input[name='__RequestVerificationToken']").value;
+                submitBtn.disabled = true;
+                fetch(`/Billing`,{
+                    method: "POST",
+                    headers:{
+                        RequestVerificationToken: token
+                    },
+                    body: data
+                }).then(res=>{
+                    console.log(res)
+                     Swal.fire({
+                    text: "Successfully Created Billing Entry",
+                    toast: true,
+                    position: "top-right",
+                    timerProgressBar: true,
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false
+                    })
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML="Add New"
+                    window.location.reload();
+                }).catch(error=>{
+                    console.error(error)
+                    Swal.fire({
+                    text: "Error Creating Billing Entry",
+                    toast: true,
+                    position: "top-right",
+                    timerProgressBar: true,
+                    icon: "error",
+                    timer: 1500,
+                    showConfirmButton: false
+                    })
+                   submitBtn.disabled = false;
+                    submitBtn.innerHTML="Add New"
+                })
+            })
+       }
+      
     </script>
 }
 

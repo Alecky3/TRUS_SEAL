@@ -23,5 +23,7 @@ namespace TrustSeal.Models
 
         public List<SupportAttachment> SupportAttachments {get;set;}
 
+        public List<Support> Replies {get;set;}
+
     }
 }
