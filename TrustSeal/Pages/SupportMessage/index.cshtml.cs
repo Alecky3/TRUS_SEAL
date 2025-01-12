@@ -107,6 +107,64 @@ namespace TrustSeal.Pages.SupportMessage
             return new JsonResult(new {success=false,message="Could Not Send Message"});
          }
 
+         // Admin Send Message
+         public async Task<IActionResult> OnPostAdminMessageAsync()
+         {
+            var user = await _userManager.GetUserAsync(User);
+            if(user!=null)
+            {
+                var fileIds = Request.Form.Keys.Where(k=>k=="fileId");
+                var uniqueId=Request.Form["uniqueId"];
+                if(uniqueId.ToString() == null)
+                {
+                    return BadRequest();
+                }
+                var ReplySupportMessage = await _context.SupportMessages
+                                                                    
+                                                                    .Where(m=>m.SendById==uniqueId.ToString())
+                                                
+                                                                    .OrderBy(m=>m.CreatedAt)
+                                                                    .FirstOrDefaultAsync();
+                if(ReplySupportMessage==null)
+                {
+                    return BadRequest();
+                }     
+                var SupportMessage=new Support();                                              
+                SupportMessage.Message = Request.Form["message"];
+                SupportMessage.Read = false;
+                SupportMessage.SendById = user.Id;
+                SupportMessage.ReplyToId = ReplySupportMessage.Id;
+                // SupportMessage.TicketNumber = await GenerateSupportTicket();
+                SupportMessage.CreatedAt = DateTime.Now;
+                SupportMessage.UpdatedAt = DateTime.Now;
+
+                _context.SupportMessages.Add(SupportMessage);
+                await _context.SaveChangesAsync();
+
+                foreach(var fileKey in fileIds)
+                {
+                    _logger.LogInformation($"fileKey {fileKey}");
+                    var Id = Request.Form[fileKey];
+                    _logger.LogInformation($"fileKey Id {Id}");
+                    foreach(var returnId in Id.ToString().Split(','))
+                    {
+                        var supportAttachment = await _context.SupportAttachments
+                                                            .Where(sa=>sa.Id == int.Parse(returnId))
+                                                            .FirstOrDefaultAsync();
+                        if(supportAttachment!=null)
+                        {
+                            supportAttachment.SupportMessageId = SupportMessage.Id;
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+                    
+                }
+                return new JsonResult(new {success=true,message="Posted Message successfully"});
+            }
+            
+            return new JsonResult(new {success=false,message="Could Not Send Message"});
+         }
+
          public async Task<IActionResult> OnPostReplyMessageAsync()
          {
              var user = await _userManager.GetUserAsync(User);

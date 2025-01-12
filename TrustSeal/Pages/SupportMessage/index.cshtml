@@ -65,8 +65,15 @@
                 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
                 @* Messages *@
                 <ul id="message-list" class="px-2 py-4">
+                    @{
+                        string currentUserId;
+                    }
                    @foreach(var mssg in usr.SupportTickets)
                     {
+                        {
+                            currentUserId=mssg.SendById;
+                        }
+                      
                         <div class="flex items-start gap-2.5">
                             <div class="flex flex-col gap-1 w-full max-w-[320px]">
                                 <div class="flex items-center space-x-2 rtl:space-x-reverse">
@@ -74,8 +81,8 @@
                                     <span class="text-sm font-normal text-gray-500 dark:text-gray-400">@mssg.CreatedAt</span>
                                     <span class="text-sm font-normal text-gray-500 dark:text-gray-400 ms-4">@mssg.TicketNumber</span>
                                 </div>
-                                <div class="flex flex-col leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
-                                    <p class="text-sm font-normal text-gray-900 dark:text-white">@mssg.Message</p>
+                                <div class="flex flex-col leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700" style="overflow: hidden;">
+                                    <p class="text-sm font-normal text-gray-900 dark:text-white" >@mssg.Message</p>
                                     <div>
                                         @if(@mssg.SupportAttachments !=null)
                                         {
@@ -88,79 +95,46 @@
                                 </div>
                                 
                             </div>
-                            <button id="dropdownMenuIconButton-@mssg.Id" data-dropdown-toggle="dropdownDots-@mssg.Id" data-dropdown-placement="bottom-start" class="inline-flex self-center items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:focus:ring-gray-600" type="button">
-                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
-                                    <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
-                                </svg>
-                            </button>
-                            <div id="dropdownDots-@mssg.Id" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-40 dark:bg-gray-700 dark:divide-gray-600">
-                                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton">
-                                    <li>
-                                        <a href="#" data-modal-target="reply-message-@mssg.Id" data-modal-toggle="reply-message-@mssg.Id" type="button" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Reply</a>
-                                        @* Add New Attachment Config Modal *@
-                                        <div id="reply-message-@mssg.Id" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                                            <div class="relative p-4 w-full max-w-md max-h-full">
-                                                <!-- Modal content -->
-                                                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                                                    <!-- Modal header -->
-                                                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                                                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                                                            Reply Message
-                                                        </h3>
-                                                        <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="reply-message-@mssg.Id">
-                                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                                                            </svg>
-                                                            <span class="sr-only">Close modal</span>
-                                                        </button>
-                                                    </div>
-                                                    <!-- Modal body -->
-                                                    <div class="p-4 md:p-5">
-                                                        <form data-form="attachment-config-business-information" class="space-y-4" method="POST">
-                                                            <input type="text" name="AttachmentConfig.category" value="Business Information" hidden>
-                                                            <div>
-                                                                <label for="AttachmentConfig.ForWhichField" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ForWhichField</label>
-                                                                <input type="text" name="AttachmentConfig.ForWhichField" id="AttachmentConfig.ForWhichField" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"  required />
-                                                            </div>
-                                                            <div>
-                                                                <label for="AttachmentConfig.Required" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Required</label>
-                                                                <select  id="AttachmentConfig.Required" name="AttachmentConfig.Required" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                                    <option selected value="0">False</option>
-                                                                    <option value="1">True</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                                                                <button  type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
-                                                                <button data-modal-hide="add-attachmentconfig-modal-business-info" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Cancel</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div> 
-                                        @* End Add New Attachment Config Modal *@
-                                    </li>
-                                    <li>
-                                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
-                                    </li>
-                                </ul>
-                            </div>
+                            
+                                <button id="dropdownMenuIconButton-@mssg.Id" data-dropdown-toggle="dropdownDots-@mssg.Id" data-dropdown-placement="bottom-start" class="inline-flex self-center items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:focus:ring-gray-600" type="button">
+                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                                        <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                                    </svg>
+                                </button>
+                                <div id="dropdownDots-@mssg.Id" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-40 dark:bg-gray-700 dark:divide-gray-600">
+                                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton">
+                                    
+                                            <li>
+                                                <a href="#" data-modal-target="reply-message-@mssg.Id" data-modal-toggle="reply-message-@mssg.Id" type="button" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Reply</a>
+                                            </li>
+                                            @if(user.Id==usr.Id)
+                                            {
+                                                <li>
+                                                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
+                                                </li>
+                                            }
+                                            
+    
+                                    </ul>
+                                </div>
+                            
+                            
                         </div>
                     } 
                 </ul>
                 @* End of Messages *@
                     </div>
                     <div style="margin-top: auto;">
-                        <div id="attached-uposted-files" class="p-2">
+                        <div id="attached-uposted-files" data-send-message="user-id-@usr.Id" class="p-2">
                         
                         </div>
                         <!-- Textarea -->
                         <div class="relative">
                         <form action="" method="post" class="mb-2">
-                        <textarea id="message-content" class="p-4 pb-12 block w-full bg-gray-100 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" placeholder="Type You Message Here" data-hs-textarea-auto-height=""></textarea>
+                        <textarea id="message-content" data-send-message="user-id-@usr.Id" class="p-4 pb-12 block w-full bg-gray-100 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" placeholder="Type You Message Here" data-hs-textarea-auto-height=""></textarea>
                         </form>
 
                         <!-- Toolbar -->
@@ -170,7 +144,7 @@
                             <div class="flex items-center">
 
                                 <!-- Attach Button -->
-                                <button type="button" id="message-attach-file" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                <button type="button" data-send-message="user-id-@usr.Id" id="message-attach-file" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                                 <form action="" method="post">
                                     <input type="file" hidden name="message-attachment">
                                 </form>
@@ -186,7 +160,7 @@
                             <div class="flex items-center gap-x-1">
                             
                                 <!-- Send Button -->
-                                <button type="button" id="message-send" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                <button type="button" data-send-message="user-id-@usr.Id" data-user="@usr.Id" id="admin-message-send-@usr.Id" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                                 <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                     <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"></path>
                                 </svg>
@@ -723,6 +697,10 @@
 
 @section Scripts{
     <script>
+       var IsAdmin ="@IsAdmin";
+       if(IsAdmin !="True")
+       {
+
         let attachBtn =document.querySelectorAll('#message-attach-file')[0]
         let sendMessageBtn=document.querySelectorAll("#message-send")[0]
         sendMessageBtn.disabled=true;
@@ -733,6 +711,8 @@
         let deleteMessageForms =document.querySelectorAll("form[data-form='delete-message-form']");
         
         let removeFilesBtns =document.querySelectorAll("button[data-remove-file='remove-file']");
+
+       
         
         messageTextArea.addEventListener("change",e=>
             {
@@ -1106,6 +1086,70 @@
                 submitBtn.innerHTML="Deleted";
             })
         }
+        } else {
+             //admin side
+            var adminSendBtns=document.querySelectorAll("button[id^='admin-message-send']")
+            adminSendBtns.forEach(adminSendBtn=>{
+                let dataSendAttr=adminSendBtn.getAttribute("data-send-message");
+                let dataUser=adminSendBtn.getAttribute("data-user")
+                adminSendBtn.addEventListener("click",(e)=>{
+                    handlePostNewMessage(e,dataSendAttr,dataUser)
+                })
+            })
+
+            function handlePostNewMessage(e,attr,user)
+            {
+                let messageTextArea=document.querySelector(`textarea[data-send-message='${attr}']`)
+                let attachedFilesCon=document.querySelector(`div[data-send-message='${attr}']`)
+                
+                messageTextArea.disabled=true;
+                let message=messageTextArea.value;
+                let attachedFiles =attachedFilesCon.querySelectorAll('input');
+                let formData =new FormData();
+                formData.append("message",message);
+                formData.append("uniqueId",user)
+                attachedFiles.forEach(input=>{
+                    formData.append('fileId',input.value)
+                })
+                const token = document.querySelector("input[name='__RequestVerificationToken']").value;
+                fetch("/SupportMessage?handler=AdminMessage", {
+                    method: "POST",
+                    headers: {
+                        RequestVerificationToken: token
+                    },
+                    body: formData
+                }).then(res=>res.json())
+                .then(jsonRes=>{
+                    console.log(jsonRes)
+                    messageTextArea.value=''
+                    messageTextArea.disabled=false;
+                    Swal.fire({
+                    text: "Successfully Created Ticket",
+                    toast: true,
+                    position: "top-right",
+                    timerProgressBar: true,
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false
+                    })
+                    window.location.reload()
+                }).catch(err=>{
+                    console.error(err)
+                    messageTextArea.disabled=false;
+                    Swal.fire({
+                    text: "Error Creating Ticket",
+                    toast: true,
+                    position: "top-right",
+                    timerProgressBar: true,
+                    icon: "error",
+                    timer: 1500,
+                    showConfirmButton: false
+                    })
+                })
+            }
+        }
+
+        
     </script>
 }
 
