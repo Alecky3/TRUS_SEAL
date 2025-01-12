@@ -39,6 +39,8 @@ namespace TrustSeal.Pages.TsSeals
 
             public string SealReadableId {get;set;}
 
+            public TSUser Owner {get;set;}
+
             public Guid SealCode {get;set;}
         }
         public IList<AllSeals> Seals {get;set;} = new List<AllSeals>();
@@ -59,7 +61,8 @@ namespace TrustSeal.Pages.TsSeals
                                                     ExpiresAt = s.ExpiresAt,
                                                     BusinessLegalName = s.Business.LegalName,
                                                     SealReadableId = s.Business.SealReadableId,
-                                                    SealCode = s.SealCode
+                                                    SealCode = s.SealCode,
+                                                    Owner=s.Business.Owner
                                                 })
                                                 .ToListAsync();
                 

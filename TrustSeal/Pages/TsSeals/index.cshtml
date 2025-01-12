@@ -112,19 +112,19 @@
             <div class="certificate-header">Trust Seal Badge</div>
             <img src="@Url.Content("~/Badges/badge.png")" alt="Trust Badge" class="certificate-badge">
             <div class="certificate-subheader">This is to certify that</div>
-            <div class="certificate-name">John Doe</div>
+            <div class="certificate-name">@seal.Owner.FirstName</div>
             <div class="certificate-content">
                 Has successfully completed the <strong>Business Verification</strong><br>
-                on <strong>January 2, 2025</strong>.
+                on <strong>@seal.CreatedAt.ToShortDateString()</strong>.
             </div>
             <div class="certificate-footer">
                 <div class="certificate-signature">
                     <img src="@Url.Content("~/Badges/signature.png")" alt="CEO Signature">
                     <p>CEO Signature</p>
                 </div>
-                <div class="certificate-date">Issued on: January 2, 2025</div>
+                <div class="certificate-date">Issued on: @seal.CreatedAt.ToShortDateString()</div>
             </div>
-            <a href="#" class="download-btn" onclick="downloadCertificate()">Download Certificate</a>
+            <a href="#" class="download-btn" onclick="downloadCertificate()" class="mt-2">Download Certificate</a>
         </div>
         
     </div>
