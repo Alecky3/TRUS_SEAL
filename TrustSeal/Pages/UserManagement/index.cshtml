@@ -85,19 +85,95 @@
             </td>
             <td>
                 <div class="hs-dropdown relative inline-flex">
-                    <button id="@user.Id" type="button" class="hs-dropdown-toggle py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
+                    <button id="@user.Id"  type="button" class="hs-dropdown-toggle py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
                     Actions
                     <svg class="hs-dropdown-open:rotate-180 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                     </button>
 
                     <div class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg mt-2 dark:bg-neutral-800 dark:border dark:border-neutral-700 dark:divide-neutral-700 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full" style="z-index: 1000;" role="menu" aria-orientation="vertical" aria-labelledby="@user.Id">
                         <div class="p-1 space-y-0.5">
-                            <a href="/ApplySeal/index?Id=@user.Id" class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700" >
+                            <a data-modal-target="view-edit-user-modal-@user.Id" data-modal-toggle="view-edit-user-modal-@user.Id" type="button"  class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700" >
                             View/Edit
                             </a>
                         </div>
                     </div>
                 </div>
+                @* View/Edit User Modal *@
+                    <div id="view-edit-user-modal-@user.Id" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                        <div class="relative p-4 w-full max-w-md max-h-full">
+                            <!-- Modal content -->
+                            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                <!-- Modal header -->
+                                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                        View/Edit User Details
+                                    </h3>
+                                    <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="view-edit-user-modal-@user.Id">
+                                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                        </svg>
+                                        <span class="sr-only">Close modal</span>
+                                    </button>
+                                </div>
+                                <!-- Modal body -->
+                                <div class="p-4 md:p-5">
+                                    <form data-form="view-edit-user-info-form-@user.Id" id="view-edit-user-info-form-@user.Id" class="space-y-4" method="POST">
+                                        <input type="text" name="User.Id" value="@user.Id" hidden>
+                                        <div>
+                                            <label for="User.FirstName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name</label>
+                                            <input value="@user.FirstName" type="text" name="User.FirstName" id="User.FirstName-@user.Id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"  required />
+                                        </div>
+                                        <div>
+                                            <label for="User.LastName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name</label>
+                                            <input value="@user.LastName" type="text" name="User.LastName" id="User.LastName-@user.Id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"  required />
+                                    
+                                        </div>
+                                        <div>
+                                            <label for="User.Email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                                            <input value="@user.Email" type="text" name="User.Email" id="User.Email-@user.Id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"  required  disabled/>
+                                    
+                                        </div>
+                                        <div>
+                                            <label for="User.EmailConfirmed" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email Confirmed</label>
+                                            <select  id="User.EmailConfirmed-@user.Id" name="User.EmailConfirmed" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                @if(user.EmailConfirmed)
+                                                {
+                                                    <option value="@user.EmailConfirmed" selected>Email Confirmed</option>
+                                                    <option value="False">Email Not Confirmed</option>
+                                                } else {
+                                                   <option value="True">Email Confirmed</option>
+                                                    <option value="False" selected>Email Not Confirmed</option> 
+                                                }
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label for="User.PhoneNumber" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone Number</label>
+                                            <input value="@user.PhoneNumber" type="text" name="User.PhoneNumber" id="User.PhoneNumber-@user.Id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" />
+                                    
+                                        </div>
+                                        <div>
+                                            <label for="User.Role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email Confirmed</label>
+                                            <select  id="User.Role-@user.Id" name="User.Role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                @if(user.Roles.Contains("Admin"))
+                                                {
+                                                    <option value="@(string.Join(", ",user.Roles))" selected>@(string.Join(", ",user.Roles))</option>
+                                                    <option value="User">Portal User</option>
+                                                } else {
+                                                   <option value="Admin">Admin</option>
+                                                    <option value="User" selected>Portal User</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                                            <button  type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
+                                            <button data-modal-hide="view-edit-user-modal-@user.Id" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                    @* End View/Edit Modal *@
             </td>
         </tr>
         }
@@ -145,5 +221,23 @@
           }
 
        })
+
+       var userViewEditForms=document.querySelectorAll("form[data-form^='view-edit-user-info-form']")
+      
+      userViewEditForms.forEach(userForm=>{
+        
+        userForm.addEventListener("submit",(e)=>{
+            console.log(e.target)
+            e.preventDefault();
+            handleUpdateUserInfo(e)
+        })
+      })
+
+
+       function handleUpdateUserInfo(e)
+       {
+        
+        console.log("Update User Info")
+       }
     </script>
 }

@@ -17,6 +17,8 @@ namespace TrustSeal.Models
 
         public bool HasAttachment { get; set; } = false;
 
+        public List<string> Choices {get;set;} = new List<string> {"Yes","No"};
+
         [ForeignKey("Category")]
         [Required]
         public int CategoryId { get; set; }

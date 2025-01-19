@@ -69,6 +69,12 @@ namespace TrustSeal.Pages.UserManagement {
 
         public async Task<IActionResult> OnPostAsync()
         {
+            var userId=Request.Form["User.Id"];
+            var user=await _context.Users.FirstOrDefaultAsync(u=>u.Id==userId.ToString());
+            if(user!=null)
+            {
+                return new JsonResult(new {success=true,message="Update User Successfully"});
+            }
             return Page();
         }
     }
