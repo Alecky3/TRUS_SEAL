@@ -2028,10 +2028,6 @@ input:checked + .toggle-bg {
   height: 100vh;
 }
 
-.max-h-10 {
-  max-height: 2.5rem;
-}
-
 .max-h-\[400px\] {
   max-height: 400px;
 }
@@ -2132,22 +2128,6 @@ input:checked + .toggle-bg {
   width: 1px;
 }
 
-.w-28 {
-  width: 7rem;
-}
-
-.w-12 {
-  width: 3rem;
-}
-
-.w-24 {
-  width: 6rem;
-}
-
-.w-16 {
-  width: 4rem;
-}
-
 .min-w-60 {
   min-width: 15rem;
 }
@@ -2156,8 +2136,8 @@ input:checked + .toggle-bg {
   min-width: 1.75rem;
 }
 
-.max-w-28 {
-  max-width: 7rem;
+.max-w-16 {
+  max-width: 4rem;
 }
 
 .max-w-2xl {
@@ -2194,10 +2174,6 @@ input:checked + .toggle-bg {
 
 .max-w-sm {
   max-width: 24rem;
-}
-
-.max-w-16 {
-  max-width: 4rem;
 }
 
 .flex-1 {
@@ -3663,6 +3639,11 @@ input:checked + .toggle-bg {
   background-color: rgb(17 24 39 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-green-300:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(132 225 188 / var(--tw-bg-opacity));
+}
+
 .hover\:bg-green-400:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(49 196 141 / var(--tw-bg-opacity));
@@ -4652,6 +4633,10 @@ input:checked + .toggle-bg {
     inset: 0px;
   }
 
+  .md\:col-span-3 {
+    grid-column: span 3 / span 3;
+  }
+
   .md\:mb-0 {
     margin-bottom: 0px;
   }
@@ -4710,6 +4695,10 @@ input:checked + .toggle-bg {
 
   .md\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 
   .md\:flex-row {

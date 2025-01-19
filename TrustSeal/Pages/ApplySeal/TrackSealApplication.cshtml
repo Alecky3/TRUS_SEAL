@@ -18,32 +18,6 @@
         You are Tracking @Model.Business.LegalName, Case Number <span class="text-3xl text-green-500 font-bold underline decoration-green-500">@Model.Business.CaseNumber</span> 
     </div>
 </div>
-@* <!-- Stepper -->
-<ul class="relative flex flex-col  gap-2">
-  @foreach(var (app,index) in Model.ApplicationTrackings.Select((app,index)=>(app,index)))
-  {
-    <!-- Item -->
-  <li class="md:shrink md:basis-0 flex-1 group flex gap-x-2 ">
-    <div class="min-w-7 min-h-7 flex flex-col items-center  md:inline-flex md:flex-wrap text-xs align-middle">
-      <span class="size-7 flex justify-center items-center shrink-0 bg-gray-100 font-medium text-gray-800 rounded-full dark:bg-neutral-700 dark:text-white">
-        @index
-      </span>
-      <div class="mt-2 w-px h-full md:mt-0 md:ms-2  bg-gray-200 group-last:hidden dark:bg-neutral-700"></div>
-    </div>
-    <div class="grow md:grow-0 md:mt-3 pb-5">
-      <span class="block text-sm font-medium text-gray-800 dark:text-white">
-        @app.Status
-      </span>
-      <p class="text-sm text-gray-500 dark:text-neutral-500">
-        @(app.Comments != null ? app.Comments : "[Reviewer Comments will appear here]")
-      </p>
-    </div>
-  </li>
-  <!-- End Item -->
-  }
-</ul>
-<!-- End Stepper -->
-</div> *@
 
 
 

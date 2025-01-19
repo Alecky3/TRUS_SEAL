@@ -39,7 +39,8 @@ namespace TrustSeal.Pages.ApplicationStatus
 
          public async Task OnGetAsync()
          {
-            ApplicationStatus = await _context.ApplicationTrackings.ToListAsync();
+            ApplicationStatus = await _context.ApplicationTrackings
+                                                .Where(s=>s.IsMain==true).ToListAsync();
          }
 
          public async Task<IActionResult> OnPostCreateNewAsync()
@@ -47,8 +48,64 @@ namespace TrustSeal.Pages.ApplicationStatus
             return BadRequest();
          }
 
-         public async Task<IActionResult> OnPostChangeIsRequiredAsync()
+         public async Task<IActionResult> OnPostUpdateStatusAsync()
          {
+            var StatusId = Request.Form["applicationStatus.Id"];
+           
+            if(StatusId.ToString() != null)
+            {
+                var applicationTracking = await _context.ApplicationTrackings.FirstOrDefaultAsync(s=>s.Id==int.Parse(StatusId));
+                if(applicationTracking !=null)
+                {
+                    applicationTracking.Required = Request.Form["applicationStatus.Required"].ToString() == "True" ? true:false;
+                    applicationTracking.Status = Request.Form["applicationStatus.Status"];
+                    applicationTracking.Order = int.Parse(Request.Form["applicationStatus.Order"]);
+                    await _context.SaveChangesAsync();
+
+                    return new JsonResult(new {success=true,message="successfully update status Config"});
+                } 
+            }
+            return BadRequest();
+         }
+
+         public async Task<IActionResult> OnPostChangeOrderAsync()
+         {
+            return BadRequest();
+         }
+         public async Task<IActionResult> OnPostChangeStatusAsync()
+         {
+            return BadRequest();
+         }
+
+         public async Task<IActionResult> OnPostAddNewStatusAsync()
+         {
+            _logger.LogInformation("In create new application status");
+            var applicationTrackingStatus = new ApplicationTracking();
+            _logger.LogInformation("Creating new empty Application Tracking Status");
+            if( await TryUpdateModelAsync<ApplicationTracking>(
+                applicationTrackingStatus,
+                "applicationStatus",
+                s=> s.IsMain,
+                s=>s.Status,
+                s=>s.Required
+            )){
+                var lastStatus= await _context.ApplicationTrackings.OrderByDescending(a=>a.Order)
+                                .FirstOrDefaultAsync();
+                _logger.LogInformation("Creating new Application Tracking Status");
+                int order = 1;
+                if(lastStatus != null)
+                {
+                    order=lastStatus.Order + 1;
+                }
+                applicationTrackingStatus.Order = order;
+                applicationTrackingStatus.CreatedAt = DateTime.Now;
+                applicationTrackingStatus.UpdatedAt = DateTime.Now;
+                
+                _context.ApplicationTrackings.Add(applicationTrackingStatus);
+
+                await _context.SaveChangesAsync();
+                return new JsonResult(new {success=true,message="Created Verification Status successfully"});
+            }
             return BadRequest();
          }
     }
