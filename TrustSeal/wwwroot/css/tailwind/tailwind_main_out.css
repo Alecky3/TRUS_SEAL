@@ -1940,11 +1940,6 @@ input:checked + .toggle-bg {
   height: 1.5rem;
 }
 
-.size-7 {
-  width: 1.75rem;
-  height: 1.75rem;
-}
-
 .size-8 {
   width: 2rem;
   height: 2rem;
@@ -2036,10 +2031,6 @@ input:checked + .toggle-bg {
   max-height: 100%;
 }
 
-.min-h-7 {
-  min-height: 1.75rem;
-}
-
 .min-h-\[calc\(100\%-3\.5rem\)\] {
   min-height: calc(100% - 3.5rem);
 }
@@ -2124,16 +2115,8 @@ input:checked + .toggle-bg {
   width: 100%;
 }
 
-.w-px {
-  width: 1px;
-}
-
 .min-w-60 {
   min-width: 15rem;
-}
-
-.min-w-7 {
-  min-width: 1.75rem;
 }
 
 .max-w-16 {
@@ -2817,6 +2800,11 @@ input:checked + .toggle-bg {
   background-color: rgb(248 180 180 / var(--tw-bg-opacity));
 }
 
+.bg-red-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(253 242 242 / var(--tw-bg-opacity));
+}
+
 .bg-red-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(240 82 82 / var(--tw-bg-opacity));
@@ -2848,6 +2836,11 @@ input:checked + .toggle-bg {
 
 .bg-white\/50 {
   background-color: rgb(255 255 255 / 0.5);
+}
+
+.bg-red-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(251 213 213 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-50 {
@@ -2995,10 +2988,6 @@ input:checked + .toggle-bg {
   padding-bottom: 1rem;
 }
 
-.pb-5 {
-  padding-bottom: 1.25rem;
-}
-
 .pe-1 {
   padding-inline-end: 0.25rem;
 }
@@ -3049,10 +3038,6 @@ input:checked + .toggle-bg {
 
 .text-end {
   text-align: end;
-}
-
-.align-middle {
-  vertical-align: middle;
 }
 
 .align-bottom {
@@ -3872,10 +3857,6 @@ input:checked + .toggle-bg {
   opacity: 0.5;
 }
 
-.group:last-child .group-last\:hidden {
-  display: none;
-}
-
 .group:hover .group-hover\:text-gray-900 {
   --tw-text-opacity: 1;
   color: rgb(17 24 39 / var(--tw-text-opacity));
@@ -4645,24 +4626,8 @@ input:checked + .toggle-bg {
     margin-inline-end: 6rem;
   }
 
-  .md\:ms-2 {
-    margin-inline-start: 0.5rem;
-  }
-
-  .md\:mt-0 {
-    margin-top: 0px;
-  }
-
-  .md\:mt-3 {
-    margin-top: 0.75rem;
-  }
-
   .md\:flex {
     display: flex;
-  }
-
-  .md\:inline-flex {
-    display: inline-flex;
   }
 
   .md\:grid {
@@ -4675,18 +4640,6 @@ input:checked + .toggle-bg {
 
   .md\:w-auto {
     width: auto;
-  }
-
-  .md\:shrink {
-    flex-shrink: 1;
-  }
-
-  .md\:grow-0 {
-    flex-grow: 0;
-  }
-
-  .md\:basis-0 {
-    flex-basis: 0px;
   }
 
   .md\:grid-cols-2 {
@@ -4703,10 +4656,6 @@ input:checked + .toggle-bg {
 
   .md\:flex-row {
     flex-direction: row;
-  }
-
-  .md\:flex-wrap {
-    flex-wrap: wrap;
   }
 
   .md\:items-center {
