@@ -117,7 +117,7 @@
                                 </div>
                                 <!-- Modal body -->
                                 <div class="p-4 md:p-5">
-                                    <form data-form="view-edit-user-info-form-@user.Id" id="view-edit-user-info-form-@user.Id" class="space-y-4" method="POST">
+                                    <form data-form="view-edit-user-info-form-@user.Id"  class="space-y-4" method="post">
                                         <input type="text" name="User.Id" value="@user.Id" hidden>
                                         <div>
                                             <label for="User.FirstName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name</label>
@@ -152,7 +152,7 @@
                                     
                                         </div>
                                         <div>
-                                            <label for="User.Role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email Confirmed</label>
+                                            <label for="User.Role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
                                             <select  id="User.Role-@user.Id" name="User.Role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                 @if(user.Roles.Contains("Admin"))
                                                 {
@@ -182,8 +182,16 @@
 
 @section Scripts{
     <script>
-        window.addEventListener("DOMContentLoaded",function(event){
         
+
+        window.addEventListener("DOMContentLoaded",function(event){
+            document.addEventListener("submit", function(e) {
+                const form = e.target;
+                if (form.matches("form[data-form^='view-edit-user-info-form']")) {
+                    e.preventDefault();
+                    handleUpdateUserInfo(e)
+                }
+            });
           if (document.getElementById("manageusers-table") && typeof simpleDatatables.DataTable !== 'undefined') {
               const dataTable = new simpleDatatables.DataTable("#manageusers-table", {
                   searchable: true,
@@ -222,22 +230,51 @@
 
        })
 
-       var userViewEditForms=document.querySelectorAll("form[data-form^='view-edit-user-info-form']")
-      
-      userViewEditForms.forEach(userForm=>{
-        
-        userForm.addEventListener("submit",(e)=>{
-            console.log(e.target)
-            e.preventDefault();
-            handleUpdateUserInfo(e)
-        })
-      })
+       
 
 
        function handleUpdateUserInfo(e)
        {
-        
-        console.log("Update User Info")
+            var submitBtn=e.target.querySelector("button[type='submit']");
+            submitBtn.disabled=true;
+             submitBtn.innerHTML=`<span class="animate-spin inline-block size-4 border-[3px] border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"></span>
+                            Saving...`
+            let formData=new FormData(e.target);
+            const token = e.target.querySelector("input[name='__RequestVerificationToken']").value;
+            fetch("/UserManagement", {
+            method: "POST",
+            headers: {
+                RequestVerificationToken: token
+            },
+            body: formData
+            }).then(res=>res.json())
+            .then(jsonRes=>{
+                console.log(jsonRes)
+                Swal.fire({
+                text: "Successfuly Updated User Information",
+                toast: true,
+                position: "center",
+                timerProgressBar: true,
+                icon: "success",
+                timer: 1500,
+                showConfirmButton: false
+              })
+                submitBtn.innerHTML="Save"
+                submitBtn.disabled=false;
+            }).catch(err=>{
+                Swal.fire({
+                text: "Error  Updating User Information",
+                toast: true,
+                position: "center",
+                timerProgressBar: true,
+                icon: "error",
+                timer: 1500,
+                showConfirmButton: false
+              })
+                console.log(err)
+                submitBtn.disabled=false;
+                submitBtn.innerHTML="Save"
+            })
        }
     </script>
 }

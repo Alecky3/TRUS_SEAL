@@ -73,6 +73,15 @@ namespace TrustSeal.Pages.UserManagement {
             var user=await _context.Users.FirstOrDefaultAsync(u=>u.Id==userId.ToString());
             if(user!=null)
             {
+                user.FirstName=Request.Form["User.FirstName"];
+                user.LastName=Request.Form["User.LastName"];
+                user.EmailConfirmed = Request.Form["User.EmailConfirmed"].ToString() == "True" ? true: false;
+                user.PhoneNumber = Request.Form["User.PhoneNumber"];
+                await _context.SaveChangesAsync();
+                var roles= await _userManager.GetRolesAsync(user);
+                await _userManager.RemoveFromRolesAsync(user,roles);
+                await _userManager.AddToRoleAsync(user,Request.Form["User.Role"]);
+                await _context.SaveChangesAsync();
                 return new JsonResult(new {success=true,message="Update User Successfully"});
             }
             return Page();
