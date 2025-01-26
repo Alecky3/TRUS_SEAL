@@ -15,7 +15,7 @@ namespace TrustSeal.Models
 
         public bool IsActive { get; set; } = true;
 
-        public bool HasAttachment { get; set; } = false;
+        public bool HasChoices { get; set; } = false;
 
         public List<string> Choices {get;set;} = new List<string> {"Yes","No"};
 

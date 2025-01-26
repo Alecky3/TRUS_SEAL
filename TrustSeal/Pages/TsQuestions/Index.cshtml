@@ -5,153 +5,817 @@
     ViewData["Title"] = "Index";
 }
 
-
-    <!-- Start coding here -->
-<section class="container mx-auto over">
-    <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-        <div class="w-full md:w-1/2">
-            <form class="flex items-center">
-                <label for="simple-search" class="sr-only">Search</label>
-                <div class="relative w-full">
-                    <input type="text" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pr-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search" required="">
-                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                        <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+<section>
+    @* Add new Category *@
+    <div class="flex justify-end mb-2">
+        <button data-modal-target="add-category-modal" data-modal-toggle="add-category-modal" type="button" class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add Category</button>
+    </div>
+    @* Add New Question Category Modal *@
+    <div id="add-category-modal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-md max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                        Create Question Category Entry
+                    </h3>
+                    <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="add-category-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                         </svg>
-                    </div>
+                        <span class="sr-only">Close modal</span>
+                    </button>
                 </div>
-            </form>
-        </div>
-
-        <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-            <a asp-page="Create" type="button" class="flex items-center text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
-                <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                </svg>
-                Add Question
-            </a>
-            <div class="flex items-center space-x-3 w-full md:w-auto">
-                <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown" class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:outline-none focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
-                    <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                    </svg>
-                    Actions
-                </button>
-                <div id="actionsDropdown" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
-                        <li>
-                            <a href="#" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Mass Edit</a>
-                        </li>
-                    </ul>
-                    <div class="py-1">
-                        <a href="#" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete all</a>
-                    </div>
-                </div>
-                <button id="filterDropdownButton" data-dropdown-toggle="filterDropdown" class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:outline-none focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="h-4 w-4 mr-2 text-gray-400" viewbox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />
-                    </svg>
-                    Filter
-                    <svg class="-mr-1 ml-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                    </svg>
-                </button>
-                <div id="filterDropdown" class="z-10 hidden w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700">
-                    <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">Choose brand</h6>
-                    <ul class="space-y-2 text-sm" aria-labelledby="filterDropdownButton">
-                        <li class="flex items-center">
-                            <input id="apple" type="checkbox" value="" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                            <label for="apple" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Apple (56)</label>
-                        </li>
-                        <li class="flex items-center">
-                            <input id="fitbit" type="checkbox" value="" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                            <label for="fitbit" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Microsoft (16)</label>
-                        </li>
-                        <li class="flex items-center">
-                            <input id="razor" type="checkbox" value="" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                            <label for="razor" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Razor (49)</label>
-                        </li>
-                        <li class="flex items-center">
-                            <input id="nikon" type="checkbox" value="" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                            <label for="nikon" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Nikon (12)</label>
-                        </li>
-                        <li class="flex items-center">
-                            <input id="benq" type="checkbox" value="" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                            <label for="benq" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">BenQ (74)</label>
-                        </li>
-                    </ul>
+                <!-- Modal body -->
+                <div class="p-4 md:p-5">
+                    <form data-form="add-category" class="space-y-4" method="POST">
+                        <div>
+                            <label for="category.Name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                            <input type="text" name="category.Name" id="category.Name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"  required />
+                        </div>
+                        <div>
+                            <label for="category.Description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                            <input type="text" name="category.Description" id="category.Description" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"  required />
+                        </div>
+                         <div>
+                            <label for="category.Order" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Order</label>
+                            <input type="number" name="category.Order" id="category.Order" value="@(Model.Categories.Count() + 1)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"  required />
+                        </div>
+                        <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                            <button  type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
+                            <button data-modal-hide="add-category-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Cancel</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
+    </div>                   
+    @* End add new Category *@
 
-    <!-- Table section -->
-    <div class="overflow-x-auto p-4">
-        <table class="w-full text-xs text-left text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th scope="col" class="p-4">
-                        <div class="flex items-center">
-                            <input id="checkbox-all" type="checkbox" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                            <label for="checkbox-all" class="sr-only">checkbox</label>
+@* Categories and Question Accordions *@
+<div class="hs-accordion-group" >
+ @* Start of Category Accordion *@
+ @{
+    var index = 0;
+ }
+  @foreach(var cat in Model.Categories)
+  { 
+    
+    <div class="hs-accordion @(index==0 ? "active" : null) p-px sm:p-2 hs-accordion-active:border-gray-200 bg-white border border-transparent rounded-xl dark:hs-accordion-active:border-neutral-700 dark:bg-neutral-800 dark:border-transparent" id="category-heading-@cat.Id">
+    <button class="hs-accordion-toggle hs-accordion-active:text-blue-600 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-start text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none dark:hs-accordion-active:text-blue-500 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:text-neutral-400" aria-expanded="@(index==0 ? "true" : "false")" aria-controls="hs-category-open-@cat.Id">
+      <svg class="hs-accordion-active:hidden block size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14"></path>
+        <path d="M12 5v14"></path>
+      </svg>
+      <svg class="hs-accordion-active:block hidden size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14"></path>
+      </svg>
+      @cat.Name
+    </button>
+    <div id="hs-category-open-@cat.Id" class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300" role="region" aria-labelledby="category-heading-@cat.Id">
+        @* Update Category *@
+        <div class="flex   justify-between mb-2">
+            <button data-modal-target="new-question-modal-@cat.Id" data-modal-toggle="new-question-modal-@cat.Id" type="button" class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">New Question</button>
+            <div>
+                <button data-modal-target="delete-category-modal-@cat.Id" data-modal-toggle="delete-category-modal-@cat.Id" type="button" class="px-3 py-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Delete</button>
+                <button data-modal-target="update-category-modal-@cat.Id" data-modal-toggle="update-category-modal-@cat.Id" type="button" class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">View/Update Category</button>
+            </div>
+        </div>
+        @* Delete Category *@
+            <div id="delete-category-modal-@cat.Id" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                <div class="relative p-4 w-full max-w-md max-h-full">
+                    <!-- Modal content -->
+                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                        <!-- Modal header -->
+                        <div class="flex items-center justify-between p-4 md:p-5 ">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                Delete Category
+                            </h3>
+                            <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="delete-category-modal-@cat.Id">
+                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                </svg>
+                                <span class="sr-only">Close modal</span>
+                            </button>
                         </div>
-                    </th>
-                    <th scope="col" class="px-2 py-2">Text</th>
-                    <th scope="col" class="px-2 py-2">Status</th>
-                    <th scope="col" class="px-2 py-2">Criteria</th>
-                    <th scope="col" class="px-2 py-2 text-nowrap">Requires Document</th>
-                    <th scope="col" class="px-2 py-2">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Question)
-                {
-                    <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                        <td class="w-4 px-4 py-3">
-                            <div class="flex items-center">
-                                <input id="checkbox-table-search-1" type="checkbox" onclick="event.stopPropagation()" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
-                            </div>
-                        </td>
-                        <td class="px-2 py-2 font-medium text-gray-900 dark:text-white">@Html.DisplayFor(modelItem => item.QuestionText)</td>
-                        <td class="px-2 py-2">
-                            <div class="flex items-center">
-                                <input type="checkbox"
-                                       checked="@item.IsActive"
-                                       disabled
-                                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                            </div>
-                        </td>
-                        <td class="px-2 py-2">@Html.DisplayFor(modelItem => item.Category.Name)</td>
-                        <td class="px-2 py-2">
-                            <div class="flex items-center">
-                                <input type="checkbox"
-                                       checked="@item.HasAttachment"
-                                       disabled
-                                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                            </div>
-                        </td>
-                        <td class="px-2 py-2">
-                            <div class="flex items-center space-x-1 gap-1">
-                                @* <a class="inline-flex items-center px-2.5 py-1.5 bg-green-600 text-white text-sm font-medium rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" asp-page="#" asp-route-id="@item.Id">
-                                    <i class="bi bi-file-text-fill"></i>
-                                </a> *@
-                                <a class="inline-flex items-center px-2.5 py-1.5 bg-blue-500 text-white text-sm font-medium rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400" asp-page="./Details" asp-route-id="@item.Id">
-                                    <i class="bi bi-eye-fill"></i>
-                                </a>
-                                <a class="inline-flex items-center px-2.5 py-1.5 bg-indigo-600 text-white text-sm font-medium rounded hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" asp-page="./Edit" asp-route-id="@item.Id">
-                                    <i class="bi bi-pencil-fill"></i>
-                                </a>
-                                <a class="inline-flex items-center px-3 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" asp-page="./Delete" asp-route-id="@item.Id">
-                                    <i class="bi bi-trash-fill"></i>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div> 
-    </section>
-  
+                        <!-- Modal body -->
+                        <div class="p-4 md:p-5">
+                            <form data-form="delete-category" class="space-y-4" method="POST">
+                                <input type="text" name="category.Id" value="@cat.Id" hidden>
+                                
+                                <div class="flex items-center p-4 md:p-5  rounded-b dark:border-gray-600">
+                                    <button  type="submit" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Delete</button>
+                                    <button data-modal-hide="delete-category-modal-@cat.Id" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        @* End Delete Category *@
 
+        @* New Question *@
+        <div id="new-question-modal-@cat.Id" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative p-4 w-full max-w-md max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    <!-- Modal header -->
+                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                            New Question Entry
+                        </h3>
+                        <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="new-question-modal-@cat.Id">
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                            </svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-4 md:p-5">
+                        <form data-form="new-question" class="space-y-4" method="POST">
+                            <input type="text" name="question.CategoryId" value="@cat.Id" hidden>
+                            <div>
+                                <label for="question.QuestionText" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Question Text</label>
+                                <input type="text" name="question.QuestionText" id="question.QuestionText"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"  required />
+                            </div>
+                            <div>
+                                <label for="question.IsActive" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">IsActive</label>
+                                <select  id="question.IsActive" name="question.IsActive" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option  selected value="True">True</option>
+                                    <option  value="False">False</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="question.HasChoices" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">HasChoices</label>
+                                <select  id="question.HasChoices" name="question.HasChoices" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option  value="True">True</option>
+                                    <option selected value="False">False</option>
+                                </select>
+                            </div>
+                            
+                            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                                <button  type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
+                                <button data-modal-hide="new-question-modal-@cat.Id" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>  
+        @* End Add new Question *@
+        @* Update Question Category Modal *@
+        <div id="update-category-modal-@cat.Id" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative p-4 w-full max-w-md max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    <!-- Modal header -->
+                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                            Update Question Category Entry
+                        </h3>
+                        <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="update-category-modal-@cat.Id">
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                            </svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-4 md:p-5">
+                        <form data-form="update-category" class="space-y-4" method="POST">
+                            <input type="text" name="category.Id" value="@cat.Id" hidden>
+                            <div>
+                                <label for="category.Name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                                <input type="text" name="category.Name" id="category.Name" value="@cat.Name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"  required />
+                            </div>
+                            <div>
+                                <label for="category.Description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                                <input type="text" name="category.Description" id="category.Description" value="@cat.Description" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"  required />
+                            </div>
+                            <div>
+                                <label for="category.Order" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Order</label>
+                                <input type="number" name="category.Order" id="category.Order" value="@cat.Order" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"  required />
+                            </div>
+                            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                                <button  type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
+                                <button data-modal-hide="update-category-modal-@cat.Id" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>                   
+        @* End Update Category *@ 
+        <div class="hs-accordion-group ps-6 ">
+        @foreach(var q in cat.questions)
+        {
+            @* Questions Accordions *@
+            <div class="hs-accordion p-px sm:p-2 hs-accordion-active:border-gray-200 bg-white border border-transparent rounded-xl dark:hs-accordion-active:border-neutral-700 dark:bg-neutral-800 dark:border-transparent" id="question-heading-@q.Id">
+                <button class="hs-accordion-toggle hs-accordion-active:text-blue-600 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-start text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none dark:hs-accordion-active:text-blue-500 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:text-neutral-400" aria-expanded="false" aria-controls="hs-question-open-@q.Id">
+                    <svg class="hs-accordion-active:hidden block size-3" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2.62421 7.86L13.6242 7.85999" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                    <path d="M8.12421 13.36V2.35999" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                    </svg>
+                    <svg class="hs-accordion-active:block hidden size-3" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2.62421 7.86L13.6242 7.85999" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                    </svg>
+                    @q.QuestionText
+                </button>
+                <div id="hs-question-open-@q.Id" class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300" role="region" aria-labelledby="question-heading-@q.Id">
+                    <div class="flex justify-start border-b border-gray-200 pb-2">
+                        <button data-modal-target="edit-question-modal-@q.Id" data-modal-toggle="edit-question-modal-@q.Id" type="button" class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 me-2 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Edit</button>
+                        <button data-modal-target="delete-question-modal-@q.Id" data-modal-toggle="delete-question-modal-@q.Id" type="button" class="px-3 py-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Delete</button>
+                    </div>
+                    @* Question Body *@
+                    <div class="grid @(q.HasChoices ? "md:grid-cols-3" : "md:grid-cols-2") p-2">
+                         <div>
+                            <label class="inline-flex items-center cursor-pointer">
+                                <input disabled type="checkbox" value='@q.IsActive' class="sr-only peer" @(q.IsActive ? "checked": null)>
+                                <div class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Is Active</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label class="inline-flex items-center cursor-pointer">
+                                <input disabled type="checkbox" value='@q.HasChoices' class="sr-only peer" @(q.HasChoices ? "checked": null)>
+                                <div class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Has Choices</span>
+                            </label>
+                        </div>
+                        @if(q.HasChoices)
+                        {
+                            <div>
+                                 <button data-modal-target="question-choices-modal-@q.Id" data-modal-toggle="question-choices-modal-@q.Id" type="button" class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 me-2 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add Choices</button>
+                                 @* Add Choices Modal *@
+                                 <div id="question-choices-modal-@q.Id" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                    <div class="relative p-4 w-full max-w-md max-h-full">
+                                        <!-- Modal content -->
+                                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                            <!-- Modal header -->
+                                            <div class="flex items-center justify-between p-4 md:p-5 ">
+                                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                                   Add Question Choices
+                                                </h3>
+                                                <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="question-choices-modal-@q.Id">
+                                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                                    </svg>
+                                                    <span class="sr-only">Close modal</span>
+                                                </button>
+                                            </div>
+                                            <!-- Modal body -->
+                                            <div class="p-4 md:p-5">
+                                                <form data-form="add-question-choices" class="space-y-4" method="POST">
+                                                    <input type="text" name="question.Id" value="@q.Id" hidden>
+                                                    <div data-choice="choice-container">
+                                                        <button data-choice="btn-add-choice"  type="button" class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 me-2 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add New</button>
+
+                                                        <div class="mt-1">
+                                                            <label for="choice" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Choice Text</label>
+                                                            <input type="text" name="choice"  id="choice"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"  required />
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex items-center p-4 md:p-5  rounded-b dark:border-gray-600">
+                                                        <button  type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
+                                                        <button data-modal-hide="question-choices-modal-@q.Id" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Cancel</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                 @* End Add Choices Modal *@
+                            </div>
+                            <div>
+                                <div>
+                                    @foreach(var choice in @q.Choices)
+                                    {
+                                        <li>@choice</li>
+                                    }
+                                </div> 
+                            </div>
+                        }
+                    </div>
+                    @* End Question Body *@
+                    @* Delete Question *@
+                    <div id="delete-question-modal-@q.Id" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                        <div class="relative p-4 w-full max-w-md max-h-full">
+                            <!-- Modal content -->
+                            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                <!-- Modal header -->
+                                <div class="flex items-center justify-between p-4 md:p-5 ">
+                                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                        Delete Question
+                                    </h3>
+                                    <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="delete-question-modal-@q.Id">
+                                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                        </svg>
+                                        <span class="sr-only">Close modal</span>
+                                    </button>
+                                </div>
+                                <!-- Modal body -->
+                                <div class="p-4 md:p-5">
+                                    <form data-form="delete-question" class="space-y-4" method="POST">
+                                        <input type="text" name="question.Id" value="@q.Id" hidden>
+                                        
+                                        <div class="flex items-center p-4 md:p-5  rounded-b dark:border-gray-600">
+                                            <button  type="submit" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Delete</button>
+                                            <button data-modal-hide="delete-question-modal-@q.Id" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                    @* End Delete Question *@
+                    @* Edit Question *@
+                    <div id="edit-question-modal-@q.Id" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                        <div class="relative p-4 w-full max-w-md max-h-full">
+                            <!-- Modal content -->
+                            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                <!-- Modal header -->
+                                <div class="flex items-center justify-between p-4 md:p-5 ">
+                                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                        Edit Question
+                                    </h3>
+                                    <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="edit-question-modal-@q.Id">
+                                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                        </svg>
+                                        <span class="sr-only">Close modal</span>
+                                    </button>
+                                </div>
+                                <!-- Modal body -->
+                                <div class="p-4 md:p-5">
+                                    <form data-form="edit-question" class="space-y-4" method="POST">
+                                        <input type="text" name="question.Id" value="@q.Id" hidden>
+                                        <div>
+                                            <label for="question.QuestionText" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Question Text</label>
+                                            <input type="text" name="question.QuestionText" value="@q.QuestionText" id="question.QuestionText"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"  required />
+                                        </div>
+                                        <div>
+                                            <label for="question.IsActive" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">IsActive</label>
+                                            <select  id="question.IsActive" name="question.IsActive" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                @if(q.IsActive)
+                                                {
+                                                    <option value="@q.IsActive" selected>True</option>
+                                                    <option value="False">False</option>
+                                                } else {
+                                                    <option value="True">True</option>
+                                                    <option value="False" selected>False</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label for="question.HasChoices" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">HasChoices</label>
+                                            <select  id="question.HasChoices" name="question.HasChoices" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                 @if(q.HasChoices)
+                                                {
+                                                    <option value="@q.HasChoices" selected>True</option>
+                                                    <option value="False">False</option>
+                                                } else {
+                                                    <option value="True">True</option>
+                                                    <option value="False" selected>False</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label for="question.CategoryId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+                                            <select  id="question.CategoryId" name="question.CategoryId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                @foreach(var c in Model.Categories)
+                                                {
+                                                    @if(c.Id==cat.Id)
+                                                    {
+                                                        <option value="@c.Id" selected>@cat.Name</option>
+                                                    } else {
+                                                        <option value="@c.Id">@c.Name</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="flex items-center p-4 md:p-5  rounded-b dark:border-gray-600">
+                                            <button  type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
+                                            <button data-modal-hide="edit-question-modal-@q.Id" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                    @* End Edit Question *@
+                </div>
+            </div>
+            @* End Of Questions Accordions *@
+        }
+        </div>
+    </div>
+  </div>
+  index += 1;
+  }
+ @* End of Category Accordion *@
+</div>
+@* End of Categories and Question Accordions *@
+
+</section>
+
+
+@section Scripts{
+    <script>
+        var addCategoryForm =document.querySelector("form[data-form='add-category']");
+        var updateCategoryForms =document.querySelectorAll("form[data-form='update-category']");
+        var addNewQuestionForms =document.querySelectorAll("form[data-form='new-question']");
+        var deleteQuestionForms=document.querySelectorAll("form[data-form='delete-question']");
+        var updateQuestionForms=document.querySelectorAll("form[data-form='edit-question']")
+        var deleteCategoryForms=document.querySelectorAll("form[data-form='delete-category']");
+        var addChoiceBtns =document.querySelectorAll("button[data-choice='btn-add-choice']");
+        var addQuestionChoicesForms=document.querySelectorAll("form[data-form='add-question-choices']");
+        
+        
+
+        addCategoryForm.addEventListener("submit",handleAddNewQuestionCategory)
+        
+        updateCategoryForms.forEach(updateForm=>{
+            updateForm.addEventListener("submit",handleUpdateQuestionCategory)
+        })
+
+        addNewQuestionForms.forEach(questionForm=>{
+            questionForm.addEventListener("submit",AddNewQuestion);
+        })
+
+        deleteQuestionForms.forEach(deleteForm=>{
+            deleteForm.addEventListener("submit",DeleteQuestion)
+        })
+
+        updateQuestionForms.forEach(editForm=>{
+            editForm.addEventListener("submit",UpdateQuestion)
+        })
+
+        deleteCategoryForms.forEach(deleteForm=>{
+            deleteForm.addEventListener("submit",DeleteCategory)
+        })
+
+        addChoiceBtns.forEach(choiceBtn=>{
+            choiceBtn.addEventListener("click",AddChoiceField)
+        })
+
+        addQuestionChoicesForms.forEach(choiceForm=>{
+            choiceForm.addEventListener("submit",AddQuestionChoice)
+        })
+
+        @* Add Question Field *@
+        function AddChoiceField(e)
+        {
+            var parentEl =e.target.parentElement;
+            var el=document.createElement("div")
+            el.classList.add("mt-1");
+            el.innerHTML =`<label for="choice" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Choice Text</label>
+                                                            <input type="text" name="choice"  id="choice"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"  required />`;
+            parentEl.appendChild(el)
+        }
+
+        //-- add new Question Category
+        function handleAddNewQuestionCategory(e)
+        {
+            e.preventDefault();
+            var submitBtn=e.target.querySelector("button[type='submit']");
+            submitBtn.disabled=true;
+             submitBtn.innerHTML=`<span class="animate-spin inline-block size-4 border-[3px] border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"></span>
+                            Saving...`
+            let formData=new FormData(e.target);
+            const token = e.target.querySelector("input[name='__RequestVerificationToken']").value;
+            fetch("/TsQuestions?handler=AddNewCategory", {
+            method: "POST",
+            headers: {
+                RequestVerificationToken: token
+            },
+            body: formData
+            }).then(res=>res.json())
+            .then(jsonRes=>{
+                console.log(jsonRes)
+                Swal.fire({
+                text: "Successfuly Created Question Category",
+                toast: true,
+                position: "center",
+                timerProgressBar: true,
+                icon: "success",
+                timer: 1500,
+                showConfirmButton: false
+              })
+                submitBtn.innerHTML="Save"
+                submitBtn.disabled=false;
+                submitBtn.classList.toggle("hidden")
+                window.location.reload()
+            }).catch(err=>{
+                Swal.fire({
+                text: "Error Creating Question Category",
+                toast: true,
+                position: "center",
+                timerProgressBar: true,
+                icon: "error",
+                timer: 1500,
+                showConfirmButton: false
+              })
+                console.log(err)
+                submitBtn.disabled=false;
+                submitBtn.innerHTML="Save"
+                submitBtn.classList.toggle("hidden")
+            })
+        }
+
+        @* handle update Category *@
+        function handleUpdateQuestionCategory(e)
+        {
+            e.preventDefault();
+            var submitBtn=e.target.querySelector("button[type='submit']");
+            submitBtn.disabled=true;
+             submitBtn.innerHTML=`<span class="animate-spin inline-block size-4 border-[3px] border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"></span>
+                            Saving...`
+            let formData=new FormData(e.target);
+            const token = e.target.querySelector("input[name='__RequestVerificationToken']").value;
+            fetch("/TsQuestions?handler=UpdateCategory", {
+            method: "POST",
+            headers: {
+                RequestVerificationToken: token
+            },
+            body: formData
+            }).then(res=>res.json())
+            .then(jsonRes=>{
+                console.log(jsonRes)
+                Swal.fire({
+                text: "Successfuly Update Question Category",
+                toast: true,
+                position: "center",
+                timerProgressBar: true,
+                icon: "success",
+                timer: 1500,
+                showConfirmButton: false
+              })
+                submitBtn.innerHTML="Save"
+                submitBtn.disabled=false;
+                submitBtn.classList.toggle("hidden")
+                window.location.reload();
+            }).catch(err=>{
+                Swal.fire({
+                text: "Error Updating Question Category",
+                toast: true,
+                position: "center",
+                timerProgressBar: true,
+                icon: "error",
+                timer: 1500,
+                showConfirmButton: false
+              })
+                console.log(err)
+                submitBtn.disabled=false;
+                submitBtn.innerHTML="Save"
+                submitBtn.classList.toggle("hidden")
+            })
+        }
+        @* Handle Add new Question *@
+            function AddNewQuestion(e)
+            {
+                e.preventDefault();
+                var submitBtn=e.target.querySelector("button[type='submit']");
+                submitBtn.disabled=true;
+                submitBtn.innerHTML=`<span class="animate-spin inline-block size-4 border-[3px] border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"></span>
+                                Saving...`
+                let formData=new FormData(e.target);
+                const token = e.target.querySelector("input[name='__RequestVerificationToken']").value;
+                fetch("/TsQuestions?handler=AddNewQuestion", {
+                method: "POST",
+                headers: {
+                    RequestVerificationToken: token
+                },
+                body: formData
+                }).then(res=>res.json())
+                .then(jsonRes=>{
+                    console.log(jsonRes)
+                    Swal.fire({
+                    text: "Successfuly Created Question Category",
+                    toast: true,
+                    position: "center",
+                    timerProgressBar: true,
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false
+                })
+                    submitBtn.innerHTML="Save"
+                    submitBtn.disabled=false;
+                    submitBtn.classList.toggle("hidden")
+                    window.location.reload();
+                }).catch(err=>{
+                    Swal.fire({
+                    text: "Error Creating Question Category",
+                    toast: true,
+                    position: "center",
+                    timerProgressBar: true,
+                    icon: "error",
+                    timer: 1500,
+                    showConfirmButton: false
+                })
+                    console.log(err)
+                    submitBtn.disabled=false;
+                    submitBtn.innerHTML="Save"
+                    submitBtn.classList.toggle("hidden")
+                })
+            }
+
+            @* Handle Delete Question *@
+            function DeleteQuestion(e)
+            {
+                e.preventDefault();
+                var submitBtn=e.target.querySelector("button[type='submit']");
+                submitBtn.disabled=true;
+                submitBtn.innerHTML=`<span class="animate-spin inline-block size-4 border-[3px] border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"></span>
+                                Saving...`
+                let formData=new FormData(e.target);
+                const token = e.target.querySelector("input[name='__RequestVerificationToken']").value;
+                fetch("/TsQuestions?handler=DeleteQuestion", {
+                method: "POST",
+                headers: {
+                    RequestVerificationToken: token
+                },
+                body: formData
+                }).then(res=>res.json())
+                .then(jsonRes=>{
+                    console.log(jsonRes)
+                    Swal.fire({
+                    text: "Successfuly  Deleted Question",
+                    toast: true,
+                    position: "center",
+                    timerProgressBar: true,
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false
+                })
+                    submitBtn.innerHTML="Save"
+                    submitBtn.disabled=false;
+                    submitBtn.classList.toggle("hidden")
+                    window.location.reload();
+                }).catch(err=>{
+                    Swal.fire({
+                    text: "Error Deleting Question",
+                    toast: true,
+                    position: "center",
+                    timerProgressBar: true,
+                    icon: "error",
+                    timer: 1500,
+                    showConfirmButton: false
+                })
+                    console.log(err)
+                    submitBtn.disabled=false;
+                    submitBtn.innerHTML="Save"
+                    submitBtn.classList.toggle("hidden")
+                })
+            }
+
+            @* Edit Question *@
+            function UpdateQuestion(e)
+            {
+                e.preventDefault();
+                var submitBtn=e.target.querySelector("button[type='submit']");
+                submitBtn.disabled=true;
+                submitBtn.innerHTML=`<span class="animate-spin inline-block size-4 border-[3px] border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"></span>
+                                Saving...`
+                let formData=new FormData(e.target);
+                const token = e.target.querySelector("input[name='__RequestVerificationToken']").value;
+                fetch("/TsQuestions?handler=UpdateQuestion", {
+                method: "POST",
+                headers: {
+                    RequestVerificationToken: token
+                },
+                body: formData
+                }).then(res=>res.json())
+                .then(jsonRes=>{
+                    console.log(jsonRes)
+                    Swal.fire({
+                    text: "Successfuly  Update Question",
+                    toast: true,
+                    position: "center",
+                    timerProgressBar: true,
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false
+                })
+                    submitBtn.innerHTML="Save"
+                    submitBtn.disabled=false;
+                    submitBtn.classList.toggle("hidden")
+                    window.location.reload();
+                }).catch(err=>{
+                    Swal.fire({
+                    text: "Error Updating Question",
+                    toast: true,
+                    position: "center",
+                    timerProgressBar: true,
+                    icon: "error",
+                    timer: 1500,
+                    showConfirmButton: false
+                })
+                    console.log(err)
+                    submitBtn.disabled=false;
+                    submitBtn.innerHTML="Save"
+                    submitBtn.classList.toggle("hidden")
+                })
+            }
+
+            @* Delete Category *@
+            function DeleteCategory(e)
+            {
+                e.preventDefault();
+                var submitBtn=e.target.querySelector("button[type='submit']");
+                submitBtn.disabled=true;
+                submitBtn.innerHTML=`<span class="animate-spin inline-block size-4 border-[3px] border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"></span>
+                                Saving...`
+                let formData=new FormData(e.target);
+                const token = e.target.querySelector("input[name='__RequestVerificationToken']").value;
+                fetch("/TsQuestions?handler=DeleteCategory", {
+                method: "POST",
+                headers: {
+                    RequestVerificationToken: token
+                },
+                body: formData
+                }).then(res=>res.json())
+                .then(jsonRes=>{
+                    console.log(jsonRes)
+                    Swal.fire({
+                    text: "Successfuly  Deleted Category",
+                    toast: true,
+                    position: "center",
+                    timerProgressBar: true,
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false
+                })
+                    submitBtn.innerHTML="Save"
+                    submitBtn.disabled=false;
+                    submitBtn.classList.toggle("hidden")
+                    window.location.reload();
+                }).catch(err=>{
+                    Swal.fire({
+                    text: "Error Deleting Category",
+                    toast: true,
+                    position: "center",
+                    timerProgressBar: true,
+                    icon: "error",
+                    timer: 1500,
+                    showConfirmButton: false
+                })
+                    console.log(err)
+                    submitBtn.disabled=false;
+                    submitBtn.innerHTML="Save"
+                    submitBtn.classList.toggle("hidden")
+                })
+            }
+
+            @* Add Question Choice *@
+            function AddQuestionChoice(e)
+            {
+                e.preventDefault();
+                var submitBtn=e.target.querySelector("button[type='submit']");
+                submitBtn.disabled=true;
+                submitBtn.innerHTML=`<span class="animate-spin inline-block size-4 border-[3px] border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"></span>
+                                Saving...`
+                let formData=new FormData(e.target);
+                const token = e.target.querySelector("input[name='__RequestVerificationToken']").value;
+                fetch("/TsQuestions?handler=AddQuestionChoices", {
+                method: "POST",
+                headers: {
+                    RequestVerificationToken: token
+                },
+                body: formData
+                }).then(res=>res.json())
+                .then(jsonRes=>{
+                    console.log(jsonRes)
+                    Swal.fire({
+                    text: "Successfuly Added Question Choice",
+                    toast: true,
+                    position: "center",
+                    timerProgressBar: true,
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false
+                })
+                    submitBtn.innerHTML="Save"
+                    submitBtn.disabled=false;
+                    submitBtn.classList.toggle("hidden")
+                    window.location.reload();
+                }).catch(err=>{
+                    Swal.fire({
+                    text: "Error Adding Question Choice",
+                    toast: true,
+                    position: "center",
+                    timerProgressBar: true,
+                    icon: "error",
+                    timer: 1500,
+                    showConfirmButton: false
+                })
+                    console.log(err)
+                    submitBtn.disabled=false;
+                    submitBtn.innerHTML="Save"
+                    submitBtn.classList.toggle("hidden")
+                })
+            }
+    </script>
+}
