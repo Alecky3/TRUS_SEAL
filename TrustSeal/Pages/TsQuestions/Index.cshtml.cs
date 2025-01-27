@@ -160,13 +160,22 @@ namespace TrustSeal.Pages.TsQuestions
         public async Task<IActionResult> OnPostAddQuestionChoicesAsync()
         {
             var questionId = Request.Form["question.Id"];
+            _logger.LogInformation($"Question Id {questionId}");
             if(!string.IsNullOrEmpty(questionId.ToString()))
             {
                 var question = await _context.Questions.FirstOrDefaultAsync(q=>q.Id==int.Parse(questionId));
+                _logger.LogInformation($"Question {question.Id}");
                 if(question !=null)
                 {
                     var choices=Request.Form["choice"].ToString().Split(',');
-                    question.Choices.AddRange(choices);
+                    _logger.LogInformation($"choices {choices.Count()}");
+                    if(question.Choices !=null)
+                    {
+                        question.Choices.AddRange(choices);
+                    } else {
+                        question.Choices = choices.ToList<string>();
+                    }
+                    _logger.LogInformation($"choices  2 {choices.Count()}");
                     await _context.SaveChangesAsync();
                    return new JsonResult(new {seccess=true,message="Successfully Added Question Choice(s)"}); 
                 }

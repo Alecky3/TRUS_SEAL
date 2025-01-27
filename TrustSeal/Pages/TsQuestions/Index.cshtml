@@ -290,9 +290,12 @@
                             </div>
                             <div>
                                 <div>
-                                    @foreach(var choice in @q.Choices)
+                                    @if(q.HasChoices && q.Choices != null)
                                     {
-                                        <li>@choice</li>
+                                        @foreach(var choice in @q.Choices)
+                                        {
+                                            <li>@choice</li>
+                                        }
                                     }
                                 </div> 
                             </div>

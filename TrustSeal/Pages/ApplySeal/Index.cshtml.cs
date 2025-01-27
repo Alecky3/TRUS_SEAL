@@ -71,7 +71,8 @@ namespace TrustSeal.Pages.ApplySeal
         {
             _logger.LogInformation("In OnGetAsync");
             Criteria = await _context.QuestionCategories
-               .Include(q => q.questions).ToListAsync();
+               .Include(q => q.questions.Where(q=>q.IsActive==true))
+               .ToListAsync();
             AttachmentConfigs = await _context.AttachmentConfigs.ToListAsync();
 
             if (Id != null && Id != string.Empty)
