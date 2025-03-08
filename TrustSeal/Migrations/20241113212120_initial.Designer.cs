@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrustSeal.Areas.Identity.Data;
 
@@ -11,14 +12,15 @@ using TrustSeal.Areas.Identity.Data;
 namespace TrustSeal.Migrations
 {
     [DbContext(typeof(TSAuth))]
-    partial class TSAuthModelSnapshot : ModelSnapshot
+    [Migration("20241113212120_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.12")
-
+                .HasAnnotation("ProductVersion", "8.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -252,23 +254,11 @@ namespace TrustSeal.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsMain")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("NeedsAttention")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
                     b.Property<bool>("Required")
                         .HasColumnType("bit");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("StepVerified")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -278,34 +268,6 @@ namespace TrustSeal.Migrations
                     b.HasIndex("BusinessId");
 
                     b.ToTable("ApplicationTrackings");
-                });
-
-            modelBuilder.Entity("TrustSeal.Models.AttachmentConfigs", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Category")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ForWhichField")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Required")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AttachmentConfigs");
                 });
 
             modelBuilder.Entity("TrustSeal.Models.BsAnswer", b =>
@@ -416,9 +378,6 @@ namespace TrustSeal.Migrations
                     b.Property<int?>("SealId")
                         .HasColumnType("int");
 
-                    b.Property<string>("SealReadableId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
@@ -460,9 +419,6 @@ namespace TrustSeal.Migrations
                     b.Property<int?>("BusinessId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CategoryName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("DisplayName")
                         .HasColumnType("nvarchar(max)");
 
@@ -479,22 +435,6 @@ namespace TrustSeal.Migrations
                     b.HasIndex("BusinessId");
 
                     b.ToTable("BusinessAttachment");
-                });
-
-            modelBuilder.Entity("TrustSeal.Models.DocumentPath", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("BaseUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DocumentPaths");
                 });
 
             modelBuilder.Entity("TrustSeal.Models.Notification", b =>
@@ -575,10 +515,7 @@ namespace TrustSeal.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Choices")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("HasChoices")
+                    b.Property<bool>("HasAttachment")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsActive")
@@ -611,9 +548,6 @@ namespace TrustSeal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Order")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("QuestionCategories");
@@ -645,110 +579,6 @@ namespace TrustSeal.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Seals");
-                });
-
-            modelBuilder.Entity("TrustSeal.Models.Support", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Message")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Read")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("ReplyToId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SendById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("TicketNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReplyToId");
-
-                    b.HasIndex("SendById");
-
-                    b.ToTable("SupportMessages");
-                });
-
-            modelBuilder.Entity("TrustSeal.Models.SupportAttachment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DisplayName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FileUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("SupportMessageId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SupportMessageId");
-
-                    b.ToTable("SupportAttachments");
-                });
-
-            modelBuilder.Entity("TrustSeal.Models.UserBillings", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
-
-                    b.Property<string>("CreatedById")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DatePaid")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PaidById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("PaymentCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PaymentMethod")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Reason")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PaidById");
-
-                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -926,46 +756,9 @@ namespace TrustSeal.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("TrustSeal.Models.Support", b =>
-                {
-                    b.HasOne("TrustSeal.Models.Support", "ReplyTo")
-                        .WithMany("Replies")
-                        .HasForeignKey("ReplyToId");
-
-                    b.HasOne("TrustSeal.Areas.Identity.Data.TSUser", "SendBy")
-                        .WithMany("SupportTickets")
-                        .HasForeignKey("SendById");
-
-                    b.Navigation("ReplyTo");
-
-                    b.Navigation("SendBy");
-                });
-
-            modelBuilder.Entity("TrustSeal.Models.SupportAttachment", b =>
-                {
-                    b.HasOne("TrustSeal.Models.Support", "SupportMessage")
-                        .WithMany("SupportAttachments")
-                        .HasForeignKey("SupportMessageId");
-
-                    b.Navigation("SupportMessage");
-                });
-
-            modelBuilder.Entity("TrustSeal.Models.UserBillings", b =>
-                {
-                    b.HasOne("TrustSeal.Areas.Identity.Data.TSUser", "PaidBy")
-                        .WithMany("Billings")
-                        .HasForeignKey("PaidById");
-
-                    b.Navigation("PaidBy");
-                });
-
             modelBuilder.Entity("TrustSeal.Areas.Identity.Data.TSUser", b =>
                 {
-                    b.Navigation("Billings");
-
                     b.Navigation("Notifications");
-
-                    b.Navigation("SupportTickets");
 
                     b.Navigation("UserBusinesses");
                 });
@@ -1013,13 +806,6 @@ namespace TrustSeal.Migrations
                     b.Navigation("Business");
 
                     b.Navigation("Notifications");
-                });
-
-            modelBuilder.Entity("TrustSeal.Models.Support", b =>
-                {
-                    b.Navigation("Replies");
-
-                    b.Navigation("SupportAttachments");
                 });
 #pragma warning restore 612, 618
         }

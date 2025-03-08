@@ -529,7 +529,6 @@ namespace TrustSeal.Pages.ApplySeal
 
                 return result.ToUpper();
          }
-        
         public async Task<IActionResult> OnGetCaseNumberAsync(string? Id)
         {
             if (Id != null && Id != string.Empty)
