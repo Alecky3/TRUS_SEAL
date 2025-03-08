@@ -113,8 +113,6 @@ namespace TrustSeal.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             
-            [Display(Name = "Is Admin")]
-            public bool IsAdmin {get;set;} = false;
         }
 
 
@@ -127,7 +125,6 @@ namespace TrustSeal.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
-            _logger.LogInformation($"Register {Input.IsAdmin}");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
@@ -148,13 +145,9 @@ namespace TrustSeal.Areas.Identity.Pages.Account
                     */
                     await CreateRole();
                     // assign the role
-                    if (Input.IsAdmin)
-                    {
-                        var roleResult =  await _userManager.AddToRoleAsync(user,"Admin");   
-
-                    } else {
+                   
                         var roleResult =  await _userManager.AddToRoleAsync(user,"User");   
-                    }
+                
                    _logger.LogInformation("User assigned to Role");
 
                     var userId = await _userManager.GetUserIdAsync(user);

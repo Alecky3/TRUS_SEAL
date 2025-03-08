@@ -29,20 +29,67 @@ namespace TrustSeal.Pages.TsBusinesses
             _logger = logger;
         }
 
-        public IList<Business> Business { get;set; } = default!;
 
-        public async Task OnGet()
+        public IList<Business> Business { get;set; } = default!;
+    
+
+        public async Task<IActionResult> OnGetAsync()
         {
-            
+            var user = await _userManager.GetUserAsync(User);
+                if(user !=null)
+                {
+                    var roles = await _userManager.GetRolesAsync(user);
+
+                    if (roles.Contains("Admin"))
+                    {
+                        Business = await _context.Businesses
+                                                    .ToListAsync();
+
+                        return Page();
+
+                    } else {
+                        Business = await _context.Businesses.Where(b=> b.OwnerId == user.Id)
+                        .ToListAsync();
+                       return Page();
+                    }
+                }
+              
+            return NotFound();
         }
         public async Task<IActionResult> OnGetBusinessesAsync()
         {
-            
-              
-                Business = await _context.Businesses
+                var user = await _userManager.GetUserAsync(User);
+                if(user !=null)
+                {
+                    var roles = await _userManager.GetRolesAsync(user);
+
+                    if (roles.Contains("Admin"))
+                    {
+                        Business = await _context.Businesses
                                                     .Where(b=> b.CaseNumber != null && b.CaseNumber != "")
                                                     .ToListAsync();
-                return new JsonResult(Business);
+                        var result = Business.Select(b=> new {
+                            b.LegalName,b.RegistrationNumber,b.TaxIdentificationNumber,
+                            b.Country,b.PhoneNumber,b.Email,b.IsVerified,b.SubmissionDate,b.CaseNumber
+                        }).ToList();
+
+                        return new JsonResult(result);
+
+                    } else {
+                        Business = await _context.Businesses
+                                                    .Where(b=> b.CaseNumber != null && b.CaseNumber != "" && b.OwnerId == user.Id)
+                                                    .ToListAsync();
+                         var result = Business.Select(b=> new {
+                            b.LegalName,b.RegistrationNumber,b.TaxIdentificationNumber,
+                            b.Country,b.PhoneNumber,b.Email,b.IsVerified,b.SubmissionDate,b.CaseNumber
+                        }).ToList();
+
+                        return new JsonResult(result);
+                    }
+                }
+              
+                
+                return new JsonResult(new {});
            
             
         }

@@ -26,7 +26,6 @@ namespace TrustSeal.Pages.BusinessAttachments
         {
             BsAnswers = await _context.Answers
                                         .Include(a => a.BusinessAttachment)
-                                        .Where(a => a.Question.HasAttachment)
                                             .ToListAsync();
             
         }

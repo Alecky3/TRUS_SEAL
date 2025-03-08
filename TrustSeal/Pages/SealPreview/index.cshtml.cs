@@ -38,6 +38,7 @@ namespace TrustSeal.Pages.SealPreview
          {
             Seal = await _context.Seals
                                     .Include(s=>s.Business)
+                                    .ThenInclude(b=>b.Owner)
                                     .Where(s=> s.SealCode.ToString() == SealCode).FirstOrDefaultAsync();
             if(Seal != null)
             {

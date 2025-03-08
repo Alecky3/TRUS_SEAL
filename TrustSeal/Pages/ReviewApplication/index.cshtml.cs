@@ -23,14 +23,17 @@ namespace TrustSeal.Pages.ReviewApplication
     {
         private readonly TrustSeal.Areas.Identity.Data.TSAuth _context;
         private readonly UserManager<TSUser> _userManager;
+
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<IndexModel> _logger;
         public IndexModel(TrustSeal.Areas.Identity.Data.TSAuth context,
          ILogger<IndexModel> logger,
-         UserManager<TSUser> userManager)
+         UserManager<TSUser> userManager,RoleManager<IdentityRole> roleManager)
          {
              _context = context;
             _logger = logger;
             _userManager = userManager;
+            _roleManager = roleManager;
          }
     public Business Business {get;set;}
     public List<BsAnswer> BsAnswer {get;set;}
@@ -40,6 +43,8 @@ namespace TrustSeal.Pages.ReviewApplication
     public List<ApplicationTracking> BusinessApplicationTrackings {get;set;}
 
     public List<BusinessAttachment> BusinessAttachments {get;set;}
+
+    public List<Business> Businesses {get;set;}
     public async Task<IActionResult> OnGetAsync(string CaseNumber)
     {
         if (CaseNumber == null)
@@ -70,6 +75,8 @@ namespace TrustSeal.Pages.ReviewApplication
 
         return NotFound();
     }
+
+  
 
     public async void OnPost()
     {
@@ -108,7 +115,8 @@ namespace TrustSeal.Pages.ReviewApplication
                     {
                         return new JsonResult(new {error = "Could not verify Seal Generation, Looks like some required steps have not been verified"});
                     }
-
+                    business.IsVerified=true;
+                    await _context.SaveChangesAsync();
                     string bsName = business.LegalName[0].ToString() + business.LegalName[1].ToString();
                     if (business.SealReadableId != string.Empty)
                     {

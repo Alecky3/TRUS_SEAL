@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using TrustSeal.Areas.Identity.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace TrustSeal.Areas.Identity.Pages.Account
 {
@@ -25,8 +26,11 @@ namespace TrustSeal.Areas.Identity.Pages.Account
 
         private readonly UserManager<TSUser> _userManager;
 
-        public LoginModel(SignInManager<TSUser> signInManager, ILogger<LoginModel> logger,UserManager<TSUser> userManager)
+         private readonly TrustSeal.Areas.Identity.Data.TSAuth _context;
+
+        public LoginModel(TrustSeal.Areas.Identity.Data.TSAuth context,SignInManager<TSUser> signInManager, ILogger<LoginModel> logger,UserManager<TSUser> userManager)
         {
+            _context = context;
             _signInManager = signInManager;
             _logger = logger;
             _userManager = userManager;
@@ -126,8 +130,16 @@ namespace TrustSeal.Areas.Identity.Pages.Account
                 _logger.LogInformation("User is Logged in");
                 if (await _userManager.IsInRoleAsync(user, "User"))
                 {
-                    returnUrl ??= Url.Content("~/ApplySeal");
-                    _logger.LogInformation($"User is Logged in {returnUrl}");
+                    var Business = await _context.Businesses.Where(b => b.OwnerId == user.Id).ToListAsync();
+                     _logger.LogInformation($"User is Logged in {returnUrl}");
+                    if (Business.Count() == 0)
+                    {
+                         returnUrl ??= Url.Content("~/ApplySeal");
+                    } else {
+                        returnUrl ??= Url.Content("~/TsBusinesses");
+                    }
+                   
+                   
                 }
                 else {
                     returnUrl ??= Url.Content("~/TsDashboard");

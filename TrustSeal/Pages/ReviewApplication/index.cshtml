@@ -1,8 +1,14 @@
 @page
 @model TrustSeal.Pages.ReviewApplication.IndexModel
+@using Microsoft.AspNetCore.Identity
+@using TrustSeal.Areas.Identity.Data
+@inject UserManager<TSUser> UserManager
 
 @{
     ViewData["Title"] = "Review Business Application";
+    TSUser user = await UserManager.GetUserAsync(User);
+    var role = await UserManager.GetRolesAsync(user);
+    var IsAdmin = role.Contains("Admin");
 }
 
 <section class="bg-white dark:bg-gray-900">
@@ -191,10 +197,11 @@
         }
       @foreach(var status in Model.BusinessApplicationTrackings)
       {
+        
        
         @* Header *@
           <h2 id="accordion-collapse-business-status-header-@status.Id">
-          <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200  focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3" data-accordion-target="#accordion-collapse-business-status-@status.Id" aria-expanded="@(count == 1 ? "true" : "false")" aria-controls="accordion-collapse-business-status-@status.Id">
+          <button type="button" class="flex items-center justify-between w-full p-5 @(status.Required && !status.StepVerified ? "bg-red-300": status.StepVerified ? "bg-green-300" : null) font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200  focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 @(status.Required && !status.StepVerified ? "hover:bg-red-300": status.StepVerified ? "hover:bg-green-300" : null) dark:hover:bg-gray-800 gap-3" data-accordion-target="#accordion-collapse-business-status-@status.Id" aria-expanded="@(count == 1 ? "true" : "false")" aria-controls="accordion-collapse-business-status-@status.Id">
             <span>@status.Status</span>
             <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
@@ -241,6 +248,7 @@
   @* End of business Statuses *@
  </div>
 </section>
+
 
 @section Scripts {
   <script>
@@ -353,7 +361,7 @@
       if (status !== "error" && status != "seal")
       {
         
-      toastr[status](content);
+      
         toastr.options = {
           "closeButton": true,
           "debug": false,
@@ -371,6 +379,7 @@
           "showMethod": "fadeIn",
           "hideMethod": "fadeOut"
         }
+        toastr[status](content);
       } else if (status == "seal")
       {
          Swal.fire({
@@ -391,7 +400,7 @@
         })
       }
     }
-
+   
 
   </script>
 }

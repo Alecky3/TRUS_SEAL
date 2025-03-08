@@ -1,0 +1,1203 @@
+@page
+@model TrustSeal.Pages.SupportMessage.IndexModel
+@using Microsoft.AspNetCore.Identity
+@using TrustSeal.Areas.Identity.Data
+
+@inject UserManager<TSUser> UserManager
+
+@{
+    ViewData["Title"] = "Support";
+    TSUser user = await UserManager.GetUserAsync(User);
+    var role = await UserManager.GetRolesAsync(user);
+    var IsAdmin = role.Contains("Admin");
+}
+<section class="h-full">
+    @if(role.Contains("Admin"))
+    {
+        
+        @foreach(var usr in Model.UserWithTickets)
+        {
+            
+            @* Admin Code Here *@
+            <div class="border border-1 rounded border-gray-200 p-2 mb-2">
+                <div class="shrink-0 group block mb-1">
+                    <div class="flex items-center">
+                        <span class="inline-flex items-center justify-center size-[46px] rounded-full bg-gray-800 font-semibold text-white leading-none dark:bg-white dark:text-neutral-800">
+                            @(usr.Email[0].ToString().ToUpper())@(usr.Email[1].ToString().ToUpper())
+                        </span>
+                        <div class="display: inline-block">
+                            
+                            <div class="ms-3 flex ">
+                                <div>
+                                    <h3 class="font-semibold text-gray-800 dark:text-white">@usr.Email</h3>
+                                    <span class="bg-blue-100 text-blue-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                        @usr.SupportTickets.Count()
+                                        <span class="mr-2"></span>
+                                        Ticket@(usr.SupportTickets.Count() > 1 ? 's':null) raised
+                                    </span>
+                                    @* Collapse *@
+                                    <div style="display: inline-block;">
+                                            <p class="mt-2">
+                                            <button type="button" class="hs-collapse-toggle inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent text-blue-600 decoration-2 hover:text-blue-700 hover:underline focus:outline-none focus:underline focus:text-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-600 dark:focus:text-blue-600" id="hs-show-hide-collapse-@usr.Id" aria-expanded="false" aria-controls="hs-show-hide-collapse-heading-@usr.Id" data-hs-collapse="#hs-show-hide-collapse-heading-@usr.Id">
+                                                <span class="hs-collapse-open:hidden">Show Messages</span>
+                                                <span class="hs-collapse-open:block hidden">Hide Messages</span>
+                                                <svg class="hs-collapse-open:rotate-180 shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="m6 9 6 6 6-6"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    @* End collapse *@
+                                </div>
+                            
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            @* Body Here *@
+            @* Message List *@
+            <div id="hs-show-hide-collapse-heading-@usr.Id" class="hs-collapse hidden h-full w-full overflow-hidden transition-[height] duration-300 border border-1 rounded border-gray-200 flex flex-col" style="height: calc(100% - 120px);" aria-labelledby="hs-show-hide-collapse-@usr.Id">
+                <div class="max-h-[400px] overflow-y-auto
+                [&::-webkit-scrollbar]:w-2
+                [&::-webkit-scrollbar-track]:bg-gray-100
+                [&::-webkit-scrollbar-thumb]:bg-gray-300
+                dark:[&::-webkit-scrollbar-track]:bg-neutral-700
+                dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
+                @* Messages *@
+                <ul id="message-list" class="px-2 py-4">
+                    @{
+                        string currentUserId;
+                    }
+                   @foreach(var mssg in usr.SupportTickets)
+                    {
+                        {
+                            currentUserId=mssg.SendById;
+                        }
+                      
+                        <div class="flex items-start gap-2.5">
+                            <div class="flex flex-col gap-1 w-full max-w-[320px]">
+                                <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                                    <span class="text-sm font-semibold text-gray-900 dark:text-white">You</span>
+                                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400">@mssg.CreatedAt</span>
+                                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400 ms-4">@mssg.TicketNumber</span>
+                                </div>
+                                <div class="flex flex-col leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700" style="overflow: hidden;">
+                                    <p class="text-sm font-normal text-gray-900 dark:text-white" >@mssg.Message</p>
+                                    <div>
+                                        @if(@mssg.SupportAttachments !=null)
+                                        {
+                                            @foreach(var file in mssg.SupportAttachments)
+                                            {
+                                            <p><a class="text-blue-600 underline underline-offset-1 decoration-blue-600 hover:opacity-80 focus:outline-none focus:opacity-80" href="/SupportMessage?handler=SupportAttachment&id=@file.Id">@file.DisplayName</a></p>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            
+                                <button id="dropdownMenuIconButton-@mssg.Id" data-dropdown-toggle="dropdownDots-@mssg.Id" data-dropdown-placement="bottom-start" class="inline-flex self-center items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:focus:ring-gray-600" type="button">
+                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                                        <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                                    </svg>
+                                </button>
+                                <div id="dropdownDots-@mssg.Id" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-40 dark:bg-gray-700 dark:divide-gray-600">
+                                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton">
+                                    
+                                            <li>
+                                                <a href="#" data-modal-target="reply-message-@mssg.Id" data-modal-toggle="reply-message-@mssg.Id" type="button" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Reply</a>
+                                            </li>
+                                            @if(user.Id==usr.Id)
+                                            {
+                                                <li>
+                                                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
+                                                </li>
+                                            }
+                                            
+    
+                                    </ul>
+                                </div>
+                            
+                            
+                        </div>
+                    } 
+                </ul>
+                @* End of Messages *@
+                    </div>
+                    <div style="margin-top: auto;">
+                        <div id="attached-uposted-files" data-attach-message="user-id-@usr.Id" class="p-2">
+                        
+                        </div>
+                        <!-- Textarea -->
+                        <div class="relative">
+                        <form action="" method="post" class="mb-2">
+                        <textarea id="message-content" data-send-message="user-id-@usr.Id" class="p-4 pb-12 block w-full bg-gray-100 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" placeholder="Type You Message Here" data-hs-textarea-auto-height=""></textarea>
+                        </form>
+
+                        <!-- Toolbar -->
+                        <div class="absolute bottom-px inset-x-px p-2 rounded-b-md bg-gray-100 dark:bg-neutral-800">
+                            <div class="flex justify-between items-center">
+                            <!-- Button Group -->
+                            <div class="flex items-center">
+
+                                <!-- Attach Button -->
+                                <button type="button" data-attach-message="user-id-@usr.Id" data-user="@usr.Id" id="admin-attach-file-@usr.Id" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                <form action="" method="post">
+                                    <input type="file" hidden name="message-attachment">
+                                </form>
+                                <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                                </svg>
+                                </button>
+                                <!-- End Attach Button -->
+                            </div>
+                            <!-- End Button Group -->
+
+                            <!-- Button Group -->
+                            <div class="flex items-center gap-x-1">
+                            
+                                <!-- Send Button -->
+                                <button type="button" data-send-message="user-id-@usr.Id" data-user="@usr.Id" id="admin-message-send-@usr.Id" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"></path>
+                                </svg>
+                                </button>
+                                <!-- End Send Button -->
+                            </div>
+                            <!-- End Button Group -->
+                            </div>
+                        </div>
+                        <!-- End Toolbar -->
+                        </div>
+                        <!-- End Textarea -->
+                    </div>
+                </div>
+            @* End Message List *@
+            @* End Body Here *@
+
+        }
+        
+    } else{
+    <div class="shrink-0 group block mb-4">
+        <div class="flex items-center">
+            <span class="inline-flex items-center justify-center size-[46px] rounded-full bg-gray-800 font-semibold text-white leading-none dark:bg-white dark:text-neutral-800">
+                @(user.Email[0].ToString().ToUpper()) @(user.Email[1].ToString().ToUpper())
+            </span>
+            <div class="ms-3">
+                <h3 class="font-semibold text-gray-800 dark:text-white">@user.Email</h3>
+                <span class="bg-blue-100 text-blue-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                    <span class="mr-2">@Model.SupportMessages.Count()</span>
+                    Tickets raised
+                </span>
+            </div>
+        </div>
+    </div> 
+    <div class="border border-1 rounded border-gray-200 flex flex-col" style="height: calc(100% - 120px);">
+        <div class="max-h-[400px] overflow-y-auto
+        [&::-webkit-scrollbar]:w-2
+        [&::-webkit-scrollbar-track]:bg-gray-100
+        [&::-webkit-scrollbar-thumb]:bg-gray-300
+        dark:[&::-webkit-scrollbar-track]:bg-neutral-700
+        dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
+        <ul id="message-list" class="px-2 py-4">
+            @foreach(var mssg in Model.SupportMessages)
+            {
+                if(mssg.ReplyToId == null)
+                {
+                    <div class="flex items-start gap-2.5">
+                    <div class="flex flex-col gap-1 w-full max-w-[320px]">
+                        <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                            <span class="text-sm font-semibold text-gray-900 dark:text-white">You</span>
+                            <span class="text-sm font-normal text-gray-500 dark:text-gray-400">@mssg.CreatedAt</span>
+                            <span class="text-sm font-normal text-gray-500 dark:text-gray-400 ms-4">@mssg.TicketNumber</span>
+                        </div>
+                        <div class="flex flex-col leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
+                            <p class="text-sm font-normal text-gray-900 dark:text-white">@mssg.Message</p>
+                            <div>
+                                @if(@mssg.SupportAttachments !=null)
+                                {
+                                    @foreach(var file in mssg.SupportAttachments)
+                                    {
+                                    <p style="overflow: hidden;"><a class="text-blue-600 underline underline-offset-1 decoration-blue-600 hover:opacity-80 focus:outline-none focus:opacity-80" href="/SupportMessage?handler=SupportAttachment&id=@file.Id">@file.DisplayName</a></p>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <button id="dropdownMenuIconButton-@mssg.Id" data-dropdown-toggle="dropdownDots-@mssg.Id" data-dropdown-placement="bottom-start" class="inline-flex self-center items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:focus:ring-gray-600" type="button">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                            <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                        </svg>
+                    </button>
+                    <div id="dropdownDots-@mssg.Id" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-40 dark:bg-gray-700 dark:divide-gray-600">
+                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton">
+                            <li>
+                                <a href="#" aria-haspopup="dialog" aria-expanded="false" aria-controls="reply-message-modal-@mssg.Id" data-hs-overlay="#reply-message-modal-@mssg.Id" type="button" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Reply</a>
+                                
+                            </li>
+                            <li>
+                                <a href="#" aria-haspopup="dialog" aria-expanded="false" aria-controls="edit-message-modal-@mssg.Id" data-hs-overlay="#edit-message-modal-@mssg.Id" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                            </li>
+                            <li>
+                                <a href="#" aria-haspopup="dialog" aria-expanded="false" aria-controls="delete-message-modal-@mssg.Id" data-hs-overlay="#delete-message-modal-@mssg.Id" type="button" class="block px-4 py-2 bg-red-300 hover:bg-red-600 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
+                            </li>
+                        </ul>
+                    </div>
+                    @* Start Delete Dialog *@
+                                    <div id="delete-message-modal-@mssg.Id" class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none" role="dialog" tabindex="-1" aria-labelledby="delete-message-modal-@mssg.Id-label">
+                                    <div class="hs-overlay-animation-target hs-overlay-open:scale-100 hs-overlay-open:opacity-100 scale-95 opacity-0 ease-in-out transition-all duration-200 sm:max-w-lg sm:w-full m-3 sm:mx-auto min-h-[calc(100%-3.5rem)] flex items-center">
+                                        <div class="w-full flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
+                                        <div class="flex justify-between items-center py-3 px-4 border-b dark:border-neutral-700">
+                                            <h3 id="reply-message-modal-@mssg.Id-label" class="font-bold text-gray-800 dark:text-white">
+                                            Confirm Delete Message
+                                            </h3>
+                                            <button type="button" class="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:hover:bg-neutral-600 dark:text-neutral-400 dark:focus:bg-neutral-600" aria-label="Close" data-hs-overlay="#delete-message-modal-@mssg.Id">
+                                            <span class="sr-only">Close</span>
+                                            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M18 6 6 18"></path>
+                                                <path d="m6 6 12 12"></path>
+                                            </svg>
+                                            </button>
+                                        </div>
+                                       
+                                       <div class="flex items-start gap-2.5 ms-2">
+                                            <div class="flex flex-col gap-1 w-full max-w-[320px]">
+                                                <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                        
+                                                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400">@mssg.CreatedAt</span>
+                                                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400 ms-4">@mssg.TicketNumber</span>
+                                                </div>
+                                                <div class="flex flex-col leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
+                                                    <p class="text-sm font-normal text-gray-900 dark:text-white">@mssg.Message</p>
+                                                    <div>
+                                                        @if(@mssg.SupportAttachments !=null)
+                                                        {
+                                                            @foreach(var file in mssg.SupportAttachments)
+                                                            {
+                                                            <p><a class="text-blue-600 underline underline-offset-1 decoration-blue-600 hover:opacity-80 focus:outline-none focus:opacity-80" href="/SupportMessage?handler=SupportAttachment&id=@file.Id">@file.DisplayName</a></p>
+                                                            }
+                                                        }
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                       </div>
+                                      
+                                        <div class="p-4 overflow-y-auto">
+                                            <form data-form="delete-message-form" class="space-y-4" method="POST">
+                                                <input type="text" name="Message.Id" value="@mssg.Id" hidden>
+                                               <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-neutral-700">
+                                                    <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" data-hs-overlay="#delete-message-modal-@mssg.Id">
+                                                    Close
+                                                    </button>
+                                                    <button   type="submit" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+                                                    Delete
+                                                    </button>
+                                                </div>
+                                            </form>
+                            
+                                        </div>
+                                        
+                                        </div>
+                                    </div>
+                                    </div>    
+                                @* End Delete dialog *@
+                                @* Start Reply Dialog *@
+                                    <div id="reply-message-modal-@mssg.Id" class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none" role="dialog" tabindex="-1" aria-labelledby="reply-message-modal-@mssg.Id-label">
+                                    <div class="hs-overlay-animation-target hs-overlay-open:scale-100 hs-overlay-open:opacity-100 scale-95 opacity-0 ease-in-out transition-all duration-200 sm:max-w-lg sm:w-full m-3 sm:mx-auto min-h-[calc(100%-3.5rem)] flex items-center">
+                                        <div class="w-full flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
+                                        <div class="flex justify-between items-center py-3 px-4 border-b dark:border-neutral-700">
+                                            <h3 id="reply-message-modal-@mssg.Id-label" class="font-bold text-gray-800 dark:text-white">
+                                            Reply Message
+                                            </h3>
+                                            <button type="button" class="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:hover:bg-neutral-600 dark:text-neutral-400 dark:focus:bg-neutral-600" aria-label="Close" data-hs-overlay="#reply-message-modal-@mssg.Id">
+                                            <span class="sr-only">Close</span>
+                                            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M18 6 6 18"></path>
+                                                <path d="m6 6 12 12"></path>
+                                            </svg>
+                                            </button>
+                                        </div>
+                                        <div class="py-3 mx-2 flex items-center text-sm text-gray-800 before:flex-1 before:border-t before:border-gray-200 before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6 dark:text-white dark:before:border-neutral-600 dark:after:border-neutral-600">You are Replying To</div>
+                                       <div class="flex items-start gap-2.5 ms-2">
+                                            <div class="flex flex-col gap-1 w-full max-w-[320px]">
+                                                <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                        
+                                                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400">@mssg.CreatedAt</span>
+                                                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400 ms-4">@mssg.TicketNumber</span>
+                                                </div>
+                                                <div class="flex flex-col leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
+                                                    <p class="text-sm font-normal text-gray-900 dark:text-white">@mssg.Message</p>
+                                                    <div>
+                                                        @if(@mssg.SupportAttachments !=null)
+                                                        {
+                                                            @foreach(var file in mssg.SupportAttachments)
+                                                            {
+                                                            <p><a class="text-blue-600 underline underline-offset-1 decoration-blue-600 hover:opacity-80 focus:outline-none focus:opacity-80" href="/SupportMessage?handler=SupportAttachment&id=@file.Id">@file.DisplayName</a></p>
+                                                            }
+                                                        }
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                       </div>
+                                       <hr class="my-2">
+                                        <div class="p-4 overflow-y-auto">
+                                            <form data-form="reply-message-form" class="space-y-4" method="POST">
+                                                <input type="text" name="ReplyToMessage.Id" value="@mssg.Id" hidden>
+                                                <div>
+                                                    <label  class="block text-sm font-medium mb-2 dark:text-white"> Reply Message</label>
+                                                    <textarea  class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" rows="3" placeholder="Say hi..." data-hs-textarea-auto-height=""></textarea>
+                                                </div>
+                                                <div data-container="reply-message-file-attachments">
+
+                                                </div>
+                                                <!-- Attach Button -->
+                                               <div class="flex items-center">
+                                                    <button data-attach="reply-message-files" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                                       <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                                                        </svg>
+
+                                                        <input type="file" hidden >
+                                                    </button>
+                                                    <span class="ml-2 ">Attach file(s)</span>
+                                               </div>
+                                               <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-neutral-700">
+                                                    <button id="reply-" type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" data-hs-overlay="#reply-message-modal-@mssg.Id">
+                                                    Close
+                                                    </button>
+                                                    <button  type="submit" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+                                                    Save changes
+                                                    </button>
+                                                </div>
+                                            </form>
+                            
+                                        </div>
+                                        
+                                        </div>
+                                    </div>
+                                    </div>    
+                                @* End Reply Dialog *@
+                                @* Start Edit Dialog *@
+                                <div id="edit-message-modal-@mssg.Id" class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none" role="dialog" tabindex="-1" aria-labelledby="edit-message-modal-@mssg.Id-label">
+                                    <div class="hs-overlay-animation-target hs-overlay-open:scale-100 hs-overlay-open:opacity-100 scale-95 opacity-0 ease-in-out transition-all duration-200 sm:max-w-lg sm:w-full m-3 sm:mx-auto min-h-[calc(100%-3.5rem)] flex items-center">
+                                        <div class="w-full flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
+                                        <div class="flex justify-between items-center py-3 px-4 border-b dark:border-neutral-700">
+                                            <h3 id="reply-message-modal-@mssg.Id-label" class="font-bold text-gray-800 dark:text-white">
+                                            Edit Message
+                                            </h3>
+                                            <button type="button" class="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:hover:bg-neutral-600 dark:text-neutral-400 dark:focus:bg-neutral-600" aria-label="Close" data-hs-overlay="#edit-message-modal-@mssg.Id">
+                                            <span class="sr-only">Close</span>
+                                            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M18 6 6 18"></path>
+                                                <path d="m6 6 12 12"></path>
+                                            </svg>
+                                            </button>
+                                        </div>
+                                        
+                                        <div class="p-4 overflow-y-auto">
+                                            <form data-form="edit-message-form" class="space-y-4" method="POST">
+                                                <input type="text" name="Message.Id" value="@mssg.Id" hidden>
+                                                <div>
+                                                    <label  class="block text-sm font-medium mb-2 dark:text-white"> Message</label>
+                                                    <textarea  class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" rows="3" placeholder="Say hi..." data-hs-textarea-auto-height="">@mssg.Message</textarea>
+                                                </div>
+                                                <div data-container="reply-message-file-attachments">
+                                                    @if(@mssg.SupportAttachments !=null)
+                                                        {
+                                                            @foreach(var file in mssg.SupportAttachments)
+                                                            {
+                                                            
+                                                                <div class="grid grid-cols-2 gap-4 mb-3">
+                                                                    <a class="text-blue-600 underline underline-offset-1 decoration-blue-600 hover:opacity-80 focus:outline-none focus:opacity-80" style="overflow: hidden;" href="/SupportMessage?handler=SupportAttachment&id=@file.Id">@file.DisplayName</a>
+                                                                    <input type="text" hidden name="fileId" value="@file.Id">
+                                                                
+                                                                    @* Delete File Icon *@
+                                                                        <button type="button" data-remove-file="remove-file" data-fileId="@file.Id" class="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium max-w-16 h-10 rounded-lg text-xs px-3 py-1.5 me-2 text-center inline-flex items-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" style="width: 120px;">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                                                                            Remove File
+                                                                        </button>
+                                                                
+                                                                    @* End Delete File Icon *@
+                                                                </div>
+                                                            
+                                                            }
+                                                        }
+                                                </div>
+                                                <!-- Attach Button -->
+                                               <div class="flex items-center">
+                                                    <button data-attach="reply-message-files" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                                       <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                                                        </svg>
+
+                                                        <input type="file" hidden >
+                                                    </button>
+                                                    <span class="ml-2 ">Attach file(s)</span>
+                                               </div>
+                                               <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-neutral-700">
+                                                    <button id="reply-" type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" data-hs-overlay="#edit-message-modal-@mssg.Id">
+                                                    Close
+                                                    </button>
+                                                    <button  type="submit" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+                                                    Save changes
+                                                    </button>
+                                                </div>
+                                            </form>
+                            
+                                        </div>
+                                        
+                                        </div>
+                                    </div>
+                                    </div>
+                                @* End Edit Dialog *@
+                </div>
+                @* Reply Messages Container *@
+                <div class="ml-8">
+                    @foreach(var reply in @mssg.Replies)
+                    {
+                        <div class="flex items-start gap-2.5">
+                            <div class="flex flex-col gap-1 w-full max-w-[320px]">
+                                <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                                    <span class="text-sm font-semibold text-gray-900 dark:text-white">@(reply.SendById==user.Id ? "You" : "Admin")</span>
+                                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400">@reply.CreatedAt</span>
+                                    @* <span class="text-sm font-normal text-gray-500 dark:text-gray-400 ms-4">@mssg.TicketNumber</span> *@
+                                </div>
+                                <div class="flex flex-col leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
+                                    <p class="text-sm font-normal text-gray-900 dark:text-white">@reply.Message</p>
+                                    <div>
+                                        @if(@reply.SupportAttachments !=null)
+                                        {
+                                            @foreach(var file in reply.SupportAttachments)
+                                            {
+                                            <p style="overflow: hidden;"><a class="text-blue-600 underline underline-offset-1 decoration-blue-600 hover:opacity-80 focus:outline-none focus:opacity-80" href="/SupportMessage?handler=SupportAttachment&id=@file.Id">@file.DisplayName</a></p>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <button id="reply-dropdownMenuIconButton-@reply.Id" data-dropdown-toggle="reply-message-@reply.Id" data-dropdown-placement="bottom-start" class="inline-flex self-center items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:focus:ring-gray-600" type="button">
+                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                                    <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                                </svg>
+                            </button>
+                            <div id="reply-message-@reply.Id" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-40 dark:bg-gray-700 dark:divide-gray-600">
+                                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="reply-dropdownMenuIconButton-@reply.Id">
+                                    @if(reply.SendById == user.Id)
+                                    {
+                                        <li>
+                                            <a href="#" aria-haspopup="dialog" aria-expanded="false" aria-controls="reply-edit-message-modal-@reply.Id" data-hs-overlay="#reply-edit-message-modal-@reply.Id"  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" aria-haspopup="dialog" aria-expanded="false" aria-controls="reply-delete-message-modal-@reply.Id" data-hs-overlay="#reply-delete-message-modal-@reply.Id" type="button" class="block px-4 py-2 bg-red-300 hover:bg-red-600 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                            @* Reply Delete and Edit Dialogs *@
+                                @* Start Delete Dialog *@
+                                    <div id="reply-delete-message-modal-@reply.Id" class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none" role="dialog" tabindex="-1" aria-labelledby="reply-delete-message-modal-@reply.Id-label">
+                                    <div class="hs-overlay-animation-target hs-overlay-open:scale-100 hs-overlay-open:opacity-100 scale-95 opacity-0 ease-in-out transition-all duration-200 sm:max-w-lg sm:w-full m-3 sm:mx-auto min-h-[calc(100%-3.5rem)] flex items-center">
+                                        <div class="w-full flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
+                                        <div class="flex justify-between items-center py-3 px-4 border-b dark:border-neutral-700">
+                                            <h3 id="reply-message-modal-@mssg.Id-label" class="font-bold text-gray-800 dark:text-white">
+                                            Confirm Delete Message
+                                            </h3>
+                                            <button type="button" class="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:hover:bg-neutral-600 dark:text-neutral-400 dark:focus:bg-neutral-600" aria-label="Close" data-hs-overlay="#reply-delete-message-modal-@reply.Id">
+                                            <span class="sr-only">Close</span>
+                                            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M18 6 6 18"></path>
+                                                <path d="m6 6 12 12"></path>
+                                            </svg>
+                                            </button>
+                                        </div>
+                                       
+                                       <div class="flex items-start gap-2.5 ms-2">
+                                            <div class="flex flex-col gap-1 w-full max-w-[320px]">
+                                                <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                        
+                                                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400">@reply.CreatedAt</span>
+                                                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400 ms-4">@reply.TicketNumber</span>
+                                                </div>
+                                                <div class="flex flex-col leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
+                                                    <p class="text-sm font-normal text-gray-900 dark:text-white">@reply.Message</p>
+                                                    <div>
+                                                        @if(@reply.SupportAttachments !=null)
+                                                        {
+                                                            @foreach(var file in reply.SupportAttachments)
+                                                            {
+                                                            <p><a class="text-blue-600 underline underline-offset-1 decoration-blue-600 hover:opacity-80 focus:outline-none focus:opacity-80" href="/SupportMessage?handler=SupportAttachment&id=@file.Id">@file.DisplayName</a></p>
+                                                            }
+                                                        }
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                       </div>
+                                      
+                                        <div class="p-4 overflow-y-auto">
+                                            <form data-form="delete-message-form" class="space-y-4" method="POST">
+                                                <input type="text" name="Message.Id" value="@reply.Id" hidden>
+                                               <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-neutral-700">
+                                                    <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" data-hs-overlay="#reply-delete-message-modal-@reply.Id">
+                                                    Close
+                                                    </button>
+                                                    <button  type="submit" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+                                                    Delete
+                                                    </button>
+                                                </div>
+                                            </form>
+                            
+                                        </div>
+                                        
+                                        </div>
+                                    </div>
+                                    </div>    
+                                @* End Delete dialog *@
+                                @* Start Edit Dialog *@
+                                <div id="reply-edit-message-modal-@reply.Id" class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none" role="dialog" tabindex="-1" aria-labelledby="reply-edit-message-modal-@reply.Id-label">
+                                    <div class="hs-overlay-animation-target hs-overlay-open:scale-100 hs-overlay-open:opacity-100 scale-95 opacity-0 ease-in-out transition-all duration-200 sm:max-w-lg sm:w-full m-3 sm:mx-auto min-h-[calc(100%-3.5rem)] flex items-center">
+                                        <div class="w-full flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
+                                        <div class="flex justify-between items-center py-3 px-4 border-b dark:border-neutral-700">
+                                            <h3 id="reply-message-modal-@mssg.Id-label" class="font-bold text-gray-800 dark:text-white">
+                                            Edit Message
+                                            </h3>
+                                            <button type="button" class="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:hover:bg-neutral-600 dark:text-neutral-400 dark:focus:bg-neutral-600" aria-label="Close" data-hs-overlay="#reply-edit-message-modal-@reply.Id">
+                                            <span class="sr-only">Close</span>
+                                            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M18 6 6 18"></path>
+                                                <path d="m6 6 12 12"></path>
+                                            </svg>
+                                            </button>
+                                        </div>
+                                        
+                                        <div class="p-4 overflow-y-auto">
+                                            <form data-form="edit-message-form" class="space-y-4" method="POST">
+                                                <input type="text" name="Message.Id" value="@reply.Id" hidden>
+                                                <div>
+                                                    <label  class="block text-sm font-medium mb-2 dark:text-white"> Message</label>
+                                                    <textarea  class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" rows="3" placeholder="Say hi..." data-hs-textarea-auto-height="">@reply.Message</textarea>
+                                                </div>
+                                                <div data-container="reply-message-file-attachments">
+                                                    @if(@reply.SupportAttachments !=null)
+                                                        {
+                                                            @foreach(var file in mssg.SupportAttachments)
+                                                            {
+                                                            
+                                                                <div class="grid grid-cols-2 gap-4 mb-3">
+                                                                    <a class="text-blue-600 underline underline-offset-1 decoration-blue-600 hover:opacity-80 focus:outline-none focus:opacity-80" style="overflow: hidden;" href="/SupportMessage?handler=SupportAttachment&id=@file.Id">@file.DisplayName</a>
+                                                                    <input type="text" hidden name="fileId" value="@file.Id">
+                                                                
+                                                                    @* Delete File Icon *@
+                                                                        <button type="button" data-remove-file="remove-file" data-fileId="@file.Id" class="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium max-w-16 h-10 rounded-lg text-xs px-3 py-1.5 me-2 text-center inline-flex items-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" style="width: 120px;">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                                                                            Remove File
+                                                                        </button>
+                                                                
+                                                                    @* End Delete File Icon *@
+                                                                </div>
+                                                            
+                                                            }
+                                                        }
+                                                </div>
+                                                <!-- Attach Button -->
+                                               <div class="flex items-center">
+                                                    <button data-attach="reply-message-files" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                                       <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                                                        </svg>
+
+                                                        <input type="file" hidden >
+                                                    </button>
+                                                    <span class="ml-2 ">Attach file(s)</span>
+                                               </div>
+                                               <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-neutral-700">
+                                                    <button id="reply-" type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" data-hs-overlay="#reply-edit-message-modal-@reply.Id">
+                                                    Close
+                                                    </button>
+                                                    <button  type="submit" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+                                                    Save changes
+                                                    </button>
+                                                </div>
+                                            </form>
+                            
+                                        </div>
+                                        
+                                        </div>
+                                    </div>
+                                    </div>
+                                @* End Edit Dialog *@
+                            @* End Reply and Delete Dialogs *@
+                        </div>
+                        
+                    }
+                    
+                </div>
+                @* End Reply Messages Container *@
+                }
+            }
+        </ul>
+        </div>
+        <div style="margin-top: auto;">
+            <div id="attached-uposted-files" class="p-2">
+               
+            </div>
+            <!-- Textarea -->
+            <div class="relative">
+            <form action="" method="post" class="mb-2">
+              <textarea id="message-content" class="p-4 pb-12 block w-full bg-gray-100 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" placeholder="Type You Message Here" data-hs-textarea-auto-height=""></textarea>
+            </form>
+
+            <!-- Toolbar -->
+            <div class="absolute bottom-px inset-x-px p-2 rounded-b-md bg-gray-100 dark:bg-neutral-800">
+                <div class="flex justify-between items-center">
+                <!-- Button Group -->
+                <div class="flex items-center">
+
+                    <!-- Attach Button -->
+                    <button type="button" id="message-attach-file" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                    <form action="" method="post">
+                        <input type="file" hidden name="message-attachment">
+                    </form>
+                    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                    </svg>
+                    </button>
+                    <!-- End Attach Button -->
+                </div>
+                <!-- End Button Group -->
+
+                <!-- Button Group -->
+                <div class="flex items-center gap-x-1">
+                   
+                    <!-- Send Button -->
+                    <button type="button" id="message-send" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                    <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"></path>
+                    </svg>
+                    </button>
+                    <!-- End Send Button -->
+                </div>
+                <!-- End Button Group -->
+                </div>
+            </div>
+            <!-- End Toolbar -->
+            </div>
+            <!-- End Textarea -->
+        </div>
+    </div>
+    }
+</section>
+
+@section Scripts{
+    <script>
+       var IsAdmin ="@IsAdmin";
+       if(IsAdmin !="True")
+       {
+
+        let attachBtn =document.querySelectorAll('#message-attach-file')[0]
+        let sendMessageBtn=document.querySelectorAll("#message-send")[0]
+        sendMessageBtn.disabled=true;
+        let attachedFilesCon = document.querySelectorAll("#attached-uposted-files")[0]
+        let messageTextArea =document.querySelectorAll("#message-content")[0];
+        let replyMessageForms =document.querySelectorAll("form[data-form='reply-message-form']");
+        let editMessageForms =document.querySelectorAll("form[data-form='edit-message-form']");
+        let deleteMessageForms =document.querySelectorAll("form[data-form='delete-message-form']");
+        
+        let removeFilesBtns =document.querySelectorAll("button[data-remove-file='remove-file']");
+
+       
+        
+        messageTextArea.addEventListener("change",e=>
+            {
+                sendMessageBtn.disabled=false;
+
+            }
+        )
+        attachBtn.addEventListener("click",(e)=>{
+            let attachInput = document.querySelectorAll("input[name='message-attachment']")[0];
+            attachInput.addEventListener("change",handlePostSupportFiles);
+            if(attachInput)
+            {
+                attachInput.click();
+            }
+        })
+        sendMessageBtn.addEventListener("click",handlePostNewMessage);
+
+        replyMessageForms.forEach(replyToForm=>{
+            let replyAttachmentBtn = replyToForm.querySelector("button[data-attach='reply-message-files']");
+            if(removeFilesBtns)
+            {
+                 replyAttachmentBtn.addEventListener("click",(e)=>{
+                    let inputFile=e.target.querySelector('input')
+                    if(inputFile)
+                    {
+                        inputFile.addEventListener("change",(e)=>{
+                            handlePostUploadReplyFile(e)
+                        })
+                        inputFile.click();
+                    }
+                })
+            }
+           
+            replyToForm.addEventListener("submit",(e)=>{
+                e.preventDefault()
+                console.log("Reply submit Clicked")
+                handlePostReplyMessage(e)
+            })
+        })
+        editMessageForms.forEach(replyToForm=>{
+            let replyAttachmentBtn = replyToForm.querySelector("button[data-attach='reply-message-files']");
+            if(replyAttachmentBtn)
+            {
+                replyAttachmentBtn.addEventListener("click",(e)=>{
+                let inputFile=e.target.querySelector('input')
+                if(inputFile)
+                {
+                    inputFile.addEventListener("change",(e)=>{
+                        handlePostUploadReplyFile(e)
+                    })
+                    inputFile.click();
+                }
+            })
+            }
+            
+            replyToForm.addEventListener("submit",(e)=>{
+                e.preventDefault()
+                console.log("Edit submit Clicked")
+                handlePostEditMessage(e)
+            })
+        })
+        deleteMessageForms.forEach(deleteForm=>{
+            deleteForm.addEventListener("submit",(e)=>{
+                e.preventDefault();
+                console.log("Delete Message");
+                handleDeleteMessage(e);
+            })
+        })
+
+        removeFilesBtns.forEach(rmBtn=>{
+            rmBtn.addEventListener("click",handleRemoveFile)
+        })
+        function handlePostSupportFiles(e)
+        {
+            let input=e.target;
+            let formData = new FormData();
+            for(let file of input.files)
+            {
+                formData.append("file",file,file.name);
+            }
+            const token = document.querySelector("input[name='__RequestVerificationToken']").value;
+            fetch("/SupportMessage?handler=SupportFile", {
+                method: "POST",
+                headers: {
+                    RequestVerificationToken: token
+                },
+                body: formData
+            }).then(res=>res.json())
+            .then(jsonRes=>{
+                let fileLink = document.createElement('p');
+                fileLink.innerHTML =`<a class="text-blue-600 underline underline-offset-1 decoration-blue-600 hover:opacity-80 focus:outline-none focus:opacity-80" href="/SupportMessage?handler=SupportAttachment&id=${jsonRes.attachmentId}">${jsonRes.fileName}</a>
+                <input hidden value='${jsonRes.attachmentId}'/>`
+                attachedFilesCon.appendChild(fileLink);
+                console.log(jsonRes)
+            }).catch(err=>{
+                console.error(err)
+            })
+            
+        }
+
+        function handlePostUploadReplyFile(e)
+        {
+           let input=e.target;
+           let closestReplyMessageForm = e.target.closest("form");
+           let replyMessageUploadedFilesCon =closestReplyMessageForm.querySelector("div[data-container='reply-message-file-attachments']");
+            let formData = new FormData();
+            for(let file of input.files)
+            {
+                formData.append("file",file,file.name);
+            }
+            const token = document.querySelector("input[name='__RequestVerificationToken']").value;
+            fetch("/SupportMessage?handler=SupportFile", {
+                method: "POST",
+                headers: {
+                    RequestVerificationToken: token
+                },
+                body: formData
+            }).then(res=>res.json())
+            .then(jsonRes=>{
+                let fileLink = document.createElement('div');
+                fileLink.setAttribute("class","grid grid-cols-2 gap-4")
+                fileLink.style.overflow="hidden";
+                fileLink.innerHTML =`<a class="text-blue-600 underline underline-offset-1 decoration-blue-600 hover:opacity-80 focus:outline-none focus:opacity-80" href="/SupportMessage?handler=SupportAttachment&id=${jsonRes.attachmentId}">${jsonRes.fileName}</a>
+                <input hidden name="fileId" value='${jsonRes.attachmentId}'/>`
+                replyMessageUploadedFilesCon.appendChild(fileLink);
+                console.log(jsonRes)
+            }).catch(err=>{
+                console.error(err)
+            }) 
+        }
+
+        function handlePostNewMessage(e)
+        {
+            messageTextArea.disabled=true;
+            let message=messageTextArea.value;
+            let attachedFiles =attachedFilesCon.querySelectorAll('input');
+            let formData =new FormData();
+            formData.append("message",message);
+            attachedFiles.forEach(input=>{
+                formData.append('fileId',input.value)
+            })
+            const token = document.querySelector("input[name='__RequestVerificationToken']").value;
+            fetch("/SupportMessage", {
+                method: "POST",
+                headers: {
+                    RequestVerificationToken: token
+                },
+                body: formData
+            }).then(res=>res.json())
+            .then(jsonRes=>{
+                console.log(jsonRes)
+                messageTextArea.value=''
+                messageTextArea.disabled=false;
+                Swal.fire({
+                  text: "Successfully Created Ticket",
+                  toast: true,
+                  position: "top-right",
+                  timerProgressBar: true,
+                  icon: "success",
+                  timer: 1500,
+                  showConfirmButton: false
+                })
+                window.location.reload()
+            }).catch(err=>{
+                console.error(err)
+                messageTextArea.disabled=false;
+                Swal.fire({
+                  text: "Error Creating Ticket",
+                  toast: true,
+                  position: "top-right",
+                  timerProgressBar: true,
+                  icon: "error",
+                  timer: 1500,
+                  showConfirmButton: false
+                })
+            })
+        }
+
+        function handlePostEditMessage(e)
+        {
+            let submitBtn = e.target.querySelector("button[type='submit']");
+            submitBtn.innerHTML=`<span class="animate-spin inline-block size-4 border-[3px] border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"></span>
+                            Saving Message`
+            let messageTextArea=e.target.querySelector("textarea")
+            messageTextArea.disabled=true;
+            let message=messageTextArea.value;
+            let formData =new FormData(e.target);
+            formData.append("message",message);
+            
+            const token = document.querySelector("input[name='__RequestVerificationToken']").value;
+            fetch("/SupportMessage?handler=EditSupportMessage", {
+                method: "POST",
+                headers: {
+                    RequestVerificationToken: token
+                },
+                body: formData
+            }).then(res=>res.json())
+            .then(jsonRes=>{
+                console.log(jsonRes)
+                messageTextArea.value=''
+                messageTextArea.disabled=false;
+                Swal.fire({
+                  text: "Successfully Update Ticket",
+                  toast: true,
+                  position: "top-right",
+                  timerProgressBar: true,
+                  icon: "success",
+                  timer: 1500,
+                  showConfirmButton: false
+                })
+                submitBtn.innerHTML="Save Changes";
+                window.location.reload()
+            }).catch(err=>{
+                console.error(err)
+                messageTextArea.disabled=false;
+                Swal.fire({
+                  text: "Error Updating Ticket",
+                  toast: true,
+                  position: "top-right",
+                  timerProgressBar: true,
+                  icon: "error",
+                  timer: 1500,
+                  showConfirmButton: false
+                })
+                submitBtn.innerHTML="Save Changes";
+            })
+        }
+        
+        function handlePostReplyMessage(e)
+        {
+            let submitBtn = e.target.querySelector("button[type='submit']");
+            submitBtn.innerHTML=`<span class="animate-spin inline-block size-4 border-[3px] border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"></span>
+                            Saving Message`
+            let messageTextArea=e.target.querySelector("textarea")
+            messageTextArea.disabled=true;
+            let message=messageTextArea.value;
+            let formData =new FormData(e.target);
+            formData.append("message",message);
+            
+            const token = document.querySelector("input[name='__RequestVerificationToken']").value;
+            fetch("/SupportMessage?handler=ReplyMessage", {
+                method: "POST",
+                headers: {
+                    RequestVerificationToken: token
+                },
+                body: formData
+            }).then(res=>res.json())
+            .then(jsonRes=>{
+                console.log(jsonRes)
+                messageTextArea.value=''
+                messageTextArea.disabled=false;
+                Swal.fire({
+                  text: "Successfully Created Ticket",
+                  toast: true,
+                  position: "top-right",
+                  timerProgressBar: true,
+                  icon: "success",
+                  timer: 1500,
+                  showConfirmButton: false
+                })
+                submitBtn.innerHTML="Save Changes";
+                window.location.reload()
+            }).catch(err=>{
+                console.error(err)
+                messageTextArea.disabled=false;
+                Swal.fire({
+                  text: "Error Creating Ticket",
+                  toast: true,
+                  position: "top-right",
+                  timerProgressBar: true,
+                  icon: "error",
+                  timer: 1500,
+                  showConfirmButton: false
+                })
+                submitBtn.innerHTML="Save Changes";
+            })
+        }
+
+        function handleDeleteMessage(e)
+        {
+             let submitBtn = e.target.querySelector("button[type='submit']");
+            submitBtn.innerHTML=`<span class="animate-spin inline-block size-4 border-[3px] border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"></span>
+                            Saving Message`
+            
+            let formData =new FormData(e.target);
+            
+            const token = document.querySelector("input[name='__RequestVerificationToken']").value;
+            fetch("/SupportMessage?handler=Delete", {
+                method: "POST",
+                headers: {
+                    RequestVerificationToken: token
+                },
+                body: formData
+            }).then(res=>res.json())
+            .then(jsonRes=>{
+                console.log(jsonRes)
+                messageTextArea.value=''
+                messageTextArea.disabled=false;
+                Swal.fire({
+                  text: "Successfully Delete Message",
+                  toast: true,
+                  position: "top-right",
+                  timerProgressBar: true,
+                  icon: "success",
+                  timer: 1500,
+                  showConfirmButton: false
+                })
+                submitBtn.innerHTML="Delete";
+                window.location.reload()
+            }).catch(err=>{
+                console.error(err)
+                messageTextArea.disabled=false;
+                Swal.fire({
+                  text: "Error Deleting Message",
+                  toast: true,
+                  position: "top-right",
+                  timerProgressBar: true,
+                  icon: "error",
+                  timer: 1500,
+                  showConfirmButton: false
+                })
+                submitBtn.innerHTML="Delete";
+            })
+        }
+
+        function handleRemoveFile(e)
+        {
+            let submitBtn = e.target;
+            submitBtn.innerHTML=`<span class="animate-spin inline-block size-4 border-[3px] border-current border-t-transparent text-white rounded-full" role="status" aria-label="loading"></span>
+                            Deleting File`
+            let fileId = e.target.getAttribute("data-fileId")
+        
+            let formData =new FormData();
+            formData.append("fileId",fileId);
+            
+            const token = document.querySelector("input[name='__RequestVerificationToken']").value;
+            fetch("/SupportMessage?handler=DeleteFile", {
+                method: "POST",
+                headers: {
+                    RequestVerificationToken: token
+                },
+                body: formData
+            }).then(res=>res.json())
+            .then(jsonRes=>{
+                console.log(jsonRes)
+                messageTextArea.value=''
+                messageTextArea.disabled=false;
+                Swal.fire({
+                  text: "Successfully Delete File",
+                  toast: true,
+                  position: "top-right",
+                  timerProgressBar: true,
+                  icon: "success",
+                  timer: 1500,
+                  showConfirmButton: false
+                })
+                submitBtn.innerHTML="Deleted";
+                window.location.reload()
+            }).catch(err=>{
+                console.error(err)
+                messageTextArea.disabled=false;
+                Swal.fire({
+                  text: "Error Deleting File",
+                  toast: true,
+                  position: "top-right",
+                  timerProgressBar: true,
+                  icon: "error",
+                  timer: 1500,
+                  showConfirmButton: false
+                })
+                submitBtn.innerHTML="Deleted";
+            })
+        }
+        } else {
+             //admin side
+            var adminSendBtns=document.querySelectorAll("button[id^='admin-message-send']")
+            var adminAttachBtns = document.querySelectorAll("button[id^='admin-attach-file']")
+            console.log(adminAttachBtns)
+            adminSendBtns.forEach(adminSendBtn=>{
+                let dataSendAttr=adminSendBtn.getAttribute("data-send-message");
+                let dataUser=adminSendBtn.getAttribute("data-user")
+                adminSendBtn.addEventListener("click",(e)=>{
+                    handlePostNewMessage(e,dataSendAttr,dataUser)
+                })
+            })
+
+            @* adminAttachBtns.forEach(adminAttachBtn=>{
+                let dataAttachAttr=adminAttachBtn.getAttribute("data-attach-message");
+                let dataUser=adminAttachBtn.getAttribute("data-user")
+                console.log(dataAttachAttr)
+                console.log(dataAttachAttr)
+                adminAttachBtn.addEventListener("click",(e)=>{
+                    let attachInput = e.target.querySelectorAll("input")[0]
+                    console.log(attachInput)
+                    attachInput.addEventListener("change",handlePostSupportFiles);
+                    if(attachInput)
+                    {
+                        attachInput.click();
+                    }
+                })
+            }) *@
+
+            function handlePostNewMessage(e,attr,user)
+            {
+                let messageTextArea=document.querySelector(`textarea[data-send-message='${attr}']`)
+                let attachedFilesCon=document.querySelector(`div[data-attach-message='${attr}']`)
+                
+                messageTextArea.disabled=true;
+                let message=messageTextArea.value;
+                let attachedFiles =attachedFilesCon.querySelectorAll('input');
+                let formData =new FormData();
+                formData.append("message",message);
+                formData.append("uniqueId",user)
+                attachedFiles.forEach(input=>{
+                    formData.append('fileId',input.value)
+                })
+                const token = document.querySelector("input[name='__RequestVerificationToken']").value;
+                fetch("/SupportMessage?handler=AdminMessage", {
+                    method: "POST",
+                    headers: {
+                        RequestVerificationToken: token
+                    },
+                    body: formData
+                }).then(res=>res.json())
+                .then(jsonRes=>{
+                    console.log(jsonRes)
+                    messageTextArea.value=''
+                    messageTextArea.disabled=false;
+                    Swal.fire({
+                    text: "Successfully Created Ticket",
+                    toast: true,
+                    position: "top-right",
+                    timerProgressBar: true,
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false
+                    })
+                    window.location.reload()
+                }).catch(err=>{
+                    console.error(err)
+                    messageTextArea.disabled=false;
+                    Swal.fire({
+                    text: "Error Creating Ticket",
+                    toast: true,
+                    position: "top-right",
+                    timerProgressBar: true,
+                    icon: "error",
+                    timer: 1500,
+                    showConfirmButton: false
+                    })
+                })
+            }
+
+            //File Upload
+            function handlePostSupportFiles(e)
+            {
+                let input=e.target;
+                let formData = new FormData();
+                for(let file of input.files)
+                {
+                    formData.append("file",file,file.name);
+                }
+                const token = document.querySelector("input[name='__RequestVerificationToken']").value;
+                fetch("/SupportMessage?handler=SupportFile", {
+                    method: "POST",
+                    headers: {
+                        RequestVerificationToken: token
+                    },
+                    body: formData
+                }).then(res=>res.json())
+                .then(jsonRes=>{
+                    let fileLink = document.createElement('p');
+                    fileLink.innerHTML =`<a class="text-blue-600 underline underline-offset-1 decoration-blue-600 hover:opacity-80 focus:outline-none focus:opacity-80" href="/SupportMessage?handler=SupportAttachment&id=${jsonRes.attachmentId}">${jsonRes.fileName}</a>
+                    <input hidden value='${jsonRes.attachmentId}'/>`
+                    attachedFilesCon.appendChild(fileLink);
+                    console.log(jsonRes)
+                }).catch(err=>{
+                    console.error(err)
+                })
+                
+            }
+        }
+
+        
+    </script>
+}
+
+

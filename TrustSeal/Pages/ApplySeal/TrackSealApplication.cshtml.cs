@@ -41,23 +41,42 @@ namespace TrustSeal.Pages.ApplySeal
 
         public List<ApplicationTracking> ApplicationTrackings {get;set;}
 
-        public async Task<IActionResult> OnGetAsync(int? Id)
+        public async Task<IActionResult> OnGetByIdAsync(int Id)
         {
-            if (Id == null)
-            {
-                return NotFound();
-            }
-            Business = await _context.Businesses.FirstOrDefaultAsync(b => b.Id == Id);
-            ApplicationTrackings = await _context.ApplicationTrackings
-                                            .Where(t => t.BusinessId == Business.Id)
+   
+                Business = await _context.Businesses.FirstOrDefaultAsync(b => b.Id == Id);
+                ApplicationTrackings = await _context.ApplicationTrackings
+                                            .Where(t => t.BusinessId == Business.Id && t.Required == true)
                                             .ToListAsync();
-
+                _logger.LogInformation(Business.LegalName);
+                _logger.LogInformation("ById");
+       
+            
             if (Business == null)
             {
                 return NotFound();
             }
 
             return Page();
+        }
+
+        public async Task<IActionResult> OnGetByCaseNumberAsync(string CaseNumber)
+        {
+            if (CaseNumber != null)
+            {
+                 Business = await _context.Businesses.FirstOrDefaultAsync(b => b.CaseNumber == CaseNumber);
+                 if (Business == null)
+                 {
+                    return NotFound();
+                 }
+                ApplicationTrackings = await _context.ApplicationTrackings
+                                            .Where(t => t.BusinessId == Business.Id && t.Required == true)
+                                            .OrderBy(a=>a.Order)
+                                            .ToListAsync();
+                return Page();
+            }
+
+            return NotFound();
         }
     }
 }
