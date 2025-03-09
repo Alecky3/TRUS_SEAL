@@ -12,15 +12,15 @@ using TrustSeal.Areas.Identity.Data;
 namespace TrustSeal.Migrations
 {
     [DbContext(typeof(TSAuth))]
-    [Migration("20250108181047_Supportattachment_init")]
-    partial class Supportattachment_init
+    [Migration("20250308221941_init_09032025")]
+    partial class init_09032025
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.11")
+                .HasAnnotation("ProductVersion", "8.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -577,7 +577,10 @@ namespace TrustSeal.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("HasAttachment")
+                    b.Property<string>("Choices")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("HasChoices")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsActive")
@@ -681,7 +684,7 @@ namespace TrustSeal.Migrations
 
                     b.HasIndex("SendById");
 
-                    b.ToTable("Support");
+                    b.ToTable("SupportMessages");
                 });
 
             modelBuilder.Entity("TrustSeal.Models.SupportAttachment", b =>
@@ -701,7 +704,7 @@ namespace TrustSeal.Migrations
                     b.Property<string>("FileUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SupportMessageId")
+                    b.Property<int?>("SupportMessageId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -711,7 +714,7 @@ namespace TrustSeal.Migrations
 
                     b.HasIndex("SupportMessageId");
 
-                    b.ToTable("SupportAttachment");
+                    b.ToTable("SupportAttachments");
                 });
 
             modelBuilder.Entity("TrustSeal.Models.UserBillings", b =>
@@ -928,7 +931,7 @@ namespace TrustSeal.Migrations
             modelBuilder.Entity("TrustSeal.Models.Support", b =>
                 {
                     b.HasOne("TrustSeal.Models.Support", "ReplyTo")
-                        .WithMany()
+                        .WithMany("Replies")
                         .HasForeignKey("ReplyToId");
 
                     b.HasOne("TrustSeal.Areas.Identity.Data.TSUser", "SendBy")
@@ -944,9 +947,7 @@ namespace TrustSeal.Migrations
                 {
                     b.HasOne("TrustSeal.Models.Support", "SupportMessage")
                         .WithMany("SupportAttachments")
-                        .HasForeignKey("SupportMessageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SupportMessageId");
 
                     b.Navigation("SupportMessage");
                 });
@@ -1018,6 +1019,8 @@ namespace TrustSeal.Migrations
 
             modelBuilder.Entity("TrustSeal.Models.Support", b =>
                 {
+                    b.Navigation("Replies");
+
                     b.Navigation("SupportAttachments");
                 });
 #pragma warning restore 612, 618

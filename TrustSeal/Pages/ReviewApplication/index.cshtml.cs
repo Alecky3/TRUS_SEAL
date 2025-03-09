@@ -91,6 +91,7 @@ namespace TrustSeal.Pages.ReviewApplication
         var trackingVerified = keys[keys.Keys.Where(k=> k.StartsWith("trackingVerified")).FirstOrDefault()];
         var isFinalStep = keys[keys.Keys.Where(k=> k.StartsWith("isFinalStep")).FirstOrDefault()];
         string SealReadableId = string.Empty;
+        string SealCode = string.Empty;
 
         var applicationTrackingStatus = await _context.ApplicationTrackings.FirstOrDefaultAsync(a => a.Id == int.Parse(trackingId));
         Business business;
@@ -120,13 +121,17 @@ namespace TrustSeal.Pages.ReviewApplication
                     string bsName = business.LegalName[0].ToString() + business.LegalName[1].ToString();
                     if (business.SealReadableId != string.Empty)
                     {
-                        return new JsonResult(new {error = "Seal already Generated, you can renew it if expired"});
+                        var sealC=await _context.Seals.FirstOrDefaultAsync(s=>s.Id==business.SealId);
+                        return new JsonResult(new {info = "Seal already Generated, you can renew it if expired",sealCode=sealC.SealCode.ToString()});
                     }
                     var sealId = await GenerateSealReadableId(bsName);
                 
                     business.SealReadableId = sealId;
                     business.Seal = new Seals();
                     SealReadableId = sealId;
+                    var seal = await _context.Seals.FirstOrDefaultAsync(s=>s.Id== business.SealId);
+                    SealCode= seal.SealCode.ToString();
+
                     await _context.SaveChangesAsync();
                     _logger.LogInformation($"Generated Seal Id Successfully-{sealId}");
             } else {
@@ -135,7 +140,7 @@ namespace TrustSeal.Pages.ReviewApplication
             applicationTrackingStatus.StepVerified = trackingVerified == "true" ? true : false;
             await _context.SaveChangesAsync();
             }
-          return new JsonResult(new {message = "Update application Status Successfully",sealId=SealReadableId});
+          return new JsonResult(new {message = "Update application Status Successfully",sealId=SealReadableId,sealCode=SealCode});
         }
        
         _logger.LogInformation($"Tracking Id {trackingId} - {isFinalStep} - {trackingRequired} - {trackingVerified}");
