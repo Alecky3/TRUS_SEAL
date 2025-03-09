@@ -43,10 +43,10 @@ namespace TrustSeal.Pages.TsSeals
                                                     SealReadableId = s.Business.SealReadableId,
                                                     SealCode = s.SealCode,
                                                     Seal = new {
-                                                        png=$"http://localhost:5027/{@Url.Content("~/Badges/badge.png")}",
-                                                        svg=$"http://localhost:5027/{@Url.Content("~/Badges/badge.png")}"
+                                                        png=$"http://localhost:5027{@Url.Content("~/Badges/badge.png")}",
+                                                        svg=$"http://localhost:5027{@Url.Content("~/Badges/badge.svg")}"
                                                         },
-                                                    SealPreview = $"hhttp://localhost:5027/SealPreview?SealCode={s.SealCode}"
+                                                    SealPreview = $"http://localhost:5027/SealPreview?SealCode={s.SealCode}"
                                                 }).FirstOrDefaultAsync();
             if (EmbedSeal != null)
             {
