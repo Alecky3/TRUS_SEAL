@@ -328,15 +328,24 @@
           if (mess.error)
           {
             createShoewToast("error",mess.error)
-          } else if(mess.sealId !== "")
+          } else if(mess.sealId)
           {
-            let content = `<p class="text-gray-500 dark:text-gray-400">Navigate to Generated Seal Page<a href="/TsSeals" class="inline-flex items-center font-medium text-blue-600 dark:text-blue-500 hover:underline">
+            let content = `<p class="text-gray-500 dark:text-gray-400">Navigate to Generated Seal Page<a href="/SealPreview?SealCode=${mess.sealCode}" class="inline-flex items-center font-medium text-blue-600 dark:text-blue-500 hover:underline">
                               ${mess.sealId}
                               <svg class="w-4 h-4 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                               </svg>
                           </a></p>`
             createShoewToast("seal",content)
+          } else if(mess.sealCode)
+          {
+              let content = `<p class="text-gray-500 dark:text-gray-400">Seal already generated, to preview;navigate to<a href="/SealPreview?SealCode=${mess.sealCode}" class="inline-flex items-center font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                ${mess.sealCode}
+                                <svg class="w-4 h-4 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                                </svg>
+                            </a></p>`
+              createShoewToast("info",content)
           }
           else {
             createShoewToast("success",mess.message)
@@ -358,7 +367,7 @@
     // show toastr 
     function createShoewToast(status,content)
     {
-      if (status !== "error" && status != "seal")
+      if (status !== "error" && status != "seal" && status !="info")
       {
         
       
@@ -389,6 +398,15 @@
           confirmButtonText: 'Close',
           allowOutsideClick:false
         })
+      } else if(status =="info")
+      {
+          Swal.fire({
+            title: 'Successfully updated Application status',
+            html: content,
+            icon: 'info',
+            confirmButtonText: 'Close',
+            allowOutsideClick:false
+          })
       }
       else {
           Swal.fire({
