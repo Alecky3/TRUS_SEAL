@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using TrustSeal.Areas.Identity.Data;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("TSAuthConnection") ?? throw new InvalidOperationException("Connection string 'TSAuthConnection' not found.");
+const string EmbedSealPolicy = "EmbedSealCorsPolicy";
 
 builder.Services.AddDbContext<TSAuth>(options => options.UseSqlServer(connectionString));
 
@@ -13,6 +14,14 @@ builder.Services.AddDbContext<TSAuth>(options => options.UseSqlServer(connection
 builder.Services.AddDefaultIdentity<TSUser>(options => options.SignIn.RequireConfirmedAccount = true)
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<TSAuth>();
+
+builder.Services.AddCors(options=>{
+    options.AddPolicy(name:EmbedSealPolicy,builder=>{
+        builder.AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
+});
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -38,7 +47,7 @@ using (var scope = app.Services.CreateScope())
     QuestionSeeder.Initialize(context);
 }
 
-
+app.UseCors();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

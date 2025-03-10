@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -24,8 +25,12 @@ namespace TrustSeal.Pages.TsSeals
              _context = context;
             _logger = logger;
          }
+        //  [EnableCors("EmbedSealCorsPolicy")]
         public async Task<IActionResult> OnGetEmbedSealAsync(string SealCode)
         {
+            Response.Headers.Append("Access-Control-Allow-Origin", "*");
+            Response.Headers.Append("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+            Response.Headers.Append("Access-Control-Allow-Headers", "Content-Type");
             if (string.IsNullOrEmpty(SealCode))
             {
                 return NotFound();
