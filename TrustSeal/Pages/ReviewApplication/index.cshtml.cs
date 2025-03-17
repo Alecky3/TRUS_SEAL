@@ -125,10 +125,11 @@ namespace TrustSeal.Pages.ReviewApplication
                         return new JsonResult(new {info = "Seal already Generated, you can renew it if expired",sealCode=sealC.SealCode.ToString()});
                     }
                     var sealId = await GenerateSealReadableId(bsName);
-                
+                    _logger.LogInformation($"Seal Id {sealId}");
                     business.SealReadableId = sealId;
                     business.Seal = new Seals();
                     SealReadableId = sealId;
+                    await _context.SaveChangesAsync();
                     var seal = await _context.Seals.FirstOrDefaultAsync(s=>s.Id== business.SealId);
                     SealCode= seal.SealCode.ToString();
 
