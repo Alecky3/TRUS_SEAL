@@ -79,5 +79,6 @@ INSERT INTO ApplicationTrackings (Status,CreatedAt,UpdatedAt,Required,StepVerifi
 
   INSERT INTO ApplicationTrackings (Status,CreatedAt,UpdatedAt,Required,StepVerified,NeedsAttention,[Order],IsMain)
   VALUES('Verified',GETDATE(),GETDATE(),1,0,1,20,1);
+  GO
 
 
