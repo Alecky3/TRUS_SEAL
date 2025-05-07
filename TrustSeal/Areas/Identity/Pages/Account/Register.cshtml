@@ -12,10 +12,15 @@
                         <h1 class="text-2xl font-semibold mb-3">Register</h1>
                         <p class="text-gray-600">Sign up to validate your business Today.</p>
                     </div>
-                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" novalidate class="group">
                         <div asp-validation-summary="ModelOnly" class="text-red-500" role="alert"></div>
                         <div class="mb-3">
-                            <input asp-for="Input.FirstName" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" autocomplete="on" aria-required="true" placeholder="FirstName" />
+                            <input 
+                            required
+                            type="text"
+                            pattern="[A-Za-z]{1,3}"
+                            asp-for="Input.FirstName" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-50 peer" autocomplete="on" aria-required="true" placeholder="" />
+                            
                             <span asp-validation-for="Input.FirstName" class="text-red-500"></span>
                         </div>
                         <div class="mb-3">
@@ -35,7 +40,7 @@
                             <input asp-for="Input.ConfirmPassword" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" autocomplete="new-password" aria-required="true" placeholder="Confirm Password" type="password" />
                             <span asp-validation-for="Input.ConfirmPassword" class="text-red-500"></span>
                         </div>
-                        <button id="registerSubmit" type="submit" class="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50">Sign up</button>
+                        <button id="registerSubmit" type="submit" class="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50 group-invalid:pointer-events-none group-invalid:opacity-30">Sign up</button>
                     </form>
                     <br class="my-4">
                     <p class="text-center text-gray-500 text-sm">By signing up, you agree to our Terms, Data Policy and Cookies Policy.</p>

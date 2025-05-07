@@ -11,7 +11,7 @@ builder.Services.AddDbContext<TSAuth>(options => options.UseSqlServer(connection
 
 
 
-builder.Services.AddDefaultIdentity<TSUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<TSUser>(options => options.SignIn.RequireConfirmedAccount = false)
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<TSAuth>();
 

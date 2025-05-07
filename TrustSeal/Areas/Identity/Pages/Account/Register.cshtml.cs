@@ -140,6 +140,7 @@ namespace TrustSeal.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+                    
                     /* assign user to role
                         first check if role are defined and if not create them
                     */
