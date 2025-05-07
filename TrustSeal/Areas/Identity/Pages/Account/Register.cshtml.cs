@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using TrustSeal.Areas.Identity.Data;
+using TrustSeal.Models;
 
 namespace TrustSeal.Areas.Identity.Pages.Account
 {
@@ -31,6 +32,7 @@ namespace TrustSeal.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
+         private readonly TrustSeal.Areas.Identity.Data.TSAuth _context;
 
         public RegisterModel(
             UserManager<TSUser> userManager,
@@ -38,7 +40,8 @@ namespace TrustSeal.Areas.Identity.Pages.Account
             SignInManager<TSUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            RoleManager<IdentityRole> roleManager
+            RoleManager<IdentityRole> roleManager,
+             TrustSeal.Areas.Identity.Data.TSAuth context
             )
         {
             _userManager = userManager;
@@ -48,6 +51,7 @@ namespace TrustSeal.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _roleManager = roleManager; 
+            _context = context;
         }
 
         /// <summary>
@@ -140,6 +144,13 @@ namespace TrustSeal.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+                    var not = new Notification();
+                    not.Content ="Created Account successfully";
+                    not.UserId = user.Id;
+                    not.CreatedAt = DateTime.Now;
+                    not.UpdateAt = DateTime.Now; 
+                    _context.Notifications.Add(not);
+                    await _context.SaveChangesAsync();
                     
                     /* assign user to role
                         first check if role are defined and if not create them

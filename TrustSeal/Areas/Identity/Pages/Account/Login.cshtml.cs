@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using TrustSeal.Areas.Identity.Data;
 using Microsoft.EntityFrameworkCore;
+using TrustSeal.Models;
 
 namespace TrustSeal.Areas.Identity.Pages.Account
 {
@@ -128,6 +129,13 @@ namespace TrustSeal.Areas.Identity.Pages.Account
             if (user != null)
             {
                 _logger.LogInformation("User is Logged in");
+                 var not = new Notification();
+                    not.Content ="Logged In successfully";
+                    not.UserId = user.Id;
+                    not.CreatedAt = DateTime.Now;
+                    not.UpdateAt = DateTime.Now; 
+                    _context.Notifications.Add(not);
+                    await _context.SaveChangesAsync();
                 if (await _userManager.IsInRoleAsync(user, "User"))
                 {
                     var Business = await _context.Businesses.Where(b => b.OwnerId == user.Id).ToListAsync();
