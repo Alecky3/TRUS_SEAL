@@ -44,6 +44,7 @@ namespace TrustSeal.Pages.TsDashboard
                         users = await _context.Users.ToListAsync();
                         seals = await _context.Seals.ToListAsync();
                         businesses = await _context.Businesses.ToListAsync();
+                        notifications = await _context.Notifications.Include(b=>b.CreatedBy).ToListAsync();
                     } else {
                         seals = await _context.Seals.Where(s=>s.Business.OwnerId == user.Id).ToListAsync();
                         businesses = await _context.Businesses.Where(b=>b.OwnerId==user.Id).ToListAsync();

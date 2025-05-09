@@ -15,6 +15,7 @@
     ViewData["Title"] = "Dashboard";
     var vBusinesses = @Model.businesses.Where(b=>b.IsVerified==true).Count();
     var unVBusinesses = @Model.businesses.Where(b=>b.IsVerified==false).Count();
+    var IsAdmin = true;
     List<Business> businesses = new List<Business>();
     @if (SignInManager.IsSignedIn(User))
     {
@@ -29,6 +30,7 @@
   {
     if(await UserManager.IsInRoleAsync(user,"user"))
     {
+      IsAdmin=false;
     <div class="container mx-auto">
       @* statistics *@
       <div class="w-full bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
@@ -153,145 +155,151 @@
       @* start of admin dashboard *@
 
 
-<div id="sticky-banner" tabindex="-1" class="fixed top-0 start-0 z-50 flex justify-between w-full p-4 border-b border-gray-200 bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
-    <div class="flex items-center mx-auto">
-        <p class="flex items-center text-sm font-normal text-gray-500 dark:text-gray-400">
-            <span class="inline-flex p-1 me-3 bg-gray-200 rounded-full dark:bg-gray-600 w-6 h-6 items-center justify-center shrink-0">
-                <svg class="w-3 h-3 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 19">
-                    <path d="M15 1.943v12.114a1 1 0 0 1-1.581.814L8 11V5l5.419-3.871A1 1 0 0 1 15 1.943ZM7 4H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2v5a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2V4ZM4 17v-5h1v5H4ZM16 5.183v5.634a2.984 2.984 0 0 0 0-5.634Z"/>
-                </svg>
-                <span class="sr-only">Light bulb</span>
-            </span>
-            <span>Admin Dashboard is comming soon! <a href="~/TsDashboard" class="inline font-medium text-blue-600 underline dark:text-blue-500 hover:no-underline">Admin Dashboard</a></span>
-        </p>
+    <div class="w-full bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+        <div class="sm:hidden">
+            <label for="tabs" class="sr-only">Select tab</label>
+            <select id="tabs" class="bg-gray-50 border-0 border-b border-gray-200 text-gray-900 text-sm rounded-t-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option>Statistics</option>
+            </select>
+        </div>
+        <ul class="hidden text-sm font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg sm:flex dark:divide-gray-600 dark:text-gray-400 rtl:divide-x-reverse" id="fullWidthTab" data-tabs-toggle="#fullWidthTabContent" role="tablist">
+            <li class="w-full">
+                <button id="stats-tab" data-tabs-target="#stats" type="button" role="tab" aria-controls="stats" aria-selected="true" class="inline-block w-full p-4 rounded-ss-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600">Statistics</button>
+            </li>
+        </ul>
+        <div id="fullWidthTabContent" class="border-t border-gray-200 dark:border-gray-600">
+            <div class="hidden p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="stats" role="tabpanel" aria-labelledby="stats-tab">
+                <dl class="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-gray-900 sm:grid-cols-3 xl:grid-cols-6 dark:text-white sm:p-8">
+                    <div class="flex flex-col items-center justify-center">
+                        <dt class="mb-2 text-3xl font-extrabold">@(Model.businesses.Count())</dt>
+                        <dd class="text-gray-500 dark:text-gray-400">All Businesses Applications</dd>
+                    </div>
+                    <div class="flex flex-col items-center justify-center">
+                        <dt class="mb-2 text-3xl font-extrabold">@(Model.businesses.Where(b=>b.IsVerified==true).Count())</dt>
+                        <dd class="text-gray-500 dark:text-gray-400">Verified Businesses</dd>
+                    </div>
+                    <div class="flex flex-col items-center justify-center">
+                        <dt class="mb-2 text-3xl font-extrabold">@(Model.businesses.Where(b=>b.IsVerified==false).Count())</dt>
+                        <dd class="text-gray-500 dark:text-gray-400">Unverified Businesses</dd>
+                    </div>
+                    <div class="flex flex-col items-center justify-center">
+                        <dt class="mb-2 text-3xl font-extrabold">@(Model.seals.Count())</dt>
+                        <dd class="text-gray-500 dark:text-gray-400">All Seals</dd>
+                    </div>
+                    <div class="flex flex-col items-center justify-center">
+                        <dt class="mb-2 text-3xl font-extrabold">@(Model.seals.Where(s=>s.ExpiresAt >= DateTime.Now).Count())</dt>
+                        <dd class="text-gray-500 dark:text-gray-400">Valid Seals</dd>
+                    </div>
+                    <div class="flex flex-col items-center justify-center">
+                        <dt class="mb-2 text-3xl font-extrabold">@(Model.seals.Where(s=>s.ExpiresAt < DateTime.Now).Count())</dt>
+                        <dd class="text-gray-500 dark:text-gray-400">Expired Seals</dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
     </div>
-    <div class="flex items-center">
-        <button data-dismiss-target="#sticky-banner" type="button" class="shrink-0 inline-flex justify-center w-7 h-7 items-center text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 dark:hover:bg-gray-600 dark:hover:text-white">
-            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-            </svg>
-            <span class="sr-only">Close banner</span>
-        </button>
+    @* lower side bar *@
+    <div class="container">
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 p-2 sm:p-3">
+          <div class="chart-container" style="width: 100%; height: 100%;">
+            <canvas id="admin-businesses" width="300" height="300"></canvas>
+          </div>
+          <div class="chart-container" style="width: 100%; height: 100%;">
+            <canvas id="admin-seals" width="300" height="300"></canvas>
+          </div>
+          
+        </div>
     </div>
-</div>
-     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4">
+    @* end of lower sidebar *@
+    @* lower end *@
+    <div class="container">
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-3 p-2 sm:p-3">
+            <div class="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-8 dark:bg-gray-800 dark:border-gray-700 ">
+                <div class="flex items-center justify-between mb-4">
+                    <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">Latest Customers</h5>
+              </div>
+              <div class="flow-root">
+                    <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700 max-h-[500px] overflow-y-auto
+                        [&::-webkit-scrollbar]:w-2
+                        [&::-webkit-scrollbar-track]:rounded-full
+                        [&::-webkit-scrollbar-track]:bg-gray-100
+                        [&::-webkit-scrollbar-thumb]:rounded-full
+                        [&::-webkit-scrollbar-thumb]:bg-gray-300
+                        dark:[&::-webkit-scrollbar-track]:bg-neutral-700
+                        dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
+                        @foreach(var u in Model.users)
+                        {
+                            <li class="py-3 sm:py-4">
+                              <div class="flex items-center">
+                                  <div class="shrink-0">
+                                      <span class="inline-flex items-center justify-center size-11 text-sm font-semibold rounded-full border border-gray-800 text-gray-800 dark:border-neutral-200 dark:text-white">
+                                        @u.FirstName[0].ToString().ToUpper()
+                                      </span>
+                                  </div>
+                                  <div class="flex-1 min-w-0 ms-4">
+                                      <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                          @u.FirstName
+                                      </p>
+                                      <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                          @u.Email
+                                      </p>
+                                  </div>
+                              </div>
+                          </li>
+                        }
+                       
+                    </ul>
+              </div>
+            </div>
+            @* datatable *@
 
-            <div role="status" class="max-w-md p-4 space-y-4 border border-gray-200 divide-y divide-gray-200 rounded-sm shadow-sm animate-pulse dark:divide-gray-700 md:p-6 dark:border-gray-700">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div class="flex items-center justify-between pt-4">
-                    <div>
-                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div class="flex items-center justify-between pt-4">
-                    <div>
-                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div class="flex items-center justify-between pt-4">
-                    <div>
-                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div class="flex items-center justify-between pt-4">
-                    <div>
-                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <span class="sr-only">Loading...</span>
+            <div class="md:col-span-2">
+              <div class="py-3 flex items-center text-sm text-gray-800 before:flex-1 before:border-t before:border-gray-200 before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6 dark:text-white dark:before:border-neutral-600 dark:after:border-neutral-600">Users Actions</div>
+              <table id="all-user-actions">
+                <thead>
+                    <tr>
+                        <th>
+                            <span class="flex items-center">
+                                User Email
+                                <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4"/>
+                                </svg>
+                            </span>
+                        </th>
+                        <th data-type="date" data-format="YYYY/DD/MM">
+                            <span class="flex items-center">
+                               Action
+                                <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4"/>
+                                </svg>
+                            </span>
+                        </th>
+                        <th>
+                            <span class="flex items-center">
+                                Date & Time
+                                <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4"/>
+                                </svg>
+                            </span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var not in Model.notifications)
+                    {
+                      <tr>
+                        <td class="font-medium text-gray-900 whitespace-nowrap dark:text-white">@not.CreatedBy.Email</td>
+                        <td>@not.Content</td>
+                        <td>@not.CreatedAt</td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
             </div>
 
-
-        <div role="status" class="max-w-sm p-4 border border-gray-200 rounded-sm shadow-sm animate-pulse md:p-6 dark:border-gray-700">
-            <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-2.5"></div>
-            <div class="w-48 h-2 mb-10 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-            <div class="flex items-baseline mt-4">
-                <div class="w-full bg-gray-200 rounded-t-lg h-72 dark:bg-gray-700"></div>
-                <div class="w-full h-56 ms-6 bg-gray-200 rounded-t-lg dark:bg-gray-700"></div>
-                <div class="w-full bg-gray-200 rounded-t-lg h-72 ms-6 dark:bg-gray-700"></div>
-                <div class="w-full h-64 ms-6 bg-gray-200 rounded-t-lg dark:bg-gray-700"></div>
-                <div class="w-full bg-gray-200 rounded-t-lg h-80 ms-6 dark:bg-gray-700"></div>
-                <div class="w-full bg-gray-200 rounded-t-lg h-72 ms-6 dark:bg-gray-700"></div>
-                <div class="w-full bg-gray-200 rounded-t-lg h-80 ms-6 dark:bg-gray-700"></div>
-            </div>
-            <span class="sr-only">Loading...</span>
         </div>
-
-            <div role="status" class="max-w-sm p-4 border border-gray-200 rounded-sm shadow-sm animate-pulse md:p-6 dark:border-gray-700">
-            <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-2.5"></div>
-            <div class="w-48 h-2 mb-10 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-            <div class="flex items-baseline mt-4">
-                <div class="w-full bg-gray-200 rounded-t-lg h-72 dark:bg-gray-700"></div>
-                <div class="w-full h-56 ms-6 bg-gray-200 rounded-t-lg dark:bg-gray-700"></div>
-                <div class="w-full bg-gray-200 rounded-t-lg h-72 ms-6 dark:bg-gray-700"></div>
-                <div class="w-full h-64 ms-6 bg-gray-200 rounded-t-lg dark:bg-gray-700"></div>
-                <div class="w-full bg-gray-200 rounded-t-lg h-80 ms-6 dark:bg-gray-700"></div>
-                <div class="w-full bg-gray-200 rounded-t-lg h-72 ms-6 dark:bg-gray-700"></div>
-                <div class="w-full bg-gray-200 rounded-t-lg h-80 ms-6 dark:bg-gray-700"></div>
-            </div>
-            <span class="sr-only">Loading...</span>
-        </div>
-
-
-      <div role="status" class="max-w-sm animate-pulse">
-          <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
-          <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
-          <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
-          <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
-          <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
-          <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
-          <span class="sr-only">Loading...</span>
-      </div>
-
-      <div role="status" class="max-w-sm p-4 border border-gray-200 rounded-sm shadow-sm animate-pulse md:p-6 dark:border-gray-700">
-            <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-2.5"></div>
-            <div class="w-48 h-2 mb-10 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-            <div class="flex items-baseline mt-4">
-                <div class="w-full bg-gray-200 rounded-t-lg h-72 dark:bg-gray-700"></div>
-                <div class="w-full h-56 ms-6 bg-gray-200 rounded-t-lg dark:bg-gray-700"></div>
-                <div class="w-full bg-gray-200 rounded-t-lg h-72 ms-6 dark:bg-gray-700"></div>
-                <div class="w-full h-64 ms-6 bg-gray-200 rounded-t-lg dark:bg-gray-700"></div>
-                <div class="w-full bg-gray-200 rounded-t-lg h-80 ms-6 dark:bg-gray-700"></div>
-                <div class="w-full bg-gray-200 rounded-t-lg h-72 ms-6 dark:bg-gray-700"></div>
-                <div class="w-full bg-gray-200 rounded-t-lg h-80 ms-6 dark:bg-gray-700"></div>
-            </div>
-            <span class="sr-only">Loading...</span>
-        </div>
-
-        <div role="status" class="max-w-sm p-4 border border-gray-200 rounded-sm shadow-sm animate-pulse md:p-6 dark:border-gray-700">
-            <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-2.5"></div>
-            <div class="w-48 h-2 mb-10 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-            <div class="flex items-baseline mt-4">
-                <div class="w-full bg-gray-200 rounded-t-lg h-72 dark:bg-gray-700"></div>
-                <div class="w-full h-56 ms-6 bg-gray-200 rounded-t-lg dark:bg-gray-700"></div>
-                <div class="w-full bg-gray-200 rounded-t-lg h-72 ms-6 dark:bg-gray-700"></div>
-                <div class="w-full h-64 ms-6 bg-gray-200 rounded-t-lg dark:bg-gray-700"></div>
-                <div class="w-full bg-gray-200 rounded-t-lg h-80 ms-6 dark:bg-gray-700"></div>
-                <div class="w-full bg-gray-200 rounded-t-lg h-72 ms-6 dark:bg-gray-700"></div>
-                <div class="w-full bg-gray-200 rounded-t-lg h-80 ms-6 dark:bg-gray-700"></div>
-            </div>
-            <span class="sr-only">Loading...</span>
-        </div>
-
-
-
-
-     </div>
-
+    </div>
+    @* end of lower end *@
       @* end of admin dashboard *@
     }
   }
@@ -301,34 +309,107 @@
 <script>
   let vbusinesses = @vBusinesses;
   let ubusinesses = @unVBusinesses
-
+  console.log("This is JS")
+  console.log('@IsAdmin')
   //
-  const data = {
-  labels: [
-    'Verified',
-    'Unverified',
-  ],
-  datasets: [{
-    label: 'User Analytics',
-    data: [vbusinesses,ubusinesses],
-    backgroundColor: [
-      'rgb(255, 99, 132)',
-      'rgb(54, 162, 235)',
-    ],
-    hoverOffset: 4
-  }]
-};
+  if('@IsAdmin' == 'False'){
+    var data = {
+      labels: [
+        'Verified',
+        'Unverified',
+      ],
+      datasets: [{
+        label: 'User Analytics',
+        data: [vbusinesses,ubusinesses],
+        backgroundColor: [
+          'rgb(255, 99, 132)',
+          'rgb(54, 162, 235)',
+        ],
+        hoverOffset: 4
+      }]
+    };
+  } else {
+    var bdata = {
+      labels: [
+        'All Businesses',
+        'Verified Businesses',
+        "Unverified Businesses"
+      ],
+      datasets: [{
+        label: 'Business Analytics',
+        data: [@Model.businesses.Count(),@Model.seals.Where(s=>s.ExpiresAt >= DateTime.Now).Count(),@Model.businesses.Where(b=>b.IsVerified==false).Count()],
+        backgroundColor: [
+          'rgb(255, 99, 132)',
+          'rgb(54, 162, 235)',
+          'rgb(255, 205, 86)'
+        ],
+        hoverOffset: 4
+      }]
+    }; 
+    var sdata = {
+      labels: [
+        'All Seals',
+        'Velid Seals',
+        "Expired Seals"
+      ],
+      datasets: [{
+        label: 'Seals Analytics',
+        data: [@Model.businesses.Count(),@Model.businesses.Where(b=>b.IsVerified==true).Count(),@Model.seals.Where(s=>s.ExpiresAt < DateTime.Now).Count()],
+        backgroundColor: [
+          'rgb(54, 162, 235)',
+          'rgb(255, 205, 86)',
+          'rgb(255, 99, 132)'
+        ],
+        hoverOffset: 4
+      }]
+    }; 
+    //
+  }
+  
+  
   //
-  console.log(vbusinesses,ubusinesses)
-    window.addEventListener('DOMContentLoaded', () => {
-  try {
-    const canvas = document.getElementById('user-analytics-chart');
-    console.log(canvas)
+  window.addEventListener('DOMContentLoaded', () => {
 
-    new Chart(canvas, {
-      type: 'doughnut',
-      data: data
+if (document.getElementById("all-user-actions") && typeof simpleDatatables.DataTable !== 'undefined') {
+    const dataTable = new simpleDatatables.DataTable("#all-user-actions", {
+        searchable: true,
+        paging: true,
+        perPage: 5,
+        perPageSelect: [5, 10],
     });
+}
+
+  try {
+    if('@IsAdmin' == 'False')
+    {
+      const canvas = document.getElementById('user-analytics-chart');
+      new Chart(canvas, {
+        type: 'doughnut',
+        data: data
+      });
+    } else {
+       const bcanvas = document.getElementById('admin-businesses');
+       bcanvas.style.width ='100%S'
+       const scanvas = document.getElementById('admin-seals');
+
+      new Chart(bcanvas, {
+        type: 'pie',
+        data: bdata,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false, // this allows full height use of the container
+        }
+      });
+
+      new Chart(scanvas, {
+        type: 'doughnut',
+        data: sdata,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false, // this allows full height use of the container
+        }
+      });
+    }
   } catch (err) {
     console.error("Failed to create chart:", err.message);
   }
