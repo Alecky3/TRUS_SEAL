@@ -107,7 +107,7 @@
       @* Lower side bar *@
       <div class="container">
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2 p-2 sm:p-3">
-          <div class="flex flex-col bg-white border border-gray-200 shadow-2xs rounded-xl p-4 md:p-5 dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
+          <div class="flex flex-col bg-white border border-gray-200 shadow-2xs  rounded-xl p-4 md:p-5 dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70" style="height:500px; max-height: 600px; overflow:auto;">
             <h3 class="text-lg font-bold text-gray-800 dark:text-white">
              Your Actions
             </h3>
@@ -143,8 +143,9 @@
              Analytics
             </h3>
             @* Chart *@
-            
-              <canvas id="user-analytics-chart" width="400" height="200"></canvas>
+            <div class="chart-container flex justify-content-center align-items-center" style="width: 100%; height: 100%; max-height: 400px;">
+              <canvas id="user-analytics-chart"></canvas>
+            </div>
             @* End of chart *@
           </div>
         </div>
@@ -385,7 +386,11 @@ if (document.getElementById("all-user-actions") && typeof simpleDatatables.DataT
       const canvas = document.getElementById('user-analytics-chart');
       new Chart(canvas, {
         type: 'doughnut',
-        data: data
+        data: data,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false, // this allows full height use of the container
+        }
       });
     } else {
        const bcanvas = document.getElementById('admin-businesses');

@@ -2012,6 +2012,10 @@ input:checked + .toggle-bg {
   max-height: 500px;
 }
 
+.max-h-\[300px\] {
+  max-height: 300px;
+}
+
 .min-h-\[calc\(100\%-3\.5rem\)\] {
   min-height: calc(100% - 3.5rem);
 }
