@@ -18,8 +18,8 @@
                             <input 
                             required
                             type="text"
-                            pattern="[A-Za-z]{1,3}"
-                            asp-for="Input.FirstName" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-50 peer" autocomplete="on" aria-required="true" placeholder="" />
+                            pattern="[A-Za-z0-9_\-'\s]+"
+                            asp-for="Input.FirstName" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-50 peer" required aria-required="true" placeholder="FirstName" />
                             
                             <span asp-validation-for="Input.FirstName" class="text-red-500"></span>
                         </div>
@@ -56,4 +56,5 @@
 </div>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    
 }
