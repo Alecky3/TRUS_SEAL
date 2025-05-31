@@ -80,12 +80,14 @@ namespace TrustSeal.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+            [RegularExpression(@"^[A-Za-z0-9_\-'\s]+$", ErrorMessage ="Please Input a valid First Name")]
             [Display(Name = "First name")]
             public string FirstName { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+            [RegularExpression(@"^[A-Za-z0-9_\-'\s]+$", ErrorMessage ="Please Input A valid Last Name")]
             [Display(Name = "Last name")]
             public string LastName { get; set; }
             /// <summary>
@@ -102,7 +104,13 @@ namespace TrustSeal.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 8)]
+            [RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$",
+            ErrorMessage ="""
+                Your password does not match below creteria <br/> minimum 8 characters in length.
+                <br/>at least one uppercase letter <br/>at least one lowercase English letter
+                <br/> at least one digit </br>at least one special character
+             """)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
