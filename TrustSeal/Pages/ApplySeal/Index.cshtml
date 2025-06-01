@@ -656,7 +656,9 @@
       validator.onSuccess(event => {
         handleCreateBusiness();
       })
-      let businessInputs = document.querySelectorAll("form#createBusiness input[type='text'], form#createBusiness input[type='email'], form#createBusiness input[type='date'],form#createBusiness input[type='datetime-local'],form#createBusiness input[type='url']");
+      let businessInputs = document.querySelectorAll("form#createBusiness input[type='text'],form#createBusiness input[type='url']");
+      let businessDateInputs = document.querySelectorAll("form#createBusiness input[type='date'],form#createBusiness input[type='datetime-local']")
+      let businessEmailInputs = document.querySelectorAll("form#createBusiness input[type='email']")
       businessInputs.forEach((input, index) => {
         let idAttribute = input.getAttribute('id');
 
@@ -664,10 +666,47 @@
           validator.addField("#" + idAttribute, [
             {
               rule: 'required'
+            },
+            {
+              rule:"minLength",
+              value:2
+            },
+            {
+              rule:"maxLength",
+              value:100
+            },
+            {
+              rule:"customRegexp",
+              value:/^[A-Za-z0-9_\-\.\+'\s]+$/
             }
           ])
         }
       })
+      
+      businessDateInputs.forEach(input=>{
+        let idAttribute = input.getAttribute('id');
+        if (idAttribute !== null) {
+          validator.addField("#" + idAttribute, [
+          {
+              rule: 'required'
+            }])
+          }
+      })
+
+       businessEmailInputs.forEach(input=>{
+        let idAttribute = input.getAttribute('id');
+        if (idAttribute !== null) {
+          validator.addField("#" + idAttribute, [
+          {
+              rule: 'required'
+            },
+            {
+              rule:"email"
+            }
+            ])
+          }
+      })
+
       let businessFiles = document.querySelectorAll("#createBusiness input[type='file']")
       console.log("business file inputs")
       console.log(businessFiles);
