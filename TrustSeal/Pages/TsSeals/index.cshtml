@@ -164,96 +164,103 @@
         </ul>
         <!-- End List Group -->
         <div>
-            @* Seal Url Copy *@
-            
-            <div class="w-full max-w-sm mt-8">
-                <div class="mb-2 flex justify-between items-center">
-                    <label for="website-url" class="text-sm font-medium text-gray-900 dark:text-white">Verify your website</label>
-                </div>
-                <div class="flex items-center">
-                    <span class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg dark:bg-gray-600 dark:text-white dark:border-gray-600">URL</span>
-                    <div class="relative w-full">
-                        <input id="website-url" type="text" aria-describedby="helper-text-explanation" class="bg-gray-50 border border-e-0 border-gray-300 text-gray-500 dark:text-gray-400 text-sm border-s-0 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="https://wwww.trustseal.co.ke/seals/seal_preview.png" readonly disabled />
+
+            <!-- Modal toggle -->
+            <button data-modal-target="embedseal-@seal.SealCode"  data-modal-toggle="embedseal-@seal.SealCode" class="block text-white mt-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+            Embed seal
+            </button>
+
+            <!-- Main modal -->
+            <div id="embedseal-@seal.SealCode" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                <div class="relative p-4 w-full max-w-2xl max-h-full">
+                    <!-- Modal content -->
+                    <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+                        <!-- Modal header -->
+                        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                Embed Trustseal Guide
+                            </h3>
+                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="embedseal-@seal.SealCode">
+                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                </svg>
+                                <span class="sr-only">Close modal</span>
+                            </button>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="p-4 md:p-5 space-y-4">
+                            
+                            <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+                                <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="htmlcode-tab" data-tabs-toggle="#embedcode-@seal.SealCode" role="tablist">
+                                    <li class="me-2" role="presentation">
+                                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="htmlcode-@seal.SealCode-tab" data-tabs-target="#htmlcode-@seal.SealCode" type="button" role="tab" aria-controls="htmlcode-@seal.SealCode" aria-selected="false">HTML Code</button>
+                                    </li>
+                                    <li class="me-2" role="presentation">
+                                        <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="csscode-@seal.SealCode-tab" data-tabs-target="#csscode-@seal.SealCode" type="button" role="tab" aria-controls="csscode-@seal.SealCode" aria-selected="false">CSS Code</button>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div id="embedcode-@seal.SealCode">
+                                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="htmlcode-@seal.SealCode" role="tabpanel" aria-labelledby="htmlcode-@seal.SealCode-tab">
+                                    <div>
+
+                                        <label for="embedhtmlcode-@seal.SealCode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Copy and paste below HTML code on your site,place it where your prefer the seal badge to be displayed</label>
+                                        <textarea id="embedhtmlcode-@seal.SealCode" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
+                                            <a href="@(Model.Hostname)/SealPreview?sealcode=@seal.SealCode" class="hover-text" id="sealPreviedUrl">
+                                                <img src="@Model.Hostname@Url.Content("~/Badges/badge.svg")" alt="Trust Seal Logo" style="width: 120px;height: 120px;">
+                                            </img>
+                                                <div class="tooltip-text bottom">
+                                                    <div class="tooltip-item">
+                                                        <span>Seal assigned By: </span>
+                                                        <span class="tooltip-item-text">Kenya National Chanbers of Commerce & Industry</span>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="tooltip-item">
+                                                        <span>Business Name: </span>
+                                                        <span class="tooltip-item-text">@seal.BusinessLegalName</span>
+                                                    </div>
+                                                    <div class="tooltip-item">
+                                                        <span>Date Assigned: </span>
+                                                        <span class="tooltip-item-text">@seal.CreatedAt</span>
+                                                    </div>
+                                                    <div class="tooltip-item">
+                                                        <span>Expires At: </span>
+                                                        <span class="tooltip-item-text">@seal.ExpiresAt</span>
+                                                    </div>
+                                            </div>
+                                            </a>
+                                        </textarea>
+
+                                    </div>
+                                    <div >
+                                        <button type="button" data-clipboard-target="#embedhtmlcode-@seal.SealCode" class="copyembedcode-btn px-5 py-2.5 text-sm mt-2 font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Copy</button>
+                                    </div>
+                                </div>
+                                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="csscode-@seal.SealCode" role="tabpanel" aria-labelledby="csscode-@seal.SealCode-tab">
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Dashboard tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
+                                </div>
+                             </div>
+
+                        </div>
+                        <!-- Modal footer -->
+                        <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                           
+                        </div>
                     </div>
-                    <button data-tooltip-target="tooltip-website-url" data-copy-to-clipboard-target="website-url" class="flex-shrink-0 z-10 inline-flex items-center py-3 px-4 text-sm font-medium text-center text-white bg-blue-700 rounded-e-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 border border-blue-700 dark:border-blue-600 hover:border-blue-800 dark:hover:border-blue-700" type="button">
-                        <span id="default-icon">
-                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
-                                <path d="M16 1h-3.278A1.992 1.992 0 0 0 11 0H7a1.993 1.993 0 0 0-1.722 1H2a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2Zm-3 14H5a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2Zm0-4H5a1 1 0 0 1 0-2h8a1 1 0 1 1 0 2Zm0-5H5a1 1 0 0 1 0-2h2V2h4v2h2a1 1 0 1 1 0 2Z"/>
-                            </svg>
-                        </span>
-                        <span id="success-icon" class="hidden inline-flex items-center">
-                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
-                            </svg>
-                        </span>
-                    </button>
-                    <div id="tooltip-website-url" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-                        <span id="default-tooltip-message">Copy link</span>
-                        <span id="success-tooltip-message" class="hidden">Copied!</span>
-                        <div class="tooltip-arrow" data-popper-arrow></div>
-                    </div>
                 </div>
-                <p id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">Paste this link on your website to verify your site</p>
             </div>
 
-            @* end of Seal Url Copy *@
         </div>
     </div>
 </div>
 }
 
-
-@* <section class="container mx-auto over">
-    
-    <div class="w-full">
-        <table id="sealsDatatable" class="cell-border compact stripe" style="width: 100%;">
-            <thead>
-                <tr>
-                    <td>Created At</td>
-                    <td>Expires At</td>
-                    <td>Businesses Legal Name</td>
-                    <td>Seal Code</td>
-                    <td >Actions</td>
-                </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-        </table>
-    </div>
-</section> *@
-
-@* @section Scripts {
+@section Scripts
+{
+    <script src="~/js/clipboard.min.js"></script>
     <script>
-        $(document).ready(function(){
-            let businessDataTable = $("#sealsDatatable").DataTable({
-                deferRender:true,
-                responsive: true,
-                ajax: {
-                    url: '/TsSeals?handler=AllSeals',
-                    dataSrc:'',
-                },
-                columns: [
-                    {data:'createdAt'},
-                    {data:'expiresAt'},
-                    {data:'businessLegalName'},
-                    {data:'sealReadableId'},
-                    {data:"sealCode"}
-                ],
-                columnDefs:[
-                {
-                    targets:-1,
-                    render:function(data,type,row)
-                    {
-                        
-                        return `
-                                <a href='/SealPreview?SealCode=${row.sealCode}' class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Preview</a>
-                                `
-                        
-                    }
-                },
-                ]
-                })
-            })
+        let clipboardbtns = new ClipboardJS('.copyembedcode-btn');
+       
     </script>
-} *@
+
+}
