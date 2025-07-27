@@ -205,30 +205,30 @@
                                     <div>
 
                                         <label for="embedhtmlcode-@seal.SealCode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Copy and paste below HTML code on your site,place it where your prefer the seal badge to be displayed</label>
-                                        <textarea id="embedhtmlcode-@seal.SealCode" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
-                                            <a href="@(Model.Hostname)/SealPreview?sealcode=@seal.SealCode" class="hover-text" id="sealPreviedUrl">
-                                                <img src="@Model.Hostname@Url.Content("~/Badges/badge.svg")" alt="Trust Seal Logo" style="width: 120px;height: 120px;">
-                                            </img>
-                                                <div class="tooltip-text bottom">
-                                                    <div class="tooltip-item">
-                                                        <span>Seal assigned By: </span>
-                                                        <span class="tooltip-item-text">Kenya National Chanbers of Commerce & Industry</span>
-                                                    </div>
-                                                    <hr>
-                                                    <div class="tooltip-item">
-                                                        <span>Business Name: </span>
-                                                        <span class="tooltip-item-text">@seal.BusinessLegalName</span>
-                                                    </div>
-                                                    <div class="tooltip-item">
-                                                        <span>Date Assigned: </span>
-                                                        <span class="tooltip-item-text">@seal.CreatedAt</span>
-                                                    </div>
-                                                    <div class="tooltip-item">
-                                                        <span>Expires At: </span>
-                                                        <span class="tooltip-item-text">@seal.ExpiresAt</span>
-                                                    </div>
-                                            </div>
-                                            </a>
+                                        <textarea id="embedhtmlcode-@seal.SealCode" rows="4" class="text-left block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
+<a href="@(Model.Hostname)/SealPreview?sealcode=@seal.SealCode" class="hover-text" id="sealPreviedUrl">
+    <img src="@Model.Hostname@Url.Content("~/Badges/badge.svg")" alt="Trust Seal Logo" style="width: 120px;height: 120px;">
+</img>
+    <div class="tooltip-text bottom">
+        <div class="tooltip-item">
+            <span>Seal assigned By: </span>
+            <span class="tooltip-item-text">Kenya National Chanbers of Commerce & Industry</span>
+        </div>
+        <hr>
+        <div class="tooltip-item">
+            <span>Business Name: </span>
+            <span class="tooltip-item-text">@seal.BusinessLegalName</span>
+        </div>
+        <div class="tooltip-item">
+            <span>Date Assigned: </span>
+            <span class="tooltip-item-text">@seal.CreatedAt</span>
+        </div>
+        <div class="tooltip-item">
+            <span>Expires At: </span>
+            <span class="tooltip-item-text">@seal.ExpiresAt</span>
+        </div>
+</div>
+</a>
                                         </textarea>
 
                                     </div>
@@ -240,36 +240,36 @@
                                     <div>
 
                                         <label for="embedhtmlcode-@seal.SealCode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Copy and paste below CSS code on your site style sheet.</label>
-                                        <textarea id="embedcsscode-@seal.SealCode" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
-                                            .tooltip-text {
-                                                visibility: hidden;
-                                                position: absolute;
-                                                z-index: 1;
-                                                width: 300px;
-                                                color: white;
-                                                background-color: #192733;
-                                                padding: 2px;
-                                                border-radius: 2px;
-                                                }
+                                        <textarea id="embedcsscode-@seal.SealCode" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 text-justify focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
+.tooltip-text {
+visibility: hidden;
+position: absolute;
+z-index: 1;
+width: 300px;
+color: white;
+background-color: #192733;
+padding: 2px;
+border-radius: 2px;
+}
 
-                                                .hover-text:hover .tooltip-text {
-                                                visibility: visible;
-                                                }
+.hover-text:hover .tooltip-text {
+visibility: visible;
+}
 
-                                                .bottom {
-                                                top: 25px;
-                                                left: 10%;
-                                                top: 50%;
-                                                }
-                                                .hover-text {
-                                                position: relative;
-                                                display: inline-block;
-                                                text-align: center;
-                                                
-                                                }
-                                                .tooltip-item {
-                                                    text-align: left;
-                                                }
+.bottom {
+top: 25px;
+left: 10%;
+top: 50%;
+}
+.hover-text {
+position: relative;
+display: inline-block;
+text-align: center;
+
+}
+.tooltip-item {
+    text-align: left;
+}
 
                                         </textarea>
                                          <div >
