@@ -124,7 +124,7 @@
                 </div>
                 <div class="certificate-date">Issued on: @seal.CreatedAt.ToShortDateString()</div>
             </div>
-            <a href="#" class="download-btn" onclick="downloadCertificate()" class="mt-2">Download Certificate</a>
+            @* <a href="#" class="download-btn" onclick="downloadCertificate()" class="mt-2">Download Certificate</a> *@
         </div>
         
     </div>
@@ -237,7 +237,45 @@
                                     </div>
                                 </div>
                                 <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="csscode-@seal.SealCode" role="tabpanel" aria-labelledby="csscode-@seal.SealCode-tab">
-                                            <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Dashboard tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
+                                    <div>
+
+                                        <label for="embedhtmlcode-@seal.SealCode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Copy and paste below CSS code on your site style sheet.</label>
+                                        <textarea id="embedcsscode-@seal.SealCode" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
+                                            .tooltip-text {
+                                                visibility: hidden;
+                                                position: absolute;
+                                                z-index: 1;
+                                                width: 300px;
+                                                color: white;
+                                                background-color: #192733;
+                                                padding: 2px;
+                                                border-radius: 2px;
+                                                }
+
+                                                .hover-text:hover .tooltip-text {
+                                                visibility: visible;
+                                                }
+
+                                                .bottom {
+                                                top: 25px;
+                                                left: 10%;
+                                                top: 50%;
+                                                }
+                                                .hover-text {
+                                                position: relative;
+                                                display: inline-block;
+                                                text-align: center;
+                                                
+                                                }
+                                                .tooltip-item {
+                                                    text-align: left;
+                                                }
+
+                                        </textarea>
+                                         <div >
+                                            <button type="button" data-clipboard-target="#embedcsscode-@seal.SealCode" class="copyembedcode-btn px-5 py-2.5 text-sm mt-2 font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Copy</button>
+                                        </div>
+                                    </div>
                                 </div>
                              </div>
 
