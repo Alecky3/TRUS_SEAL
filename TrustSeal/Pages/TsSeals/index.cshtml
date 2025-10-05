@@ -10,7 +10,7 @@
     TSUser user = await UserManager.GetUserAsync(User);
     var role = await UserManager.GetRolesAsync(user);
     var IsAdmin = role.Contains("Admin");
-    var baseUrl = $"{Request.Scheme}//{Request.Host}";
+    var baseUrl = $"{Request.Scheme}://{Request.Host}";
 }
 
 <style>
