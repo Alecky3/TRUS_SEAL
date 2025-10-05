@@ -1,144 +1,167 @@
 ﻿@page
 @model TrustSeal.Pages.TsBusinesses.IndexModel
+@using Microsoft.AspNetCore.Identity
+@using TrustSeal.Areas.Identity.Data
+
+@inject UserManager<TSUser> UserManager
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Business Details";
+    TSUser user = await UserManager.GetUserAsync(User);
+    var role = await UserManager.GetRolesAsync(user);
+    var IsAdmin = role.Contains("Admin");
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
+<table id="default-table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Business[0].LegalName)
+                <span class="flex items-center">
+                    Business Name
+                    <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4"/>
+                    </svg>
+                </span>
+            </th>
+            <th data-type="date" data-format="YYYY/DD/MM">
+                <span class="flex items-center">
+                    Verification Status
+                    <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4"/>
+                    </svg>
+                </span>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Business[0].RegistrationNumber)
+                <span class="flex items-center">
+                    Registration Number
+                    <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4"/>
+                    </svg>
+                </span>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Business[0].TaxIdentificationNumber)
+                <span class="flex items-center">
+                      KRA Pin
+                    <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4"/>
+                    </svg>
+                </span>
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].IncorporationDate)
+             <th>
+                <span class="flex items-center">
+                      Actions
+                    <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4"/>
+                    </svg>
+                </span>
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].StreetAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].City)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].PostalCode)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].Country)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].PhoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].Website)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].PrimaryContactName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].PrimaryContactPhone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].PrimaryContactEmail)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].BusinessType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].IndustryCategory)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].IsVerified)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].SubmissionDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Business[0].Owner)
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Business) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.LegalName)
+        @foreach(var bs in Model.Business)
+        {
+          <tr>
+            <td class="font-medium text-gray-900 whitespace-nowrap dark:text-white">
+              @bs.LegalName
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.RegistrationNumber)
-            </td>
+              @bs.IsVerified
+              </td>
+            <td>@bs.RegistrationNumber</td>
+            <td>@bs.TaxIdentificationNumber</td>
             <td>
-                @Html.DisplayFor(modelItem => item.TaxIdentificationNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IncorporationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StreetAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PostalCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Country)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Website)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrimaryContactName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrimaryContactPhone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrimaryContactEmail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BusinessType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IndustryCategory)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsVerified)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SubmissionDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Owner.Id)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+               @* Actions *@
+              <div class="hs-dropdown relative inline-flex">
+                <button id="@bs.Id" type="button" class="hs-dropdown-toggle py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
+                  Actions
+                  <svg class="hs-dropdown-open:rotate-180 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+
+                <div class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg mt-2 dark:bg-neutral-800 dark:border dark:border-neutral-700 dark:divide-neutral-700 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full" style="z-index: 1000;" role="menu" aria-orientation="vertical" aria-labelledby="@bs.Id">
+                  <div class="p-1 space-y-0.5">
+                    <a href="/ApplySeal/ReviewApplication?Id=@bs.Id" class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700" href="#">
+                      View Application
+                    </a>
+                     <a href="/ApplySeal/index?Id=@bs.Id" class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700" href="#">
+                      Edit Application
+                    </a>
+                    @if(IsAdmin)
+                    {
+                      <a href="/ReviewApplication?CaseNumber=@bs.CaseNumber" class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700" href="#">
+                      Verify Application
+                    </a>
+                    }
+                    <a href="/ApplySeal/TrackSealApplication?handler=ById&Id=@bs.Id" class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700" href="#">
+                      Track Application
+                    </a>
+                    
+                  </div>
+                </div>
+              </div>
+              @* End of actions *@
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>
+
+
+@section Scripts {
+    <script>
+      var IsAdmin = "@IsAdmin";
+       window.addEventListener("DOMContentLoaded",function(event){
+        
+          if (document.getElementById("default-table") && typeof simpleDatatables.DataTable !== 'undefined') {
+              const dataTable = new simpleDatatables.DataTable("#default-table", {
+                  searchable: true,
+                  sortable: true,
+                  perPage:5,
+                  perPageSelect:[5,10,15,20,25],
+                  columns:[
+                    {
+                      select:1,
+                      type: 'html',
+                      render: function(data, td, rowIndex, cellIndex) {
+                        if (data === "True")
+                        {
+                          return `<span class='inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-500 text-white'>Verified</span>`
+                        } else {
+                          return `<span class='inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-500 text-white'>Pending Verification</span>`
+
+                        }
+                    }
+                    }
+                  ],
+                  tableRender: (_data, table, type) => {
+                    if (type === "print") {
+                        return table
+                    }
+                    const tHead = table.childNodes[0]
+                    const filterHeaders = {
+                        nodeName: "TR",
+                        attributes: {
+                            class: "search-filtering-row"
+                        },
+                        childNodes: tHead.childNodes[0].childNodes.map(
+                            (_th, index) => ({nodeName: "TH",
+                                childNodes: [
+                                    {
+                                        nodeName: "INPUT",
+                                        attributes: {
+                                            class: "datatable-input",
+                                            type: "search",
+                                            "data-columns": "[" + index + "]"
+                                        }
+                                    }
+                                ]})
+                        )
+                    }
+                    tHead.childNodes.push(filterHeaders)
+                    return table
+                   }
+              });
+          }
+
+       })
+    </script>
+}

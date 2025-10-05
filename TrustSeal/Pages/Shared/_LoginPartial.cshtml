@@ -5,26 +5,52 @@
 @inject UserManager<TSUser> UserManager
 
 <ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
+    @if (SignInManager.IsSignedIn(User))
+    {
         TSUser user = await UserManager.GetUserAsync(User);
         var fullName = $"{user?.FirstName} {user?.LastName}";
-    <li class="nav-item">
-            <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello, @fullName!</a>
-    </li>
-    <li class="nav-item">
-        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
-            <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
-        </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
-}
+
+
+        
+        <button id="dropdownAvatarNameButton" data-dropdown-toggle="dropdownAvatarName" class="flex items-center text-sm pe-1 font-medium text-gray-900 rounded-full hover:text-blue-600 dark:hover:text-blue-500 md:me-0 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-white" type="button">
+            <span class="sr-only">Open user menu</span>
+            <span class="inline-flex items-center justify-center size-11 rounded-full bg-gray-500 font-semibold text-white">
+            @user.FirstName[0].ToString().ToUpper()
+            </span>
+        </button>
+
+        <!-- Dropdown menu -->
+        <div id="dropdownAvatarName" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg border border-gray-300 shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
+            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownInformdropdownAvatarNameButtonationButton">
+            <li>
+                <a class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" asp-area="Identity" asp-page="/Account/Manage/Index"><i data-feather="user" class="align-self-center icon-xs icon-dual me-1"></i> Profile</a>
+            </li>
+            </ul>
+            <div class="py-2">
+            <form id="logoutForm" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+                            <button id="logout" type="submit" class="btn btn-link text-dark border-0 p-0"><i data-feather="power" class="align-self-center icon-xs icon-dual me-1"></i> Logout</button>
+            </form>
+            </div>
+        </div>
+
+      
+    }
+    else
+    {
+
+        
+        <li class="dropdown">
+            <a id="manage" class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-bs-toggle="dropdown" role="button"
+               aria-haspopup="false" aria-expanded="false">
+                <span class="btn btn-primary">Authenticate</span>
+               
+            </a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                <a class="dropdown-item" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            </div>
+           
+        </li>
+   
+    }
 </ul>

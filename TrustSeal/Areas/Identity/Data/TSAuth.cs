@@ -5,6 +5,7 @@ using System.Reflection.Emit;
 using System.Reflection.Metadata;
 using TrustSeal.Areas.Identity.Data;
 using TrustSeal.Models;
+using TrustSeal.Pages.ApplySeal;
 
 namespace TrustSeal.Areas.Identity.Data;
 
@@ -17,16 +18,66 @@ public class TSAuth : IdentityDbContext<TSUser>
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+       
+    // // //     builder.Entity<BsAnswer>().ToTable("BsAnswers");
+    // // //     // Customize the ASP.NET Identity model and override the defaults if needed.
+    // // //     // For example, you can rename the ASP.NET Identity table names and more.
+    // // //     // Add your customizations after calling base.OnModelCreating(builder);
+    // // //     builder.Entity<Business>().ToTable(nameof(Businesses))
+    // // //    .HasOne(e => e.Owner)
+    // // //    .WithMany(e => e.UserBusinesses)
+    // // //    .HasForeignKey(e => e.OwnerId)
+    // // //    .IsRequired();
+
+    // // //     builder.Entity<Question>()
+    // // //          .HasOne(q => q.Category);
+    //     builder.Entity<Business>()
+    //     .HasOne(b=> b.Seal)
+    //     .WithOne(s => s.Business)
+    //     .HasForeignKey<Business>(b => b.SealId)
+    //     .IsRequired(false);
+        
+
+    //     builder.Entity<Seal>()
+    //     .Property(e => e.SealCode)
+    //     .HasColumnType("uniqueidentifier")
+    //     .HasDefaultValue("NEWSEQUENTIALID()");    
+
+       builder.Entity<BsAnswer>()
+        .HasKey(e => e.Id);
+
+         builder.Entity<Business>()
+            .HasOne(b => b.Seal)
+            .WithOne(s => s.Business)
+            .HasForeignKey<Business>(b => b.SealId)  // Set SealId as FK on Business side
+            .IsRequired(false); // Optional relationship
+
         base.OnModelCreating(builder);
-        // Customize the ASP.NET Identity model and override the defaults if needed.
-        // For example, you can rename the ASP.NET Identity table names and more.
-        // Add your customizations after calling base.OnModelCreating(builder);
-        builder.Entity<Business>().ToTable(nameof(Businesses))
-       .HasOne(e => e.Owner)
-       .WithMany(e => e.UserBusinesses)
-       .HasForeignKey(e => e.OwnerId)
-       .IsRequired();
     }
     public DbSet<Business> Businesses { get; set; }
+    public DbSet<Question> Questions { get; set; }
+    public DbSet<QuestionCategory> QuestionCategories { get; set; }
+
+    public DbSet<BsAnswer> Answers { get; set; }
+
+    public DbSet<BsAnswer> BsAnswer { get; set; }
+
+    public DbSet<BusinessAttachment> BusinessAttachment { get; set; }
+
+    public DbSet<Notification> Notifications {get; set;}
+
+    public DbSet<ApplicationTracking> ApplicationTrackings {get;set;}
+
+    public DbSet<Seals> Seals {get;set;}
+
+    public DbSet<AttachmentConfigs> AttachmentConfigs {get;set;}
+
+    public DbSet<UserBillings> Payments {get;set;}
+
+    public DbSet<DocumentPath> DocumentPaths {get;set;}
+
+    public DbSet<Support> SupportMessages {get;set;}
+
+    public DbSet<SupportAttachment> SupportAttachments {get;set;}
 
 }

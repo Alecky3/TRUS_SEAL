@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using TrustSeal.Areas.Identity.Data;
+using TrustSeal.Models;
 
 namespace TrustSeal.Areas.Identity.Pages.Account
 {
@@ -30,13 +31,18 @@ namespace TrustSeal.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<TSUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
+         private readonly TrustSeal.Areas.Identity.Data.TSAuth _context;
 
         public RegisterModel(
             UserManager<TSUser> userManager,
             IUserStore<TSUser> userStore,
             SignInManager<TSUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager,
+             TrustSeal.Areas.Identity.Data.TSAuth context
+            )
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -44,6 +50,8 @@ namespace TrustSeal.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager; 
+            _context = context;
         }
 
         /// <summary>
@@ -72,12 +80,14 @@ namespace TrustSeal.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+            [RegularExpression(@"^[A-Za-z0-9_\-'\s]+$", ErrorMessage ="Please Input a valid First Name")]
             [Display(Name = "First name")]
             public string FirstName { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+            [RegularExpression(@"^[A-Za-z0-9_\-'\s]+$", ErrorMessage ="Please Input A valid Last Name")]
             [Display(Name = "Last name")]
             public string LastName { get; set; }
             /// <summary>
@@ -94,7 +104,13 @@ namespace TrustSeal.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 8)]
+            [RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$",
+            ErrorMessage ="""
+                Your password does not match below creteria <br/> minimum 8 characters in length.
+                <br/>at least one uppercase letter <br/>at least one lowercase English letter
+                <br/> at least one digit </br>at least one special character
+             """)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
@@ -107,6 +123,8 @@ namespace TrustSeal.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            
         }
 
 
@@ -134,6 +152,23 @@ namespace TrustSeal.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+                    var not = new Notification();
+                    not.Content ="Created Account successfully";
+                    not.UserId = user.Id;
+                    not.CreatedAt = DateTime.Now;
+                    not.UpdateAt = DateTime.Now; 
+                    _context.Notifications.Add(not);
+                    await _context.SaveChangesAsync();
+                    
+                    /* assign user to role
+                        first check if role are defined and if not create them
+                    */
+                    await CreateRole();
+                    // assign the role
+                   
+                        var roleResult =  await _userManager.AddToRoleAsync(user,"User");   
+                
+                   _logger.LogInformation("User assigned to Role");
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -188,6 +223,25 @@ namespace TrustSeal.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<TSUser>)_userStore;
+        }
+
+
+       // this method create "User & Admin" Roles if they don't exist
+        private async Task CreateRole()
+        {
+            bool x = await _roleManager.RoleExistsAsync("User");
+            if (!x)
+            {
+                var role = new IdentityRole {Name="User"};
+                var roleResult = await _roleManager.CreateAsync(role);
+            }
+
+            x = await _roleManager.RoleExistsAsync("Admin");
+            if (!x)
+            {
+                var role = new IdentityRole {Name="Admin"};
+                var roleResult = await _roleManager.CreateAsync(role);
+            }
         }
     }
 }

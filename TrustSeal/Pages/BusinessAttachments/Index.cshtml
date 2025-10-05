@@ -1,0 +1,54 @@
+@page
+@model TrustSeal.Pages.BusinessAttachments.IndexModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BusinessAttachment[0].FileReference)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach(var bs in Model.BsAnswers)
+    {
+        <tr>
+            <td>@Html.DisplayFor(model => bs.AnswerText)</td>
+            @if(bs.BusinessAttachment == null)
+            {
+               
+                <td>
+                    <a asp-page="./Create" asp-route-BusinessID="@bs.BusinessID" asp-route-QuestionId="@bs.QuestionID">Create</a>
+                </td>
+            } 
+            else {
+                 <td>
+                    <a asp-page="./Details">Details</a>
+                    <a asp-page="./Edit" >Edit</a>
+                    <a asp-page="./Delete">Delete</a>
+                </td>
+            }
+
+        </tr>
+    }
+    </tbody>
+</table>
+
+</body>
+</html>

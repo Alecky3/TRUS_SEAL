@@ -1,0 +1,28 @@
+﻿@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout != null)
+    {
+        Layout = parentLayout.ToString();
+    }
+    else
+    {
+        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+    }
+}
+
+
+<div class="mt-4"> 
+   
+    <br class="my-4 border-gray-300" />
+    <div class="flex justify-center gap-4  bg-white dark:bg-gray-900 flex-wrap">
+        <div class="mt-4 flex-auto w-16">
+            <partial name="_ManageNav" />
+        </div>
+        <div class="flex-auto w-64 md:w-3/4">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

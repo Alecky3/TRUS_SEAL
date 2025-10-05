@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,6 +12,7 @@ using TrustSeal.Models;
 
 namespace TrustSeal.Pages.TsBusinesses
 {
+    [Authorize]
     public class CreateModel : PageModel
     {
         private readonly TrustSeal.Areas.Identity.Data.TSAuth _context;
@@ -31,15 +34,43 @@ namespace TrustSeal.Pages.TsBusinesses
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
 
-            _context.Businesses.Add(Business);
-            await _context.SaveChangesAsync();
+            var emptyBusiness = new Business();
+            emptyBusiness.OwnerId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            return RedirectToPage("./Index");
+           
+
+            if (await TryUpdateModelAsync<Business>(
+                emptyBusiness,
+                "business",   // Prefix for form value.
+                b => b.LegalName,
+                b => b.RegistrationNumber,
+                b => b.TaxIdentificationNumber,
+                b => b.IncorporationDate,
+                b => b.StreetAddress,
+                b => b.City,
+                b => b.PostalCode,
+                b => b.Country,
+                b => b.PhoneNumber,
+                b => b.Email,
+                b => b.Website,
+                b => b.PrimaryContactName,
+                b => b.PrimaryContactPhone,
+                b => b.PrimaryContactEmail,
+                b => b.BusinessType,
+                b => b.IndustryCategory,
+                b => b.SubmissionDate,
+                b => b.OwnerId))
+                {
+                    // Explicitly set properties not included in the form
+                    emptyBusiness.IsVerified = false;
+
+                    _context.Businesses.Add(emptyBusiness);
+                    await _context.SaveChangesAsync();
+                    return RedirectToPage("./Index");
+                }
+
+            return Page();
         }
     }
 }

@@ -17,7 +17,7 @@ namespace TrustSeal.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.7")
+                .HasAnnotation("ProductVersion", "8.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -234,6 +234,119 @@ namespace TrustSeal.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("TrustSeal.Models.ApplicationTracking", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("BusinessId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsMain")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("NeedsAttention")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Required")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("StepVerified")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BusinessId");
+
+                    b.ToTable("ApplicationTrackings");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.AttachmentConfigs", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Category")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ForWhichField")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Required")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AttachmentConfigs");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.BsAnswer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AnswerText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("AttachmentProvided")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("BusinessID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FileReference")
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("QuestionID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime>("SubmittedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BusinessID");
+
+                    b.HasIndex("QuestionID");
+
+                    b.ToTable("BsAnswer");
+                });
+
             modelBuilder.Entity("TrustSeal.Models.Business", b =>
                 {
                     b.Property<int>("Id")
@@ -243,6 +356,9 @@ namespace TrustSeal.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BusinessType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CaseNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("City")
@@ -271,7 +387,6 @@ namespace TrustSeal.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OwnerId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PhoneNumber")
@@ -295,7 +410,15 @@ namespace TrustSeal.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RegistrationNumber")
-                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SealId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SealReadableId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StreetAddress")
@@ -305,7 +428,6 @@ namespace TrustSeal.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("TaxIdentificationNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Website")
@@ -316,7 +438,316 @@ namespace TrustSeal.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Businesses", (string)null);
+                    b.HasIndex("SealId")
+                        .IsUnique()
+                        .HasFilter("[SealId] IS NOT NULL");
+
+                    b.ToTable("Businesses");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.BusinessAttachment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("BsAnswerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BusinessId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileReference")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ForWhichField")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BsAnswerId");
+
+                    b.HasIndex("BusinessId");
+
+                    b.ToTable("BusinessAttachment");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.DocumentPath", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BaseUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DocumentPaths");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("ApplicationTrackingId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BsAnswerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BusinessAttachmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BusinessId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("NotificationId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("QuestionCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SealId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationTrackingId");
+
+                    b.HasIndex("BsAnswerId");
+
+                    b.HasIndex("BusinessAttachmentId");
+
+                    b.HasIndex("BusinessId");
+
+                    b.HasIndex("NotificationId");
+
+                    b.HasIndex("QuestionCategoryId");
+
+                    b.HasIndex("QuestionId");
+
+                    b.HasIndex("SealId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notifications");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.Question", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Choices")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("HasChoices")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("QuestionText")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Questions");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.QuestionCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Order")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("QuestionCategories");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.Seals", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("RenewedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("SealCode")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Seals");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.Support", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Read")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ReplyToId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SendById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TicketNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReplyToId");
+
+                    b.HasIndex("SendById");
+
+                    b.ToTable("SupportMessages");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.SupportAttachment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SupportMessageId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SupportMessageId");
+
+                    b.ToTable("SupportAttachments");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.UserBillings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DatePaid")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaidById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PaymentCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentMethod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaidById");
+
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -370,20 +801,224 @@ namespace TrustSeal.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TrustSeal.Models.ApplicationTracking", b =>
+                {
+                    b.HasOne("TrustSeal.Models.Business", "Business")
+                        .WithMany("ApplicationTracking")
+                        .HasForeignKey("BusinessId");
+
+                    b.Navigation("Business");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.BsAnswer", b =>
+                {
+                    b.HasOne("TrustSeal.Models.Business", "Business")
+                        .WithMany()
+                        .HasForeignKey("BusinessID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TrustSeal.Models.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Business");
+
+                    b.Navigation("Question");
+                });
+
             modelBuilder.Entity("TrustSeal.Models.Business", b =>
                 {
                     b.HasOne("TrustSeal.Areas.Identity.Data.TSUser", "Owner")
                         .WithMany("UserBusinesses")
-                        .HasForeignKey("OwnerId")
+                        .HasForeignKey("OwnerId");
+
+                    b.HasOne("TrustSeal.Models.Seals", "Seal")
+                        .WithOne("Business")
+                        .HasForeignKey("TrustSeal.Models.Business", "SealId");
+
+                    b.Navigation("Owner");
+
+                    b.Navigation("Seal");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.BusinessAttachment", b =>
+                {
+                    b.HasOne("TrustSeal.Models.BsAnswer", "BsAnswer")
+                        .WithMany("BusinessAttachment")
+                        .HasForeignKey("BsAnswerId");
+
+                    b.HasOne("TrustSeal.Models.Business", "Business")
+                        .WithMany("BusinessAttachments")
+                        .HasForeignKey("BusinessId");
+
+                    b.Navigation("BsAnswer");
+
+                    b.Navigation("Business");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.Notification", b =>
+                {
+                    b.HasOne("TrustSeal.Models.ApplicationTracking", "ApplicationTracking")
+                        .WithMany("Notifications")
+                        .HasForeignKey("ApplicationTrackingId");
+
+                    b.HasOne("TrustSeal.Models.BsAnswer", "BsAnswer")
+                        .WithMany("Notifications")
+                        .HasForeignKey("BsAnswerId");
+
+                    b.HasOne("TrustSeal.Models.BusinessAttachment", null)
+                        .WithMany("Notifications")
+                        .HasForeignKey("BusinessAttachmentId");
+
+                    b.HasOne("TrustSeal.Models.Business", "Business")
+                        .WithMany("Notifications")
+                        .HasForeignKey("BusinessId");
+
+                    b.HasOne("TrustSeal.Models.Notification", "ReplyToNotification")
+                        .WithMany()
+                        .HasForeignKey("NotificationId");
+
+                    b.HasOne("TrustSeal.Models.QuestionCategory", "QuestionCategory")
+                        .WithMany("Notifications")
+                        .HasForeignKey("QuestionCategoryId");
+
+                    b.HasOne("TrustSeal.Models.Question", "Question")
+                        .WithMany("Notifications")
+                        .HasForeignKey("QuestionId");
+
+                    b.HasOne("TrustSeal.Models.Seals", "Seals")
+                        .WithMany("Notifications")
+                        .HasForeignKey("SealId");
+
+                    b.HasOne("TrustSeal.Areas.Identity.Data.TSUser", "CreatedBy")
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("ApplicationTracking");
+
+                    b.Navigation("BsAnswer");
+
+                    b.Navigation("Business");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("Question");
+
+                    b.Navigation("QuestionCategory");
+
+                    b.Navigation("ReplyToNotification");
+
+                    b.Navigation("Seals");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.Question", b =>
+                {
+                    b.HasOne("TrustSeal.Models.QuestionCategory", "Category")
+                        .WithMany("questions")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Owner");
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.Support", b =>
+                {
+                    b.HasOne("TrustSeal.Models.Support", "ReplyTo")
+                        .WithMany("Replies")
+                        .HasForeignKey("ReplyToId");
+
+                    b.HasOne("TrustSeal.Areas.Identity.Data.TSUser", "SendBy")
+                        .WithMany("SupportTickets")
+                        .HasForeignKey("SendById");
+
+                    b.Navigation("ReplyTo");
+
+                    b.Navigation("SendBy");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.SupportAttachment", b =>
+                {
+                    b.HasOne("TrustSeal.Models.Support", "SupportMessage")
+                        .WithMany("SupportAttachments")
+                        .HasForeignKey("SupportMessageId");
+
+                    b.Navigation("SupportMessage");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.UserBillings", b =>
+                {
+                    b.HasOne("TrustSeal.Areas.Identity.Data.TSUser", "PaidBy")
+                        .WithMany("Billings")
+                        .HasForeignKey("PaidById");
+
+                    b.Navigation("PaidBy");
                 });
 
             modelBuilder.Entity("TrustSeal.Areas.Identity.Data.TSUser", b =>
                 {
+                    b.Navigation("Billings");
+
+                    b.Navigation("Notifications");
+
+                    b.Navigation("SupportTickets");
+
                     b.Navigation("UserBusinesses");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.ApplicationTracking", b =>
+                {
+                    b.Navigation("Notifications");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.BsAnswer", b =>
+                {
+                    b.Navigation("BusinessAttachment");
+
+                    b.Navigation("Notifications");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.Business", b =>
+                {
+                    b.Navigation("ApplicationTracking");
+
+                    b.Navigation("BusinessAttachments");
+
+                    b.Navigation("Notifications");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.BusinessAttachment", b =>
+                {
+                    b.Navigation("Notifications");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.Question", b =>
+                {
+                    b.Navigation("Notifications");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.QuestionCategory", b =>
+                {
+                    b.Navigation("Notifications");
+
+                    b.Navigation("questions");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.Seals", b =>
+                {
+                    b.Navigation("Business");
+
+                    b.Navigation("Notifications");
+                });
+
+            modelBuilder.Entity("TrustSeal.Models.Support", b =>
+                {
+                    b.Navigation("Replies");
+
+                    b.Navigation("SupportAttachments");
                 });
 #pragma warning restore 612, 618
         }
