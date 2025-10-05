@@ -10,6 +10,7 @@
     TSUser user = await UserManager.GetUserAsync(User);
     var role = await UserManager.GetRolesAsync(user);
     var IsAdmin = role.Contains("Admin");
+    var baseUrl = $"{Request.Scheme}//{Request.Host}";
 }
 
 <style>
@@ -193,42 +194,137 @@
                             <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
                                 <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="htmlcode-tab" data-tabs-toggle="#embedcode-@seal.SealCode" role="tablist">
                                     <li class="me-2" role="presentation">
-                                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="htmlcode-@seal.SealCode-tab" data-tabs-target="#htmlcode-@seal.SealCode" type="button" role="tab" aria-controls="htmlcode-@seal.SealCode" aria-selected="false">HTML Code</button>
+                                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="htmlcode-@seal.SealCode-tab" data-tabs-target="#htmlcode-@seal.SealCode" type="button" role="tab" aria-controls="htmlcode-@seal.SealCode" aria-selected="false">Embed Code</button>
                                     </li>
-                                    <li class="me-2" role="presentation">
+                                    @* <li class="me-2" role="presentation">
                                         <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="csscode-@seal.SealCode-tab" data-tabs-target="#csscode-@seal.SealCode" type="button" role="tab" aria-controls="csscode-@seal.SealCode" aria-selected="false">CSS Code</button>
-                                    </li>
+                                    </li> *@
                                 </ul>
                             </div>
                             <div id="embedcode-@seal.SealCode">
                                 <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="htmlcode-@seal.SealCode" role="tabpanel" aria-labelledby="htmlcode-@seal.SealCode-tab">
                                     <div>
 
-                                        <label for="embedhtmlcode-@seal.SealCode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Copy and paste below HTML code on your site,place it where your prefer the seal badge to be displayed</label>
+                                        <label for="embedhtmlcode-@seal.SealCode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Copy and paste below code on your site,just before the end of the body tag.</label>
                                         <textarea id="embedhtmlcode-@seal.SealCode" rows="4" class="text-left block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
-<a href="@(Model.Hostname)/SealPreview?sealcode=@seal.SealCode" class="hover-text" id="sealPreviedUrl">
-    <img src="@Model.Hostname@Url.Content("~/Badges/badge.svg")" alt="Trust Seal Logo" style="width: 120px;height: 120px;">
-</img>
-    <div class="tooltip-text bottom">
-        <div class="tooltip-item">
-            <span>Seal assigned By: </span>
-            <span class="tooltip-item-text">Kenya National Chanbers of Commerce & Industry</span>
-        </div>
-        <hr>
-        <div class="tooltip-item">
-            <span>Business Name: </span>
-            <span class="tooltip-item-text">@seal.BusinessLegalName</span>
-        </div>
-        <div class="tooltip-item">
-            <span>Date Assigned: </span>
-            <span class="tooltip-item-text">@seal.CreatedAt</span>
-        </div>
-        <div class="tooltip-item">
-            <span>Expires At: </span>
-            <span class="tooltip-item-text">@seal.ExpiresAt</span>
-        </div>
-</div>
-</a>
+
+                                            <!-- Place This Script before the end of the body tag -->
+                                            <script>
+                                                (function() {
+                                                    // Seal Details
+                                                    // update the sealCode to preview embedding seal to a page
+                                                        let sealCode="@seal.SealCode" 
+                                                        let sealUrl = "@baseUrl" 
+                                                        let businessName;
+                                                        let previewLink;
+                                                        let expiresAt;
+                                                        let createdAt;
+                                                        let imgsrc ='';
+                                                    
+                                                        // replace http://localhost:5027 with the IP of the trust seal site
+                                                        fetch(`${sealUrl}/TsSeals/EmbedSeal?handler=EmbedSeal&SealCode=${sealCode}`)
+                                                        .then(res=>res.json())
+                                                        .then(jsonResult=>{
+                                                            const createdAts = new Date(jsonResult.createdAt)
+                                                            const expiresAts = new Date(jsonResult.expiresAt)
+                                                            imgsrc=jsonResult.seal.svg.replace("http://localhost:5027",sealUrl);
+                                                            businessName=jsonResult.businessLegalName;
+                                                            previewLink=jsonResult.sealPreview.replace("http://localhost:5027",sealUrl);
+                                                            expiresAt= `Expires at: ${expiresAts.toLocaleDateString()}`;
+                                                            createdAt= `Created at: ${createdAts.toLocaleDateString()}`
+                                                        }).then(()=>{
+                                                            let sealImg = document.querySelectorAll("#seal-button img")
+                                                            let sealbusinessName = document.querySelector("#seal-businessname")
+                                                            let sealPreview = document.querySelector("#seal-preview")
+                                                            let sealexpiresAt = document.querySelector("#seal-expiresAt")
+                                                            sealImg.forEach(img=>{
+                                                                img.src=imgsrc
+                                                            })
+
+                                                            sealbusinessName.innerHTML=businessName;
+                                                            sealPreview.href=previewLink;
+                                                            sealexpiresAt.innerHTML = expiresAt;
+                                                        })
+                                                        .catch(err=>{
+                                                            console.error(err)
+                                                        })
+                                                // Avoid duplicate insertion
+                                                if (document.getElementById("seal-button")) return;
+
+                                                // Create container
+                                                const sealContainer = document.createElement("div");
+                                                sealContainer.innerHTML = `
+                                                    <div id="seal-button">
+                                                    <img src="${imgsrc}" alt="Seal" id="seal-icon">
+                                                    <div id="seal-popup">
+                                                        <img src="${imgsrc}" alt="Verified Seal" class="seal-image">
+                                                        <p style="text-align: start;font-size: medium; font-weight: bold;" id="seal-businessname">${businessName}</p>
+                                                        <p style="text-align: start;"><a id="seal-preview" href="${previewLink}" target="_blank">Validate Seal Details</a></p>
+                                                        <p style="text-align: start;"><strong id="seal-expiresAt">${expiresAt}</strong></p>
+                                                        <p style="text-align: start;"><em>Seal assigned By - <strong>Kenya National Chamber of Commerce & Industry</strong></em></p>
+                                                    </div>
+                                                    </div>
+                                                `;
+
+                                                // Add styles dynamically
+                                                const style = document.createElement("style");
+                                                style.textContent = `
+                                                    #seal-button {
+                                                    position: fixed;
+                                                    bottom: 20px;
+                                                    right: 20px;
+                                                    z-index: 99999;
+                                                    font-family: Arial, sans-serif;
+                                                    }
+
+                                                    #seal-icon {
+                                                    width: 60px;
+                                                    height: 60px;
+                                                    border-radius: 50%;
+                                                    cursor: pointer;
+                                                    box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+                                                    transition: transform 0.3s ease;
+                                                    }
+
+                                                    #seal-icon:hover {
+                                                    transform: scale(1.1);
+                                                    }
+
+                                                    #seal-popup {
+                                                    position: absolute;
+                                                    bottom: 70px;
+                                                    right: 0;
+                                                    width: 320px;
+                                                    background: white;
+                                                    border-radius: 12px;
+                                                    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+                                                    padding: 12px;
+                                                    text-align: center;
+                                                    font-size: 13px;
+                                                    opacity: 0;
+                                                    visibility: hidden;
+                                                    transition: opacity 0.3s ease, visibility 0.3s ease;
+                                                    }
+
+                                                    .seal-image {
+                                                    width: 300px;
+                                                    height: 300px;
+                                                    margin-bottom: 8px;
+                                                    }
+
+                                                    #seal-button:hover #seal-popup {
+                                                    opacity: 1;
+                                                    visibility: visible;
+                                                    }
+                                                `;
+
+                                                // Append everything to page
+                                                document.head.appendChild(style);
+                                                document.body.appendChild(sealContainer);
+                                                })();
+
+                                            </script>
+                                            <!-- End of seal script -->
                                         </textarea>
 
                                     </div>
@@ -241,36 +337,6 @@
 
                                         <label for="embedhtmlcode-@seal.SealCode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Copy and paste below CSS code on your site style sheet.</label>
                                         <textarea id="embedcsscode-@seal.SealCode" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 text-justify focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
-.tooltip-text {
-visibility: hidden;
-position: absolute;
-z-index: 1;
-width: 300px;
-color: white;
-background-color: #192733;
-padding: 2px;
-border-radius: 2px;
-}
-
-.hover-text:hover .tooltip-text {
-visibility: visible;
-}
-
-.bottom {
-top: 25px;
-left: 10%;
-top: 50%;
-}
-.hover-text {
-position: relative;
-display: inline-block;
-text-align: center;
-
-}
-.tooltip-item {
-    text-align: left;
-}
-
                                         </textarea>
                                          <div >
                                             <button type="button" data-clipboard-target="#embedcsscode-@seal.SealCode" class="copyembedcode-btn px-5 py-2.5 text-sm mt-2 font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Copy</button>
